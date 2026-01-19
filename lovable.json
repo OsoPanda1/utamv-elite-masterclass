@@ -1,0 +1,12 @@
+{
+  "projectId": "a7d96c5c-d3c9-46a8-9438-e6f8d3874d13",
+  "buildCommand": "npm run build",
+  "startCommand": "npm run start",
+  "env": {
+    "SUPABASE_URL": "@env(SUPABASE_URL)",
+    "SUPABASE_ANON_KEY": "@env(SUPABASE_ANON_KEY)",
+    "STRIPE_PUBLIC_KEY": "@env(STRIPE_PUBLIC_KEY)",
+    "STRIPE_SECRET_KEY": "@env(STRIPE_SECRET_KEY)",
+    "STRIPE_WEBHOOK_SECRET": "@env(STRIPE_WEBHOOK_SECRET)"
+  }
+}
