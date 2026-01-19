@@ -1,0 +1,12 @@
+[
+  {
+    "moduleId": 1,
+    "questions": [
+      {
+        "question": "¿Qué es el marketing digital?",
+        "options": ["Publicidad offline", "Estrategias en medios digitales", "Ventas en tiendas físicas"],
+        "answer": "Estrategias en medios digitales"
+      }
+    ]
+  }
+]
