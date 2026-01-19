@@ -1,8 +1,16 @@
 import { Check, Sparkles, Shield, Clock, Award, Users, FileText, Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useState } from 'react';
 import studentsCelebrating from '@/assets/students-celebrating.jpg';
 
 const PricingSection = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+
   const features = [
     { icon: FileText, text: '10 Módulos Completos con Video y Audio IA' },
     { icon: Clock, text: '+50 Horas de Contenido Premium' },
@@ -13,6 +21,40 @@ const PricingSection = () => {
     { icon: Sparkles, text: 'Actualizaciones Gratuitas 2026-2027' },
     { icon: Check, text: 'Proyecto Final con Clientes Reales' },
   ];
+
+  const handleEnroll = async () => {
+    setIsLoading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: 'Inicia sesión primero',
+          description: 'Necesitas una cuenta para inscribirte.',
+        });
+        navigate('/auth');
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+        body: { origin: window.location.origin },
+      });
+
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+      toast({
+        title: 'Error',
+        description: 'No se pudo iniciar el pago. Intenta de nuevo.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section id="inscripcion" className="py-24 bg-gradient-to-b from-background to-navy-medium/30 relative overflow-hidden">
@@ -90,13 +132,17 @@ const PricingSection = () => {
                   variant="elite" 
                   size="xl" 
                   className="w-full text-lg py-6"
-                  onClick={() => {
-                    // This will be replaced with Stripe integration
-                    alert('La integración de pagos con Stripe será habilitada próximamente. Contacta a UTAMV para inscribirte.');
-                  }}
+                  onClick={handleEnroll}
+                  disabled={isLoading}
                 >
-                  <Sparkles className="w-5 h-5" />
-                  Inscribirme Ahora - $199 USD
+                  {isLoading ? (
+                    <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-foreground" />
+                  ) : (
+                    <>
+                      <Sparkles className="w-5 h-5" />
+                      Inscribirme Ahora - $199 USD
+                    </>
+                  )}
                 </Button>
                 
                 <div className="mt-6 flex items-center justify-center gap-6 text-sm text-muted-foreground">

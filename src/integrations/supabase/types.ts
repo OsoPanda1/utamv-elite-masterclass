@@ -14,13 +14,368 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      answers: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_correct: boolean | null
+          question_id: string
+          text: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_correct?: boolean | null
+          question_id: string
+          text: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_correct?: boolean | null
+          question_id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      certificates: {
+        Row: {
+          certificate_number: string
+          course_id: string
+          generated_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          certificate_number: string
+          course_id: string
+          generated_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          certificate_number?: string
+          course_id?: string
+          generated_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificates_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          price_cents: number | null
+          stripe_price_id: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          price_cents?: number | null
+          stripe_price_id?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          price_cents?: number | null
+          stripe_price_id?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      module_progress: {
+        Row: {
+          completed_at: string | null
+          id: string
+          module_id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          id?: string
+          module_id: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          id?: string
+          module_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "module_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      modules: {
+        Row: {
+          content: string | null
+          course_id: string
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          order_index: number
+          title: string
+        }
+        Insert: {
+          content?: string | null
+          course_id: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          order_index: number
+          title: string
+        }
+        Update: {
+          content?: string | null
+          course_id?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          order_index?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "modules_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount_cents: number
+          course_id: string
+          created_at: string | null
+          currency: string | null
+          id: string
+          status: string | null
+          stripe_payment_intent_id: string | null
+          stripe_session_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_cents: number
+          course_id: string
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_cents?: number
+          course_id?: string
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          is_paid: boolean | null
+          stripe_customer_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          is_paid?: boolean | null
+          stripe_customer_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          is_paid?: boolean | null
+          stripe_customer_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      questions: {
+        Row: {
+          created_at: string | null
+          id: string
+          order_index: number
+          quiz_id: string
+          text: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          order_index: number
+          quiz_id: string
+          text: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          order_index?: number
+          quiz_id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questions_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_attempts: {
+        Row: {
+          id: string
+          passed: boolean | null
+          quiz_id: string
+          score: number
+          submitted_at: string | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          passed?: boolean | null
+          quiz_id: string
+          score: number
+          submitted_at?: string | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          passed?: boolean | null
+          quiz_id?: string
+          score?: number
+          submitted_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_attempts_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quizzes: {
+        Row: {
+          course_id: string | null
+          created_at: string | null
+          id: string
+          is_final_exam: boolean | null
+          module_id: string | null
+          passing_score: number | null
+          title: string
+        }
+        Insert: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          is_final_exam?: boolean | null
+          module_id?: string | null
+          passing_score?: number | null
+          title: string
+        }
+        Update: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          is_final_exam?: boolean | null
+          module_id?: string | null
+          passing_score?: number | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quizzes_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quizzes_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_course_access: {
+        Args: { p_course_id: string; p_user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
