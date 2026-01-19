@@ -1,17 +1,51 @@
-name: Deploy to Lovable
+name: CI/CD UTAMV Elite Masterclass
 
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: npm install
-      - run: npm run build
-      - run: npm run start
+          cache: "npm"
+          check-latest: true
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test
+
+      - name: Security audit
+        run: npm audit --production
+
+      - name: Build project
+        run: npm run build
+
+      - name: Preview build (PR only)
+        if: github.event_name == 'pull_request'
+        run: npm run preview &
+
+      - name: Validate UTAMV Certificate API
+        run: |
+          curl -X POST http://localhost:3000/api/certificates/issue \
+          -H "Content-Type: application/json" \
+          -d '{"studentName":"Test User","courseName":"UTAMV Elite Masterclass","certificateId":"test123"}'
+
+      - name: Deploy to Lovable
+        run: |
+          echo "Build successful. Lovable despliega automáticamente al detectar build completado."
