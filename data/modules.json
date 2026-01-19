@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "title": "Fundamentos del Marketing Digital",
+    "description": "Introducción al ecosistema digital y sus principales canales."
+  },
+  {
+    "id": 2,
+    "title": "SEO y Optimización Web",
+    "description": "Técnicas de posicionamiento orgánico y herramientas de análisis."
+  }
+  // ... hasta módulo 10
+]
