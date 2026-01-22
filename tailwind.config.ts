@@ -57,15 +57,16 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // UTAMV Custom Colors
+        // UTAMV Custom Colors - Silver Platinum Palette
         navy: {
           deep: "hsl(var(--navy-deep))",
           medium: "hsl(var(--navy-medium))",
         },
-        gold: {
-          DEFAULT: "hsl(var(--gold-primary))",
-          light: "hsl(var(--gold-light))",
-          dark: "hsl(var(--gold-dark))",
+        silver: {
+          DEFAULT: "hsl(var(--silver-primary))",
+          light: "hsl(var(--silver-light))",
+          dark: "hsl(var(--silver-dark))",
+          metallic: "hsl(var(--silver-metallic))",
         },
         teal: {
           DEFAULT: "hsl(var(--teal-primary))",
@@ -111,9 +112,9 @@ export default {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-10px)" },
         },
-        "pulse-gold": {
-          "0%, 100%": { boxShadow: "0 0 20px -5px hsla(42, 70%, 55%, 0.4)" },
-          "50%": { boxShadow: "0 0 40px -5px hsla(42, 70%, 55%, 0.7)" },
+        "pulse-silver": {
+          "0%, 100%": { boxShadow: "0 0 20px -5px hsla(210, 20%, 70%, 0.45)" },
+          "50%": { boxShadow: "0 0 40px -5px hsla(210, 20%, 70%, 0.75)" },
         },
       },
       animation: {
@@ -123,7 +124,7 @@ export default {
         "slide-up": "slide-up 0.8s ease-out forwards",
         "slide-in-right": "slide-in-right 0.8s ease-out forwards",
         float: "float 6s ease-in-out infinite",
-        "pulse-gold": "pulse-gold 3s ease-in-out infinite",
+        "pulse-silver": "pulse-silver 3s ease-in-out infinite",
       },
     },
   },

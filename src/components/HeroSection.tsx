@@ -14,7 +14,13 @@ const HeroSection = () => {
     );
     utterance.lang = 'es-MX';
     utterance.rate = 0.9;
-    utterance.pitch = 1.1;
+    utterance.pitch = 1.2;
+    // Select female voice
+    const voices = speechSynthesis.getVoices();
+    const femaleVoice = voices.find(v => 
+      v.lang.includes('es') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('paulina') || v.name.toLowerCase().includes('monica') || v.name.toLowerCase().includes('helena') || v.name.toLowerCase().includes('sabina'))
+    ) || voices.find(v => v.lang.includes('es'));
+    if (femaleVoice) utterance.voice = femaleVoice;
     utterance.onend = () => setIsPlaying(false);
     speechSynthesis.speak(utterance);
   };
@@ -37,12 +43,12 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
       </div>
 
-      {/* Floating particles effect */}
+      {/* Floating particles effect - Silver */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-gold/30 rounded-full animate-float"
+            className="absolute w-1 h-1 bg-silver/30 rounded-full animate-float"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -57,15 +63,15 @@ const HeroSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <div className="text-center lg:text-left animate-slide-up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/30 bg-gold/10 mb-6">
-              <Award className="w-4 h-4 text-gold" />
-              <span className="text-sm font-medium text-gold">Acreditación Académica UTAMV</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-silver/30 bg-silver/10 mb-6">
+              <Award className="w-4 h-4 text-silver" />
+              <span className="text-sm font-medium text-silver">Acreditación Académica UTAMV</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold mb-6 leading-tight">
               <span className="text-foreground">Master Elite</span>
               <br />
-              <span className="text-gradient-gold">Marketing Digital</span>
+              <span className="text-gradient-silver">Marketing Digital</span>
               <br />
               <span className="text-teal">2026</span>
             </h1>
@@ -90,7 +96,7 @@ const HeroSection = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6 max-w-md mx-auto lg:mx-0">
               <div className="text-center lg:text-left">
-                <p className="text-2xl md:text-3xl font-display font-bold text-gold">10</p>
+                <p className="text-2xl md:text-3xl font-display font-bold text-silver">10</p>
                 <p className="text-sm text-muted-foreground">Módulos</p>
               </div>
               <div className="text-center lg:text-left">
@@ -107,11 +113,11 @@ const HeroSection = () => {
           {/* AI Assistant */}
           <div className="relative flex justify-center lg:justify-end" style={{ animationDelay: '0.3s' }}>
             <div className="relative group">
-              {/* Glow effect */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-gold/30 via-teal/20 to-gold/30 rounded-full blur-2xl opacity-50 group-hover:opacity-75 transition-opacity duration-500 animate-pulse-gold" />
+              {/* Glow effect - Silver */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-silver/30 via-teal/20 to-silver/30 rounded-full blur-2xl opacity-50 group-hover:opacity-75 transition-opacity duration-500 animate-pulse-silver" />
               
               {/* AI Image */}
-              <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-gold/50 shadow-gold animate-float">
+              <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-silver/50 shadow-silver animate-float">
                 <img 
                   src={aiAssistant} 
                   alt="Isabella Villaseñor - AI Guide" 
@@ -122,7 +128,7 @@ const HeroSection = () => {
               {/* Play Button */}
               <button
                 onClick={isPlaying ? stopWelcome : playWelcome}
-                className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-gold to-gold-light text-primary-foreground font-semibold shadow-gold hover:shadow-[0_8px_40px_-5px_hsla(42,70%,55%,0.6)] transition-all duration-300 hover:-translate-y-1"
+                className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-silver to-silver-light text-primary-foreground font-semibold shadow-silver hover:shadow-[0_8px_40px_-5px_hsla(210,20%,70%,0.6)] transition-all duration-300 hover:-translate-y-1"
               >
                 {isPlaying ? (
                   <>
@@ -141,7 +147,7 @@ const HeroSection = () => {
               <div className="absolute -right-4 top-1/4 px-4 py-2 rounded-lg bg-card border border-border shadow-lg animate-slide-up" style={{ animationDelay: '0.5s' }}>
                 <p className="text-xs text-muted-foreground">Tu Guía</p>
                 <p className="text-sm font-semibold text-foreground">Isabella Villaseñor</p>
-                <p className="text-xs text-gold">AI Academic Tutor</p>
+                <p className="text-xs text-silver">AI Academic Tutor</p>
               </div>
             </div>
           </div>
@@ -151,7 +157,7 @@ const HeroSection = () => {
         <div className="mt-20 pt-10 border-t border-border/50">
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 items-center opacity-60">
             <div className="flex items-center gap-2">
-              <Globe className="w-5 h-5 text-gold" />
+              <Globe className="w-5 h-5 text-silver" />
               <span className="text-sm">100% Online</span>
             </div>
             <div className="flex items-center gap-2">
@@ -159,10 +165,10 @@ const HeroSection = () => {
               <span className="text-sm">Comunidad Global</span>
             </div>
             <div className="flex items-center gap-2">
-              <Award className="w-5 h-5 text-gold" />
+              <Award className="w-5 h-5 text-silver" />
               <span className="text-sm">Certificación UTAMV</span>
             </div>
-            <div className="text-sm font-display font-semibold text-gradient-gold">
+            <div className="text-sm font-display font-semibold text-gradient-silver">
               Orgullosamente Realmontenses
             </div>
           </div>
