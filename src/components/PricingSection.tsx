@@ -71,7 +71,7 @@ const PricingSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1 rounded-full bg-gold/20 text-gold text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-1 rounded-full bg-silver/20 text-silver text-sm font-medium mb-4">
             Inversión Única
           </span>
           <h2 className="section-title">Tu Transformación Comienza Hoy</h2>
@@ -84,13 +84,13 @@ const PricingSection = () => {
         {/* Pricing Card */}
         <div className="max-w-2xl mx-auto">
           <div className="relative">
-            {/* Glow effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-gold via-teal to-gold rounded-3xl blur-lg opacity-50 animate-pulse-gold" />
+            {/* Glow effect - Silver */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-silver via-teal to-silver rounded-3xl blur-lg opacity-50 animate-pulse-silver" />
             
-            <div className="relative bg-card rounded-3xl border-2 border-gold/50 overflow-hidden">
+            <div className="relative bg-card rounded-3xl border-2 border-silver/50 overflow-hidden">
               {/* Header */}
-              <div className="bg-gradient-to-r from-gold/20 via-teal/10 to-gold/20 p-8 text-center border-b border-border">
-                <span className="inline-block px-4 py-1 rounded-full bg-gold text-primary-foreground text-sm font-bold mb-4">
+              <div className="bg-gradient-to-r from-silver/20 via-teal/10 to-silver/20 p-8 text-center border-b border-border">
+                <span className="inline-block px-4 py-1 rounded-full bg-silver text-primary-foreground text-sm font-bold mb-4">
                   ACCESO COMPLETO
                 </span>
                 <h3 className="font-display text-3xl font-bold mb-2 text-foreground">
@@ -106,7 +106,7 @@ const PricingSection = () => {
                   <span className="px-2 py-1 rounded bg-teal/20 text-teal text-sm font-bold">-60%</span>
                 </div>
                 <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-6xl font-display font-bold text-gradient-gold">$199</span>
+                  <span className="text-6xl font-display font-bold text-gradient-silver">$199</span>
                   <span className="text-2xl text-muted-foreground">USD</span>
                 </div>
                 <p className="text-sm text-muted-foreground mt-2">Pago único • Acceso vitalicio</p>
@@ -117,8 +117,8 @@ const PricingSection = () => {
                 <div className="grid gap-3">
                   {features.map((feature, index) => (
                     <div key={index} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center shrink-0">
-                        <feature.icon className="w-4 h-4 text-gold" />
+                      <div className="w-8 h-8 rounded-full bg-silver/10 flex items-center justify-center shrink-0">
+                        <feature.icon className="w-4 h-4 text-silver" />
                       </div>
                       <span className="text-foreground">{feature.text}</span>
                     </div>

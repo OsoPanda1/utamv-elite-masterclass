@@ -135,14 +135,14 @@ const ModulesSection = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card" />
                   
                   {/* Module Number */}
-                  <div className="absolute top-3 left-3 w-10 h-10 rounded-full bg-gold flex items-center justify-center font-display font-bold text-primary-foreground shadow-gold">
+                  <div className="absolute top-3 left-3 w-10 h-10 rounded-full bg-silver flex items-center justify-center font-display font-bold text-primary-foreground shadow-silver">
                     {module.id}
                   </div>
                 </div>
 
                 {/* Content */}
                 <div className="flex-1 p-6">
-                  <h3 className="font-display text-lg font-semibold mb-2 text-foreground group-hover:text-gold transition-colors">
+                  <h3 className="font-display text-lg font-semibold mb-2 text-foreground group-hover:text-silver transition-colors">
                     {module.title}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
@@ -159,7 +159,7 @@ const ModulesSection = () => {
                       <FileText className="w-3 h-3" />
                       {module.lessons} lecciones
                     </span>
-                    <span className="flex items-center gap-1 text-gold">
+                    <span className="flex items-center gap-1 text-silver">
                       <Lock className="w-3 h-3" />
                       Premium
                     </span>
@@ -182,7 +182,7 @@ const ModulesSection = () => {
         {/* Exam Info */}
         <div className="mt-16 max-w-4xl mx-auto">
           <div className="card-elite p-8 text-center">
-            <h3 className="font-display text-2xl font-bold text-gradient-gold mb-4">
+            <h3 className="font-display text-2xl font-bold text-gradient-silver mb-4">
               Sistema de Evaluación
             </h3>
             <div className="grid md:grid-cols-2 gap-8">
@@ -195,9 +195,9 @@ const ModulesSection = () => {
                   10 preguntas de opción múltiple + 1 ejercicio práctico al final de cada módulo
                 </p>
               </div>
-              <div className="p-6 rounded-xl bg-gold/10 border border-gold/30">
-                <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center mx-auto mb-4">
-                  <FileText className="w-6 h-6 text-gold" />
+              <div className="p-6 rounded-xl bg-silver/10 border border-silver/30">
+                <div className="w-12 h-12 rounded-full bg-silver/20 flex items-center justify-center mx-auto mb-4">
+                  <FileText className="w-6 h-6 text-silver" />
                 </div>
                 <h4 className="font-semibold mb-2">Examen Final</h4>
                 <p className="text-sm text-muted-foreground">

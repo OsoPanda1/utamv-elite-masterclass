@@ -43,7 +43,7 @@ const CertificationSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1 rounded-full bg-gold/20 text-gold text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-1 rounded-full bg-silver/20 text-silver text-sm font-medium mb-4">
             Acreditación Oficial
           </span>
           <h2 className="section-title">Certificación UTAMV</h2>
@@ -56,9 +56,9 @@ const CertificationSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
           {/* Certificate Preview */}
           <div className="relative group">
-            <div className="absolute -inset-4 bg-gradient-to-r from-gold/20 via-teal/10 to-gold/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
+            <div className="absolute -inset-4 bg-gradient-to-r from-silver/20 via-teal/10 to-silver/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
             
-            <div className="relative rounded-2xl overflow-hidden border-2 border-gold/30 shadow-gold animate-float">
+            <div className="relative rounded-2xl overflow-hidden border-2 border-silver/30 shadow-silver animate-float">
               <img 
                 src={certificatePreview} 
                 alt="Certificado UTAMV Master Marketing Digital 2026"
@@ -66,7 +66,7 @@ const CertificationSection = () => {
               />
               
               {/* Overlay badge */}
-              <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-gold text-primary-foreground text-xs font-bold">
+              <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-silver text-primary-foreground text-xs font-bold">
                 MASTER 360 ELITE
               </div>
             </div>
@@ -76,7 +76,7 @@ const CertificationSection = () => {
           <div className="space-y-6">
             <div className="mb-8">
               <h3 className="font-display text-3xl font-bold mb-4 text-foreground">
-                Diploma de <span className="text-gradient-gold">Excelencia</span>
+                Diploma de <span className="text-gradient-silver">Excelencia</span>
               </h3>
               <p className="text-muted-foreground">
                 Al completar exitosamente el Master Elite Profesional en Marketing Digital 2026, 
@@ -88,10 +88,10 @@ const CertificationSection = () => {
               {features.map((feature, index) => (
                 <div 
                   key={index}
-                  className="flex items-start gap-4 p-4 rounded-xl bg-card/50 border border-border hover:border-gold/30 transition-all duration-300 hover:shadow-gold group"
+                  className="flex items-start gap-4 p-4 rounded-xl bg-card/50 border border-border hover:border-silver/30 transition-all duration-300 hover:shadow-silver group"
                 >
-                  <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center shrink-0 group-hover:bg-gold/20 transition-colors">
-                    <feature.icon className="w-6 h-6 text-gold" />
+                  <div className="w-12 h-12 rounded-lg bg-silver/10 flex items-center justify-center shrink-0 group-hover:bg-silver/20 transition-colors">
+                    <feature.icon className="w-6 h-6 text-silver" />
                   </div>
                   <div>
                     <h4 className="font-semibold mb-1 text-foreground">{feature.title}</h4>
@@ -122,7 +122,7 @@ const CertificationSection = () => {
             </p>
           </div>
           <div className="text-center p-6 rounded-xl bg-card/30 border border-border">
-            <Globe className="w-8 h-8 text-gold mx-auto mb-3" />
+            <Globe className="w-8 h-8 text-silver mx-auto mb-3" />
             <h4 className="font-semibold mb-2">LinkedIn Ready</h4>
             <p className="text-sm text-muted-foreground">
               Añade tu certificación directamente a tu perfil profesional.
