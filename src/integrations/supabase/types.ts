@@ -137,18 +137,24 @@ export type Database = {
           completed_at: string | null
           id: string
           lesson_id: string
+          started_at: string | null
+          time_spent_seconds: number | null
           user_id: string
         }
         Insert: {
           completed_at?: string | null
           id?: string
           lesson_id: string
+          started_at?: string | null
+          time_spent_seconds?: number | null
           user_id: string
         }
         Update: {
           completed_at?: string | null
           id?: string
           lesson_id?: string
+          started_at?: string | null
+          time_spent_seconds?: number | null
           user_id?: string
         }
         Relationships: [
@@ -422,6 +428,54 @@ export type Database = {
           },
         ]
       }
+      quiz_scores: {
+        Row: {
+          created_at: string | null
+          id: string
+          module_id: string | null
+          passed: boolean | null
+          quiz_id: string | null
+          score: number
+          time_taken_seconds: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          module_id?: string | null
+          passed?: boolean | null
+          quiz_id?: string | null
+          score: number
+          time_taken_seconds?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          module_id?: string | null
+          passed?: boolean | null
+          quiz_id?: string | null
+          score?: number
+          time_taken_seconds?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_scores_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_scores_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quizzes: {
         Row: {
           course_id: string | null
@@ -494,18 +548,50 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      get_user_role: {
+        Args: { _user_id: string }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
       has_course_access: {
         Args: { p_course_id: string; p_user_id: string }
         Returns: boolean
       }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "instructor" | "student"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -632,6 +718,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "instructor", "student"],
+    },
   },
 } as const

@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import ModuleViewer from "./pages/ModuleViewer";
+import VerifyCertificate from "./pages/VerifyCertificate";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/module/:moduleId" element={<ModuleViewer />} />
+            <Route path="/verify" element={<VerifyCertificate />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
