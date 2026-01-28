@@ -1,26 +1,32 @@
-import instructor1 from '@/assets/instructor-1.jpg';
-import instructor2 from '@/assets/instructor-2.jpg';
+import { Link } from 'react-router-dom';
+import { Award, ExternalLink, Globe } from 'lucide-react';
+import edwinCastillo from '@/assets/edwin-castillo.jpg';
+import renataJazmin from '@/assets/renata-jazmin.jpg';
 import aiAssistant from '@/assets/ai-assistant.jpg';
 import campusLatinamerica from '@/assets/campus-latinamerica.jpg';
 
 const InstructorsSection = () => {
   const instructors = [
     {
-      name: 'Dra. Mariana Rodríguez',
-      role: 'Directora del Programa',
-      specialty: 'SEO & Metadatos Avanzados',
-      image: instructor1,
+      name: 'Edwin Oswaldo Castillo Trejo',
+      role: 'Director del Programa',
+      specialty: 'CEO Fundador - TAMV Enterprise',
+      expertise: 'Metadatos, SEO, AEO, IA',
+      image: edwinCastillo,
+      orcid: '0009-0000-5715-9993',
     },
     {
-      name: 'Mtro. Carlos Hernández',
-      role: 'Instructor Principal',
-      specialty: 'Marketing Predictivo & IA',
-      image: instructor2,
+      name: 'Renata Jazmin',
+      role: 'Co-Directora Académica',
+      specialty: 'CEO Fundadora - Orbita Digital',
+      expertise: 'Marketing Internacional',
+      image: renataJazmin,
     },
     {
       name: 'Isabella Villaseñor',
       role: 'AI Course Guide',
       specialty: 'Tutora Académica Virtual',
+      expertise: 'Narración y Soporte 24/7',
       image: aiAssistant,
       isAI: true,
     },
@@ -61,13 +67,13 @@ const InstructorsSection = () => {
               <div className="relative mb-6 mx-auto w-48 h-48">
                 {/* Glow effect */}
                 <div className={`absolute -inset-2 rounded-full blur-lg opacity-30 group-hover:opacity-60 transition-opacity duration-500 ${
-                  instructor.isAI ? 'bg-teal' : 'bg-gold'
+                  instructor.isAI ? 'bg-teal' : 'bg-silver'
                 }`} />
                 
                 {/* Image */}
                 <div className={`relative w-full h-full rounded-full overflow-hidden border-4 ${
-                  instructor.isAI ? 'border-teal/50' : 'border-gold/50'
-                } group-hover:border-gold transition-colors duration-300`}>
+                  instructor.isAI ? 'border-teal/50' : 'border-silver/50'
+                } group-hover:border-silver transition-colors duration-300`}>
                   <img 
                     src={instructor.image} 
                     alt={instructor.name}
@@ -86,22 +92,50 @@ const InstructorsSection = () => {
               <h3 className="font-display text-xl font-semibold mb-1 text-foreground">
                 {instructor.name}
               </h3>
-              <p className={`text-sm font-medium mb-2 ${instructor.isAI ? 'text-teal' : 'text-gold'}`}>
+              <p className={`text-sm font-medium mb-1 ${instructor.isAI ? 'text-teal' : 'text-silver'}`}>
                 {instructor.role}
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground mb-1">
                 {instructor.specialty}
               </p>
+              <p className="text-xs text-muted-foreground">
+                {instructor.expertise}
+              </p>
+
+              {/* ORCID Link */}
+              {instructor.orcid && (
+                <a 
+                  href={`https://orcid.org/${instructor.orcid}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 mt-3 text-xs text-silver hover:text-foreground transition-colors"
+                >
+                  <Globe className="w-3 h-3" />
+                  ORCID: {instructor.orcid}
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              )}
             </div>
           ))}
         </div>
 
+        {/* View More Link */}
+        <div className="mt-12 text-center">
+          <Link 
+            to="/expertos" 
+            className="inline-flex items-center gap-2 text-silver hover:text-foreground transition-colors font-medium"
+          >
+            Ver perfiles completos
+            <ExternalLink className="w-4 h-4" />
+          </Link>
+        </div>
+
         {/* Pride Badge */}
-        <div className="mt-20 text-center">
-          <div className="inline-flex items-center gap-4 px-8 py-4 rounded-2xl bg-card/50 border border-gold/30">
+        <div className="mt-16 text-center">
+          <div className="inline-flex items-center gap-4 px-8 py-4 rounded-2xl bg-card/50 border border-silver/30">
             <div className="text-left">
               <p className="text-sm text-muted-foreground">Nacido desde</p>
-              <p className="font-display text-xl font-bold text-gradient-gold">Latinoamérica</p>
+              <p className="font-display text-xl font-bold text-gradient-silver">Latinoamérica</p>
             </div>
             <div className="w-px h-12 bg-border" />
             <div className="text-left">

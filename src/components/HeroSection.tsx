@@ -1,27 +1,69 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Play, Award, Users, Globe, Volume2, VolumeX } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import heroBg from '@/assets/hero-bg.jpg';
 import aiAssistant from '@/assets/ai-assistant.jpg';
 
 const HeroSection = () => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [voicesLoaded, setVoicesLoaded] = useState(false);
+
+  // Load voices on component mount
+  useEffect(() => {
+    const loadVoices = () => {
+      const voices = speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        setVoicesLoaded(true);
+      }
+    };
+
+    loadVoices();
+    speechSynthesis.addEventListener('voiceschanged', loadVoices);
+    return () => speechSynthesis.removeEventListener('voiceschanged', loadVoices);
+  }, []);
 
   const playWelcome = () => {
+    if (!voicesLoaded) {
+      // Force load voices
+      speechSynthesis.getVoices();
+    }
+
     setIsPlaying(true);
     const utterance = new SpeechSynthesisUtterance(
       "Bienvenido al Master Elite Profesional en Marketing Digital 2026. Soy Isabella Villaseñor, tu guía académica de inteligencia artificial. Estás a punto de comenzar una transformación que te posicionará como líder en el mundo digital. Prepárate para dominar el SEO, los metadatos, el geo-targeting y las estrategias más avanzadas del marketing del futuro. Universidad TAMV, formando líderes digitales desde Latinoamérica para el mundo."
     );
     utterance.lang = 'es-MX';
-    utterance.rate = 0.9;
-    utterance.pitch = 1.2;
-    // Select female voice
+    utterance.rate = 0.95;
+    utterance.pitch = 1.15; // Slightly higher pitch for feminine voice
+
+    // Get available voices and prioritize female Spanish voices
     const voices = speechSynthesis.getVoices();
-    const femaleVoice = voices.find(v => 
-      v.lang.includes('es') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('paulina') || v.name.toLowerCase().includes('monica') || v.name.toLowerCase().includes('helena') || v.name.toLowerCase().includes('sabina'))
-    ) || voices.find(v => v.lang.includes('es'));
-    if (femaleVoice) utterance.voice = femaleVoice;
+    const femaleVoice = voices.find(v => {
+      const name = v.name.toLowerCase();
+      const isSpanish = v.lang.includes('es');
+      const isFemale = name.includes('female') || 
+                       name.includes('paulina') || 
+                       name.includes('monica') || 
+                       name.includes('helena') || 
+                       name.includes('sabina') ||
+                       name.includes('conchita') ||
+                       name.includes('lucia') ||
+                       name.includes('penelope') ||
+                       name.includes('lupe') ||
+                       name.includes('mia') ||
+                       name.includes('google español') ||
+                       (isSpanish && name.includes('female'));
+      return isSpanish && isFemale;
+    }) || voices.find(v => v.lang.includes('es') && v.name.toLowerCase().includes('female'))
+       || voices.find(v => v.lang.includes('es'));
+
+    if (femaleVoice) {
+      utterance.voice = femaleVoice;
+    }
+
     utterance.onend = () => setIsPlaying(false);
+    utterance.onerror = () => setIsPlaying(false);
     speechSynthesis.speak(utterance);
   };
 
@@ -33,7 +75,7 @@ const HeroSection = () => {
   return (
     <section 
       id="inicio"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
     >
       {/* Background */}
       <div 
@@ -65,7 +107,7 @@ const HeroSection = () => {
           <div className="text-center lg:text-left animate-slide-up">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-silver/30 bg-silver/10 mb-6">
               <Award className="w-4 h-4 text-silver" />
-              <span className="text-sm font-medium text-silver">Acreditación Académica UTAMV</span>
+              <span className="text-sm font-medium text-silver">Cohorte Fundadora - 50% Descuento</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold mb-6 leading-tight">
@@ -83,13 +125,13 @@ const HeroSection = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10">
               <Button variant="elite" size="xl" asChild>
-                <a href="#inscripcion">
+                <Link to="/inscripcion">
                   <Play className="w-5 h-5" />
-                  Comenzar Ahora - $199 USD
-                </a>
+                  Inscribirme - $199 USD
+                </Link>
               </Button>
               <Button variant="teal" size="xl" asChild>
-                <a href="#programa">Ver Programa Completo</a>
+                <Link to="/programa">Ver Programa Completo</Link>
               </Button>
             </div>
 
@@ -138,16 +180,16 @@ const HeroSection = () => {
                 ) : (
                   <>
                     <Volume2 className="w-5 h-5" />
-                    Bienvenida IA
+                    Escuchar a Isabella
                   </>
                 )}
               </button>
 
               {/* Info Badge */}
               <div className="absolute -right-4 top-1/4 px-4 py-2 rounded-lg bg-card border border-border shadow-lg animate-slide-up" style={{ animationDelay: '0.5s' }}>
-                <p className="text-xs text-muted-foreground">Tu Guía</p>
+                <p className="text-xs text-muted-foreground">Tu Guía IA</p>
                 <p className="text-sm font-semibold text-foreground">Isabella Villaseñor</p>
-                <p className="text-xs text-silver">AI Academic Tutor</p>
+                <p className="text-xs text-teal">Voz Femenina Profesional</p>
               </div>
             </div>
           </div>
@@ -169,7 +211,7 @@ const HeroSection = () => {
               <span className="text-sm">Certificación UTAMV</span>
             </div>
             <div className="text-sm font-display font-semibold text-gradient-silver">
-              Orgullosamente Realmontenses
+              Orgullosamente Latinoamericanos
             </div>
           </div>
         </div>
