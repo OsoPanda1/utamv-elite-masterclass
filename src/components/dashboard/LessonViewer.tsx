@@ -52,7 +52,7 @@ const LessonViewer = ({
   const [progress, setProgress] = useState(0);
   const speechRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  // Browser TTS implementation
+  // Browser TTS implementation - Isabella voice (feminine Spanish)
   const speakContent = () => {
     if ('speechSynthesis' in window) {
       if (isPlaying) {
@@ -65,7 +65,26 @@ const LessonViewer = ({
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'es-ES';
       utterance.rate = 0.9;
-      utterance.pitch = 1;
+      utterance.pitch = 1.1; // Slightly higher pitch for feminine voice
+      
+      // Select feminine Spanish voice for Isabella
+      const voices = window.speechSynthesis.getVoices();
+      const femaleSpanishVoice = voices.find(voice => 
+        voice.lang.startsWith('es') && 
+        (voice.name.toLowerCase().includes('female') ||
+         voice.name.toLowerCase().includes('paulina') ||
+         voice.name.toLowerCase().includes('monica') ||
+         voice.name.toLowerCase().includes('helena') ||
+         voice.name.toLowerCase().includes('laura') ||
+         voice.name.toLowerCase().includes('conchita') ||
+         voice.name.toLowerCase().includes('lucia') ||
+         voice.name.toLowerCase().includes('elvira') ||
+         voice.name.toLowerCase().includes('sabina'))
+      ) || voices.find(voice => voice.lang.startsWith('es'));
+      
+      if (femaleSpanishVoice) {
+        utterance.voice = femaleSpanishVoice;
+      }
       
       utterance.onend = () => {
         setIsPlaying(false);
