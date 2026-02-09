@@ -51,9 +51,12 @@ interface QuizScore {
 }
 
 const Dashboard = () => {
-  const { user, loading, isPaid, signOut, refreshPaymentStatus } = useAuth();
+  const { user, loading, isPaid, isAdmin, signOut, refreshPaymentStatus } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  
+  // Allow access if paid OR admin
+  const hasAccess = isPaid || isAdmin;
   const { toast } = useToast();
   
   const [modules, setModules] = useState<Module[]>([]);
@@ -178,7 +181,7 @@ const Dashboard = () => {
   };
 
   const handleModuleClick = (moduleId: string, moduleIndex: number) => {
-    if (!isPaid) {
+    if (!hasAccess) {
       toast({
         title: 'Acceso restringido',
         description: 'Inscríbete para acceder al contenido del programa.',
@@ -289,8 +292,8 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* Quick Status */}
-        {!isPaid && (
+        {/* Quick Status - Only show if not paid AND not admin */}
+        {!hasAccess && (
           <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-silver-primary/10 to-silver-accent/10 border border-silver-primary/30">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-4">
@@ -321,7 +324,7 @@ const Dashboard = () => {
             <BookOpen className="w-4 h-4 inline mr-2" />
             Módulos
           </button>
-          {isPaid && (
+          {hasAccess && (
             <>
               <button
                 onClick={() => setActiveTab('chat')}
@@ -353,7 +356,7 @@ const Dashboard = () => {
         {activeTab === 'modules' && (
           <>
             {/* Progress Charts - Only for paid users */}
-            {isPaid && (
+            {hasAccess && (
               <div className="mb-8">
                 <ProgressChart 
                   progressPercent={progressPercent}
@@ -383,7 +386,7 @@ const Dashboard = () => {
             )}
 
             {/* Generate Certificate Button */}
-            {!certificate && progressPercent === 100 && isPaid && (
+            {!certificate && progressPercent === 100 && hasAccess && (
               <div className="mb-8 p-6 rounded-2xl bg-gradient-silver border border-silver-primary/30 text-center">
                 <Award className="w-16 h-16 mx-auto mb-4 text-background" />
                 <h3 className="font-display text-2xl font-bold text-background mb-2">
@@ -414,7 +417,7 @@ const Dashboard = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {modules.map((module, index) => {
                   const completed = isModuleCompleted(module.id);
-                  const locked = !isPaid;
+                  const locked = !hasAccess;
                   
                   return (
                     <div 

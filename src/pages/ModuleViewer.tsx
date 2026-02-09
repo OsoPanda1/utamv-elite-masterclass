@@ -20,7 +20,7 @@ import {
 
 const ModuleViewer = () => {
   const { moduleId } = useParams<{ moduleId: string }>();
-  const { user, isPaid, loading } = useAuth();
+  const { user, isPaid, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -32,12 +32,15 @@ const ModuleViewer = () => {
   const moduleIndex = parseInt(moduleId || '1');
   const moduleContent = getModuleContent(moduleIndex);
 
+  // Allow access if paid OR admin
+  const hasAccess = isPaid || isAdmin;
+
   useEffect(() => {
     if (!loading && !user) {
       navigate('/auth');
       return;
     }
-    if (!loading && !isPaid) {
+    if (!loading && !hasAccess) {
       toast({
         title: 'Acceso restringido',
         description: 'Debes inscribirte para acceder al contenido.',
@@ -45,9 +48,9 @@ const ModuleViewer = () => {
       });
       navigate('/dashboard');
     }
-  }, [user, isPaid, loading, navigate, toast]);
+  }, [user, hasAccess, loading, navigate, toast]);
 
-  if (loading || !isPaid) {
+  if (loading || !hasAccess) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
