@@ -1,13 +1,25 @@
+import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import InstructorsSection from '@/components/InstructorsSection';
 import Footer from '@/components/Footer';
+import IntroScreen from '@/components/IntroScreen';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ChevronRight, BookOpen, Award, Users, Sparkles } from 'lucide-react';
 import utamvLogo from '@/assets/utamv-logo-official.jpg';
 
 const Index = () => {
+  const [showIntro, setShowIntro] = useState(() => {
+    // Only show intro once per session
+    const hasSeenIntro = sessionStorage.getItem('utamv-intro-seen');
+    return !hasSeenIntro;
+  });
+
+  const handleIntroComplete = () => {
+    sessionStorage.setItem('utamv-intro-seen', 'true');
+    setShowIntro(false);
+  };
   const quickLinks = [
     {
       icon: BookOpen,
@@ -36,7 +48,9 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      {showIntro && <IntroScreen onComplete={handleIntroComplete} />}
+      <div className="min-h-screen bg-background">
       <Header />
       <main>
         <HeroSection />
@@ -113,6 +127,7 @@ const Index = () => {
       </main>
       <Footer />
     </div>
+    </>
   );
 };
 
