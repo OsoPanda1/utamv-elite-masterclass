@@ -14,12 +14,11 @@ import {
   FileText, 
   CheckCircle2,
   Lock,
-  Play,
   Award
 } from 'lucide-react';
 
 const ModuleViewer = () => {
-  const { moduleId } = useParams<{ moduleId: string }>();
+  const { moduleIndex: moduleIndexParam } = useParams<{ moduleIndex: string }>();
   const { user, isPaid, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -29,18 +28,23 @@ const ModuleViewer = () => {
   const [completedLessons, setCompletedLessons] = useState<number[]>([]);
   const [moduleCompleted, setModuleCompleted] = useState(false);
 
-  const moduleIndex = parseInt(moduleId || '1');
+  // Usamos siempre índice numérico de módulo en la ruta: /module/:moduleIndex (1–10)
+  const moduleIndex = parseInt(moduleIndexParam || '1', 10);
   const moduleContent = getModuleContent(moduleIndex);
 
   // Allow access if paid OR admin
   const hasAccess = isPaid || isAdmin;
 
+  // Guard de autenticación y acceso
   useEffect(() => {
-    if (!loading && !user) {
+    if (loading) return;
+
+    if (!user) {
       navigate('/auth');
       return;
     }
-    if (!loading && !hasAccess) {
+
+    if (!hasAccess) {
       toast({
         title: 'Acceso restringido',
         description: 'Debes inscribirte para acceder al contenido.',
@@ -50,12 +54,49 @@ const ModuleViewer = () => {
     }
   }, [user, hasAccess, loading, navigate, toast]);
 
-  if (loading || !hasAccess) {
+  // Inicializar desde BD si el módulo ya está completado
+  useEffect(() => {
+    const initModuleCompletion = async () => {
+      if (!user || !hasAccess || !Number.isFinite(moduleIndex)) return;
+
+      try {
+        const { data: moduleRow } = await supabase
+          .from('modules')
+          .select('id')
+          .eq('order_index', moduleIndex)
+          .maybeSingle();
+
+        if (!moduleRow) return;
+
+        const { data: progressRow } = await supabase
+          .from('module_progress')
+          .select('id')
+          .eq('user_id', user.id)
+          .eq('module_id', moduleRow.id)
+          .maybeSingle();
+
+        if (progressRow) {
+          setModuleCompleted(true);
+        }
+      } catch (err) {
+        console.error('Error checking module completion:', err);
+      }
+    };
+
+    initModuleCompletion();
+  }, [user, hasAccess, moduleIndex]);
+
+  if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
+  }
+
+  if (!hasAccess) {
+    // Mientras el redirect ocurre, no renderizamos contenido sensible
+    return null;
   }
 
   if (!moduleContent) {
@@ -75,7 +116,7 @@ const ModuleViewer = () => {
 
   const lessons = moduleContent.lessons;
   const currentLesson = lessons[currentLessonIndex];
-  const progress = ((completedLessons.length) / lessons.length) * 100;
+  const progress = (completedLessons.length / lessons.length) * 100;
 
   const handleLessonComplete = () => {
     if (!completedLessons.includes(currentLessonIndex)) {
@@ -91,20 +132,19 @@ const ModuleViewer = () => {
     if (passed) {
       setModuleCompleted(true);
       
-      // Mark module as complete in database
       try {
-        const { data: modules } = await supabase
+        const { data: moduleRow } = await supabase
           .from('modules')
           .select('id')
           .eq('order_index', moduleIndex)
           .single();
 
-        if (modules && user) {
+        if (moduleRow && user) {
           await supabase
             .from('module_progress')
             .insert({
               user_id: user.id,
-              module_id: modules.id,
+              module_id: moduleRow.id,
             });
         }
       } catch (err) {
@@ -128,7 +168,6 @@ const ModuleViewer = () => {
     if (currentLessonIndex < lessons.length - 1) {
       setCurrentLessonIndex(prev => prev + 1);
     } else {
-      // All lessons completed, show quiz
       setShowQuiz(true);
     }
   };
@@ -139,7 +178,7 @@ const ModuleViewer = () => {
     }
   };
 
-  // Convert lesson quiz to component format
+  // Mini quiz de la lección actual
   const quizQuestions = currentLesson.quiz?.map((q, i) => ({
     id: `q-${i}`,
     text: q.question,
@@ -150,7 +189,7 @@ const ModuleViewer = () => {
     }))
   })) || [];
 
-  // Full module quiz (combine all lesson quizzes)
+  // Quiz completo del módulo (todas las lecciones)
   const moduleQuizQuestions = lessons.flatMap((lesson, lessonIndex) =>
     (lesson.quiz || []).map((q, i) => ({
       id: `mq-${lessonIndex}-${i}`,
