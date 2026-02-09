@@ -1,42 +1,251 @@
+:root {
+  color-scheme: dark;
+  --utamv-bg: #05060a;
+  --utamv-bg-alt: #0b0d14;
+  --utamv-primary: #d0d4e4;
+  --utamv-accent: #c0a46b;
+  --utamv-text: #f5f5f7;
+  --utamv-muted: #8a8fa3;
+  --utamv-border: #262938;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #151827 0, #05060a 48%, #05060a 100%);
+  color: var(--utamv-text);
+}
+
+body {
+  line-height: 1.6;
+}
+
+/* Root de la app: ocupar pantalla completa, sin centrar todo */
 #root {
-  max-width: 1280px;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Shell general */
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+}
+
+/* Hero UTAMV */
+
+.hero {
+  padding: 4rem 1.5rem 3rem;
+}
+
+.hero-inner {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 3rem;
+  align-items: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.hero-kicker {
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--utamv-accent);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.hero-title {
+  font-size: clamp(2.4rem, 3vw, 3rem);
+  line-height: 1.15;
+  font-weight: 650;
+  margin: 0.75rem 0 1rem;
+}
+
+.hero-subtitle {
+  font-size: 1rem;
+  max-width: 34rem;
+  color: var(--utamv-muted);
+  margin-bottom: 1.75rem;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.hero-badge {
+  font-size: 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--utamv-border);
+  padding: 0.35rem 0.9rem;
+  background: rgba(7, 9, 18, 0.8);
+}
+
+/* Botones */
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.btn {
+  border-radius: 999px;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid transparent;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.12s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #f5f5f7, #d0d4e4);
+  color: #05060a;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--utamv-border);
+  color: var(--utamv-text);
+}
+
+.btn-ghost:hover {
+  background: rgba(14, 17, 28, 0.9);
+}
+
+/* Panel lateral (preview dashboard/certificado) */
+
+.hero-side-panel {
+  border-radius: 1.5rem;
+  border: 1px solid rgba(95, 103, 144, 0.55);
+  background: radial-gradient(circle at top left, #252b4a 0, #090b15 42%, #05060a 100%);
+  padding: 1.5rem;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.75);
+}
+
+.hero-side-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: var(--utamv-muted);
+}
+
+.hero-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+/* Metric cards */
+
+.metric-card {
+  border-radius: 0.9rem;
+  border: 1px solid rgba(74, 82, 132, 0.7);
+  background: radial-gradient(circle at top, rgba(102, 152, 255, 0.2), #05060a);
+  padding: 0.8rem;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  color: var(--utamv-muted);
+  margin-bottom: 0.3rem;
+}
+
+.metric-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Tira de confianza / cohorte fundadora */
+
+.trust-strip {
+  padding: 0 1.5rem 3rem;
+}
+
+.trust-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 1.25rem;
+  border: 1px solid var(--utamv-border);
+  background: linear-gradient(120deg, #0b0d16, #05060a);
+  padding: 1.35rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.trust-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--utamv-muted);
+}
+
+.trust-highlight {
+  font-size: 1rem;
+}
+
+/* Footer */
+
+.app-footer {
+  border-top: 1px solid var(--utamv-border);
+  padding: 1.5rem 1.5rem 2rem;
+  font-size: 0.8rem;
+  color: var(--utamv-muted);
+}
+
+.app-footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: minmax(0, 1fr);
   }
-  to {
-    transform: rotate(360deg);
+
+  .hero-side-panel {
+    order: -1;
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
