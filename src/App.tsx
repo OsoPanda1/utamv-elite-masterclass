@@ -14,6 +14,7 @@ import Modulos from "./pages/Modulos";
 import Expertos from "./pages/Expertos";
 import Inscripcion from "./pages/Inscripcion";
 import Certificacion from "./pages/Certificacion";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/expertos" element={<Expertos />} />
             <Route path="/inscripcion" element={<Inscripcion />} />
             <Route path="/certificacion" element={<Certificacion />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -7,6 +7,7 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   isPaid: boolean;
+  isAdmin: boolean;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -28,6 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isPaid, setIsPaid] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchPaymentStatus = async (userId: string) => {
     try {
@@ -45,9 +47,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const fetchAdminStatus = async (userId: string) => {
+    try {
+      const { data, error } = await supabase.rpc('has_role', {
+        _user_id: userId,
+        _role: 'admin'
+      });
+      
+      if (!error) {
+        setIsAdmin(data === true);
+      }
+    } catch (err) {
+      console.error('Error fetching admin status:', err);
+    }
+  };
+
   const refreshPaymentStatus = async () => {
     if (user) {
       await fetchPaymentStatus(user.id);
+      await fetchAdminStatus(user.id);
     }
   };
 
@@ -59,13 +77,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(session?.user ?? null);
         setLoading(false);
         
-        // Defer payment status fetch
+        // Defer status fetch
         if (session?.user) {
           setTimeout(() => {
             fetchPaymentStatus(session.user.id);
+            fetchAdminStatus(session.user.id);
           }, 0);
         } else {
           setIsPaid(false);
+          setIsAdmin(false);
         }
       }
     );
@@ -78,6 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (session?.user) {
         fetchPaymentStatus(session.user.id);
+        fetchAdminStatus(session.user.id);
       }
     });
 
@@ -123,6 +144,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
     setSession(null);
     setIsPaid(false);
+    setIsAdmin(false);
   };
 
   return (
@@ -131,6 +153,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       session, 
       loading, 
       isPaid,
+      isAdmin,
       signUp, 
       signIn, 
       signOut,

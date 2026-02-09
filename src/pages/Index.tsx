@@ -11,6 +11,10 @@ import utamvLogo from '@/assets/utamv-logo-official.jpg';
 
 const Index = () => {
   const [showIntro, setShowIntro] = useState(() => {
+    // Check if user disabled intro in settings
+    const disabledPermanently = localStorage.getItem('utamv-disable-intro') === 'true';
+    if (disabledPermanently) return false;
+    
     // Only show intro once per session
     const hasSeenIntro = sessionStorage.getItem('utamv-intro-seen');
     return !hasSeenIntro;
