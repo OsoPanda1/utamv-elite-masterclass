@@ -17,7 +17,8 @@ const modules = [
   {
     id: 1,
     title: 'Fundamentos del Marketing Digital 2026',
-    description: 'Historia, evolución y tendencias. Rol de los metadatos en la nueva era digital.',
+    description:
+      'Historia, evolución y tendencias. Rol de los metadatos en la nueva era digital.',
     image: module1,
     duration: '5 horas',
     lessons: 12,
@@ -25,7 +26,8 @@ const modules = [
   {
     id: 2,
     title: 'SEO Avanzado con IA',
-    description: 'Indexación inteligente, optimización semántica y predictiva con inteligencia artificial.',
+    description:
+      'Indexación inteligente, optimización semántica y predictiva con inteligencia artificial.',
     image: module2,
     duration: '6 horas',
     lessons: 15,
@@ -33,7 +35,8 @@ const modules = [
   {
     id: 3,
     title: 'Geo-Targeting y Localización Estratégica',
-    description: 'Cómo aparecer en búsquedas locales e integración con mapas y clientes cercanos.',
+    description:
+      'Cómo aparecer en búsquedas locales e integración con mapas y clientes cercanos.',
     image: module3,
     duration: '4 horas',
     lessons: 10,
@@ -41,7 +44,8 @@ const modules = [
   {
     id: 4,
     title: 'Metadatos y Arquitectura de Información',
-    description: 'Diseño de etiquetas únicas y estrategias de visibilidad en ecosistemas digitales.',
+    description:
+      'Diseño de etiquetas únicas y estrategias de visibilidad en ecosistemas digitales.',
     image: module4,
     duration: '5 horas',
     lessons: 13,
@@ -49,7 +53,8 @@ const modules = [
   {
     id: 5,
     title: 'Clientes en Respuestas de IA',
-    description: 'Integración de bases de datos de clientes y técnicas para aparecer en búsquedas personalizadas.',
+    description:
+      'Integración de bases de datos de clientes y técnicas para aparecer en búsquedas personalizadas.',
     image: module5,
     duration: '5 horas',
     lessons: 11,
@@ -57,7 +62,8 @@ const modules = [
   {
     id: 6,
     title: 'Marketing Predictivo y Automatización',
-    description: 'IA como motor de campañas y automatización ceremonial y transparente.',
+    description:
+      'IA como motor de campañas y automatización ceremonial y transparente.',
     image: module6,
     duration: '6 horas',
     lessons: 14,
@@ -65,7 +71,8 @@ const modules = [
   {
     id: 7,
     title: 'Narrativas Digitales y Branding 2026',
-    description: 'Construcción de identidad sólida y storytelling con metadatos.',
+    description:
+      'Construcción de identidad sólida y storytelling con metadatos.',
     image: module7,
     duration: '4 horas',
     lessons: 9,
@@ -73,7 +80,8 @@ const modules = [
   {
     id: 8,
     title: 'Estrategias Multicanal y Metaverso',
-    description: 'SEO en XR, entornos inmersivos y marketing en ecosistemas híbridos.',
+    description:
+      'SEO en XR, entornos inmersivos y marketing en ecosistemas híbridos.',
     image: module8,
     duration: '5 horas',
     lessons: 12,
@@ -81,7 +89,8 @@ const modules = [
   {
     id: 9,
     title: 'Monetización y Transparencia',
-    description: 'Modelos de negocio éticos. UTAMV como garante de confianza.',
+    description:
+      'Modelos de negocio éticos. UTAMV como garante de confianza.',
     image: module9,
     duration: '4 horas',
     lessons: 10,
@@ -89,7 +98,8 @@ const modules = [
   {
     id: 10,
     title: 'Proyecto Final: Master en Acción',
-    description: 'Caso práctico con clientes reales. Integración de todo lo aprendido.',
+    description:
+      'Caso práctico con clientes reales. Integración de todo lo aprendido.',
     image: module10,
     duration: '6 horas',
     lessons: 8,
@@ -100,7 +110,10 @@ const ModulesSection = () => {
   const [activeModule, setActiveModule] = useState<number | null>(null);
 
   return (
-    <section id="modulos" className="py-24 bg-gradient-to-b from-background to-navy-medium/50">
+    <section
+      id="modulos"
+      className="py-24 bg-gradient-to-b from-background to-navy-medium/50"
+    >
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
@@ -109,8 +122,9 @@ const ModulesSection = () => {
           </span>
           <h2 className="section-title">10 Módulos de Élite</h2>
           <p className="section-subtitle">
-            Cada módulo está diseñado con los más altos estándares académicos internacionales. 
-            Texto + audio narrado por IA para una experiencia de aprendizaje inmersiva.
+            Cada módulo está diseñado con los más altos estándares académicos
+            internacionales. Texto + audio narrado por IA para una experiencia
+            de aprendizaje inmersiva.
           </p>
         </div>
 
@@ -119,7 +133,7 @@ const ModulesSection = () => {
           {modules.map((module, index) => (
             <div
               key={module.id}
-              className="module-card cursor-pointer"
+              className="module-card cursor-pointer group"
               onMouseEnter={() => setActiveModule(module.id)}
               onMouseLeave={() => setActiveModule(null)}
               style={{ animationDelay: `${index * 0.1}s` }}
@@ -127,13 +141,13 @@ const ModulesSection = () => {
               <div className="flex flex-col md:flex-row">
                 {/* Image */}
                 <div className="relative w-full md:w-48 h-40 md:h-auto overflow-hidden">
-                  <img 
-                    src={module.image} 
+                  <img
+                    src={module.image}
                     alt={module.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card" />
-                  
+
                   {/* Module Number */}
                   <div className="absolute top-3 left-3 w-10 h-10 rounded-full bg-silver flex items-center justify-center font-display font-bold text-primary-foreground shadow-silver">
                     {module.id}
@@ -161,16 +175,22 @@ const ModulesSection = () => {
                     </span>
                     <span className="flex items-center gap-1 text-silver">
                       <Lock className="w-3 h-3" />
-                      Premium
+                      Incluido en Master Elite
                     </span>
                   </div>
 
                   {/* Hover Action */}
-                  <div className={`mt-4 flex items-center gap-2 text-teal transition-all duration-300 ${
-                    activeModule === module.id ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
-                  }`}>
+                  <div
+                    className={`mt-4 flex items-center gap-2 text-teal transition-all duration-300 ${
+                      activeModule === module.id
+                        ? 'opacity-100 translate-x-0'
+                        : 'opacity-0 -translate-x-2'
+                    }`}
+                  >
                     <Play className="w-4 h-4" />
-                    <span className="text-sm font-medium">Vista previa disponible</span>
+                    <span className="text-sm font-medium">
+                      Vista previa disponible
+                    </span>
                     <ChevronRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -192,7 +212,8 @@ const ModulesSection = () => {
                 </div>
                 <h4 className="font-semibold mb-2">Exámenes por Módulo</h4>
                 <p className="text-sm text-muted-foreground">
-                  10 preguntas de opción múltiple + 1 ejercicio práctico al final de cada módulo
+                  10 preguntas de opción múltiple + 1 ejercicio práctico al
+                  final de cada módulo.
                 </p>
               </div>
               <div className="p-6 rounded-xl bg-silver/10 border border-silver/30">
@@ -201,7 +222,8 @@ const ModulesSection = () => {
                 </div>
                 <h4 className="font-semibold mb-2">Examen Final</h4>
                 <p className="text-sm text-muted-foreground">
-                  50 preguntas globales + Proyecto práctico con validación UTAMV
+                  50 preguntas globales + Proyecto práctico con validación
+                  UTAMV.
                 </p>
               </div>
             </div>
@@ -213,7 +235,7 @@ const ModulesSection = () => {
           <Button variant="elite" size="xl" asChild>
             <a href="#inscripcion">
               Acceder al Programa Completo
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-5 h-5 ml-2" />
             </a>
           </Button>
         </div>
