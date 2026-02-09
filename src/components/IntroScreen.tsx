@@ -11,10 +11,10 @@ const IntroScreen = ({ onComplete }: IntroScreenProps) => {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase(1), 500),   // Título principal
-      setTimeout(() => setPhase(2), 2200),  // Subtítulo
-      setTimeout(() => setPhase(3), 4600),  // Mensaje institucional
-      setTimeout(() => onComplete(), 6200), // Fin
+      setTimeout(() => setPhase(1), 800),   // Título principal
+      setTimeout(() => setPhase(2), 2800),  // Subtítulo
+      setTimeout(() => setPhase(3),5600),  // Mensaje institucional
+      setTimeout(() => onComplete(), 8200), // Fin
     ];
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);
