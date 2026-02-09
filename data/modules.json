@@ -1,13 +1,172 @@
 [
   {
     "id": 1,
+    "order_index": 1,
     "title": "Fundamentos del Marketing Digital",
-    "description": "Introducción al ecosistema digital y sus principales canales."
+    "description": "Introducción al ecosistema digital, el rol del estratega y los principales canales en Latinoamérica.",
+    "image_url": "/images/modules/mod-01-fundamentos.jpg",
+    "content_outline": [
+      "Historia y evolución del marketing digital",
+      "Mapa del ecosistema: medios propios, pagados y ganados",
+      "Embudo de conversión y customer journey",
+      "Particularidades de los mercados latinoamericanos"
+    ],
+    "key_assets": [
+      "Mapa visual del ecosistema de canales",
+      "Plantilla de customer journey en Notion/Figma"
+    ]
   },
   {
     "id": 2,
-    "title": "SEO y Optimización Web",
-    "description": "Técnicas de posicionamiento orgánico y herramientas de análisis."
+    "order_index": 2,
+    "title": "SEO, AEO y Optimización Web",
+    "description": "Posicionamiento orgánico para buscadores y motores de respuesta, con foco en intención de búsqueda.",
+    "image_url": "/images/modules/mod-02-seo-aeo.jpg",
+    "content_outline": [
+      "Fundamentos de SEO técnico, on‑page y off‑page",
+      "Research de keywords e intención de búsqueda",
+      "Answer Engine Optimization (AEO) y snippet thinking",
+      "Core Web Vitals, indexación y sitemaps"
+    ],
+    "key_assets": [
+      "Checklist técnico SEO para Vite/React",
+      "Plantilla de arquitectura de información UTAMV"
+    ]
+  },
+  {
+    "id": 3,
+    "order_index": 3,
+    "title": "Publicidad Digital y Paid Media",
+    "description": "Diseño de campañas de pago orientadas a performance y construcción de marca.",
+    "image_url": "/images/modules/mod-03-paid-media.jpg",
+    "content_outline": [
+      "Marco de campañas: awareness, consideración, conversión",
+      "Meta Ads y Google Ads: estructura de campañas",
+      "Segmentación, creatividades y test A/B",
+      "Métricas clave de performance y atribución básica"
+    ],
+    "key_assets": [
+      "Plantilla de briefing para campañas",
+      "Dashboard simple de métricas en Sheets"
+    ]
+  },
+  {
+    "id": 4,
+    "order_index": 4,
+    "title": "Social Media y Estrategia de Contenidos",
+    "description": "Diseño de estrategias para redes sociales con enfoque editorial y de comunidad.",
+    "image_url": "/images/modules/mod-04-social.jpg",
+    "content_outline": [
+      "Rol de cada red: Instagram, TikTok, LinkedIn, YouTube",
+      "Calendarios de contenido y pilares editoriales",
+      "Construcción de comunidad y social listening",
+      "Gestión de crisis y reputación online"
+    ],
+    "key_assets": [
+      "Calendario editorial UTAMV (Google Sheets/Notion)",
+      "Guía de formatos por red social"
+    ]
+  },
+  {
+    "id": 5,
+    "order_index": 5,
+    "title": "Email Marketing, Automatización y CRM",
+    "description": "Diseño de flujos automatizados y estrategias de relación a largo plazo.",
+    "image_url": "/images/modules/mod-05-email-crm.jpg",
+    "content_outline": [
+      "Tipos de envíos: campañas, newsletters, flujos",
+      "Segmentación y personalización",
+      "Automatizaciones clave: bienvenida, onboarding, win‑back",
+      "Métricas: aperturas, clics, conversión, churn"
+    ],
+    "key_assets": [
+      "Diagramas de flujos de automatización",
+      "Plantillas de copy para emails clave"
+    ]
+  },
+  {
+    "id": 6,
+    "order_index": 6,
+    "title": "Analítica Digital, Data y Métricas",
+    "description": "Diseño de sistemas de medición y lectura de datos para la toma de decisiones.",
+    "image_url": "/images/modules/mod-06-analytics.jpg",
+    "content_outline": [
+      "Implementación básica de analítica (GA4 u otras)",
+      "Definición de KPIs y métricas accionables",
+      "Dashboards ejecutivos vs. dashboards operativos",
+      "Lectura de cohortes y análisis de funnels"
+    ],
+    "key_assets": [
+      "Plantilla de cuadro de mando UTAMV",
+      "Guía de interpretación de métricas críticas"
+    ]
+  },
+  {
+    "id": 7,
+    "order_index": 7,
+    "title": "UX, CRO y Experiencia de Usuario",
+    "description": "Optimización de la experiencia en sitios y funnels para maximizar la conversión.",
+    "image_url": "/images/modules/mod-07-ux-cro.jpg",
+    "content_outline": [
+      "Principios de UX aplicados a landing pages",
+      "Heurísticas de usabilidad y patrones de diseño",
+      "Conversion Rate Optimization (CRO) y test A/B",
+      "Microcopys, formularios y confianza (trust signals)"
+    ],
+    "key_assets": [
+      "Checklist de UX para landing de captación",
+      "Guía de microcopy para conversiones"
+    ]
+  },
+  {
+    "id": 8,
+    "order_index": 8,
+    "title": "Estrategia de Marca y Contenido Avanzado",
+    "description": "Construcción de narrativa, tono y sistemas de contenido consistentes.",
+    "image_url": "/images/modules/mod-08-brand-content.jpg",
+    "content_outline": [
+      "Arquitectura de marca y propuesta de valor",
+      "Storytelling y frameworks narrativos",
+      "Sistemas de contenido evergreen vs. campañas",
+      "Guías de estilo y documentación de marca"
+    ],
+    "key_assets": [
+      "Plantilla de brand narrative",
+      "Guía de tono y voz UTAMV"
+    ]
+  },
+  {
+    "id": 9,
+    "order_index": 9,
+    "title": "Inteligencia Artificial aplicada al Marketing",
+    "description": "Uso de IA para investigación, creatividad, automatización y personalización a escala.",
+    "image_url": "/images/modules/mod-09-ai.jpg",
+    "content_outline": [
+      "Introducción a IA generativa para marketing",
+      "Prompting estratégico para investigación y copy",
+      "Automatización de tareas repetitivas con IA",
+      "Riesgos, ética y límites del uso de IA en campañas"
+    ],
+    "key_assets": [
+      "Playbook de prompts UTAMV para marketers",
+      "Checklist de riesgos y buenas prácticas con IA"
+    ]
+  },
+  {
+    "id": 10,
+    "order_index": 10,
+    "title": "Plan Maestro y Proyecto Final UTAMV",
+    "description": "Construcción del plan maestro, armado del caso UTAMV y defensa del proyecto final.",
+    "image_url": "/images/modules/mod-10-proyecto-final.jpg",
+    "content_outline": [
+      "Estructura de un plan maestro de marketing digital",
+      "Integración de canales: plan omnicanal",
+      "Presupuestos, roadmap y OKRs",
+      "Presentación ejecutiva y defensa del proyecto"
+    ],
+    "key_assets": [
+      "Plantilla del Plan Maestro UTAMV",
+      "Rubrica de evaluación del proyecto final"
+    ]
   }
-  // ... hasta módulo 10
 ]
