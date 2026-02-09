@@ -22,7 +22,7 @@ jobs:
           check-latest: true
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Lint code
         run: npm run lint
@@ -30,22 +30,24 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
-      - name: Security audit
-        run: npm audit --production
+      - name: Security audit (prod, high+)
+        run: npm audit --production --audit-level=high
 
       - name: Build project
         run: npm run build
 
-      - name: Preview build (PR only)
-        if: github.event_name == 'pull_request'
-        run: npm run preview &
+      - name: Start Vite preview in background
+        run: |
+          npm run preview -- --port 4173 &
+          sleep 15
 
       - name: Validate UTAMV Certificate API
         run: |
-          curl -X POST http://localhost:3000/api/certificates/issue \
+          curl -sS -X POST http://localhost:4173/api/certificates/issue \
           -H "Content-Type: application/json" \
           -d '{"studentName":"Test User","courseName":"UTAMV Elite Masterclass","certificateId":"test123"}'
 
       - name: Deploy to Lovable
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           echo "Build successful. Lovable despliega automáticamente al detectar build completado."
