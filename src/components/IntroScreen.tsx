@@ -11,10 +11,10 @@ const IntroScreen = ({ onComplete }: IntroScreenProps) => {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase(1), 800),   // Título principal
-      setTimeout(() => setPhase(2), 2800),  // Subtítulo
+      setTimeout(() => setPhase(1), 1200),   // Título principal
+      setTimeout(() => setPhase(2), 3800),  // Subtítulo
       setTimeout(() => setPhase(3),5600),  // Mensaje institucional
-      setTimeout(() => onComplete(), 8200), // Fin
+      setTimeout(() => onComplete(), 9900), // Fin
     ];
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);
@@ -28,15 +28,15 @@ const IntroScreen = ({ onComplete }: IntroScreenProps) => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1 }}
-          className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-[120] bg-black flex flex-col items-center justify-center overflow-hidden"
         >
           {/* Glow institucional */}
           <div className="absolute inset-0 overflow-hidden">
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: phase >= 1 ? 0.35 : 0, scale: 1 }}
+              animate={{ opacity: phase >= 1 ? 0.55 : 0, scale: 1 }}
               transition={{ duration: 2 }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[900px] rounded-full"
               style={{
                 background:
                   "radial-gradient(circle, rgba(210,210,220,0.16) 0%, transparent 68%)",
@@ -84,7 +84,7 @@ const IntroScreen = ({ onComplete }: IntroScreenProps) => {
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
-                textShadow: "0 0 70px rgba(210,210,220,0.35)",
+                textShadow: "0 0 80px rgba(210,210,220,0.35)",
               }}
             >
               MASTER 360
@@ -100,7 +100,7 @@ const IntroScreen = ({ onComplete }: IntroScreenProps) => {
               className="h-[2px] w-40 md:w-64 lg:w-80 mx-auto my-4 md:my-6"
               style={{
                 background:
-                  "linear-gradient(90deg, transparent 0%, #D0D4E4 50%, transparent 100%)",
+                  "linear-gradient(90deg, transparent 10%, #D0D4E4 50%, transparent 100%)",
               }}
             />
 
