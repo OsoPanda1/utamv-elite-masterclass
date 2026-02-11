@@ -16,6 +16,64 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 
+// Module visual assets mapping
+import funnelImg from "@/assets/funnel-marketing-digital.jpg";
+import seoGrowthImg from "@/assets/seo-growth.jpg";
+import geoTargetingImg from "@/assets/geo-targeting-local-seo.jpg";
+import brandingImg from "@/assets/branding-identity-framework.jpg";
+import aiMarketingImg from "@/assets/ai-marketing-automation.png";
+import predictiveImg from "@/assets/predictive-analytics-ai.jpg";
+import contentStrategyImg from "@/assets/content-strategy-flowchart.jpg";
+import metaverseImg from "@/assets/metaverse-marketing.jpg";
+import roiImg from "@/assets/marketing-roi-diagram.jpg";
+import projectMgmtImg from "@/assets/project-management-dashboard.jpg";
+import socialMediaImg from "@/assets/social-media-ecosystem.jpg";
+import emailAutomationImg from "@/assets/email-automation-workflow.jpg";
+import analyticsKpiImg from "@/assets/analytics-kpi-dashboard.jpg";
+import omnichannelImg from "@/assets/omnichannel-strategy.jpg";
+import ppcImg from "@/assets/ppc-campaign-structure.jpg";
+import ecommerceImg from "@/assets/ecommerce-sales-funnel.jpg";
+import seoVsAeoImg from "@/assets/seo-vs-aeo.png";
+import aiDashboardImg from "@/assets/ai-marketing-dashboard.jpg";
+import dataPrivacyImg from "@/assets/data-privacy-framework.jpg";
+import influencerImg from "@/assets/influencer-marketing-tiers.jpg";
+import videoMarketingImg from "@/assets/video-marketing-pipeline.jpg";
+import automationPlatformImg from "@/assets/marketing-automation-platform.jpg";
+import digitalChannelsImg from "@/assets/digital-channels-ecosystem.png";
+import aiSmartRepliesImg from "@/assets/ai-smart-replies.png";
+import aiCollaborationImg from "@/assets/ai-human-collaboration.jpg";
+import aeoOptImg from "@/assets/aeo-optimization.jpg";
+
+// Map lesson topics to relevant images
+const getLessonImages = (lessonTitle: string, moduleTitle: string): string[] => {
+  const title = (lessonTitle + " " + moduleTitle).toLowerCase();
+  const images: string[] = [];
+
+  if (title.includes("fundam") || title.includes("introducción") || title.includes("marketing digital")) images.push(funnelImg, digitalChannelsImg);
+  if (title.includes("seo") || title.includes("posicion")) images.push(seoGrowthImg, seoVsAeoImg);
+  if (title.includes("aeo") || title.includes("answer engine")) images.push(aeoOptImg, seoVsAeoImg);
+  if (title.includes("geo") || title.includes("local")) images.push(geoTargetingImg);
+  if (title.includes("brand") || title.includes("narrativ") || title.includes("identidad")) images.push(brandingImg);
+  if (title.includes("predicti") || title.includes("automatiz")) images.push(predictiveImg, automationPlatformImg);
+  if (title.includes("content") || title.includes("contenido")) images.push(contentStrategyImg);
+  if (title.includes("metavers") || title.includes("xr") || title.includes("multicanal")) images.push(metaverseImg, omnichannelImg);
+  if (title.includes("roi") || title.includes("monetiz")) images.push(roiImg, ecommerceImg);
+  if (title.includes("proyecto") || title.includes("final")) images.push(projectMgmtImg);
+  if (title.includes("social") || title.includes("redes")) images.push(socialMediaImg, influencerImg);
+  if (title.includes("email")) images.push(emailAutomationImg);
+  if (title.includes("analíti") || title.includes("métric") || title.includes("kpi")) images.push(analyticsKpiImg);
+  if (title.includes("ppc") || title.includes("google ads")) images.push(ppcImg);
+  if (title.includes("ia") || title.includes("inteligencia artificial") || title.includes("ai")) images.push(aiMarketingImg, aiDashboardImg, aiCollaborationImg);
+  if (title.includes("soporte") || title.includes("chat") || title.includes("respuest")) images.push(aiSmartRepliesImg);
+  if (title.includes("privacidad") || title.includes("seguridad") || title.includes("datos")) images.push(dataPrivacyImg);
+  if (title.includes("video")) images.push(videoMarketingImg);
+  if (title.includes("canal") || title.includes("estrategia")) images.push(omnichannelImg, digitalChannelsImg);
+
+  // Default fallbacks
+  if (images.length === 0) images.push(funnelImg, aiDashboardImg);
+  return images.slice(0, 3);
+};
+
 interface Lesson {
   id: string;
   title: string;
@@ -307,13 +365,24 @@ const LessonViewer = ({
           {renderContent()}
         </div>
 
-        {/* Placeholder visual / esquemas */}
-        <div className="my-8 p-6 md:p-8 rounded-xl bg-muted/20 border border-dashed border-border flex flex-col items-center justify-center gap-3">
-          <ImageIcon className="w-10 h-10 text-muted-foreground" />
-          <p className="text-xs md:text-sm text-muted-foreground text-center max-w-md">
-            Aquí podrás visualizar esquemas, mapas mentales o gráficos
-            complementarios de la lección.
-          </p>
+        {/* Visual resources for this lesson */}
+        <div className="my-8 space-y-4">
+          <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground">
+            <ImageIcon className="w-4 h-4 text-primary" />
+            Material Visual Complementario
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {getLessonImages(lesson.title, moduleTitle).map((img, i) => (
+              <div key={i} className="rounded-xl overflow-hidden border border-border shadow-md">
+                <img
+                  src={img}
+                  alt={`Recurso visual ${i + 1} - ${lesson.title}`}
+                  className="w-full h-48 object-cover"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

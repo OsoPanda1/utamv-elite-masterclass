@@ -2,6 +2,10 @@ import { Target, Brain, Zap, TrendingUp, ArrowLeft, CheckCircle } from 'lucide-r
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import analyticsDashboard from '@/assets/analytics-dashboard.jpg';
+import seoVsAeo from '@/assets/seo-vs-aeo.png';
+import aiMarketingAutomation from '@/assets/ai-marketing-automation.png';
+import omnichannelStrategy from '@/assets/omnichannel-strategy.jpg';
+import predictiveAnalytics from '@/assets/predictive-analytics-ai.jpg';
 
 const Programa = () => {
   const pillars = [
@@ -122,6 +126,45 @@ const Programa = () => {
                   <span className="text-foreground">{outcome}</span>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Visual Resources */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="font-display text-3xl font-bold mb-8 text-center text-foreground">
+            Metodología y Herramientas
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <div className="rounded-2xl overflow-hidden border border-border shadow-card group">
+              <img src={seoVsAeo} alt="SEO vs AEO" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="p-4">
+                <h4 className="font-semibold text-sm text-foreground">SEO vs AEO</h4>
+                <p className="text-xs text-muted-foreground">Optimización dual para buscadores y motores de IA</p>
+              </div>
+            </div>
+            <div className="rounded-2xl overflow-hidden border border-border shadow-card group">
+              <img src={aiMarketingAutomation} alt="Marketing con IA" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="p-4">
+                <h4 className="font-semibold text-sm text-foreground">Marketing con IA</h4>
+                <p className="text-xs text-muted-foreground">Automatización inteligente de campañas</p>
+              </div>
+            </div>
+            <div className="rounded-2xl overflow-hidden border border-border shadow-card group">
+              <img src={omnichannelStrategy} alt="Estrategia Omnicanal" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="p-4">
+                <h4 className="font-semibold text-sm text-foreground">Omnicanalidad</h4>
+                <p className="text-xs text-muted-foreground">Integración total de canales digitales</p>
+              </div>
+            </div>
+            <div className="rounded-2xl overflow-hidden border border-border shadow-card group">
+              <img src={predictiveAnalytics} alt="Analítica Predictiva" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="p-4">
+                <h4 className="font-semibold text-sm text-foreground">Analítica Predictiva</h4>
+                <p className="text-xs text-muted-foreground">Machine learning aplicado al marketing</p>
+              </div>
             </div>
           </div>
         </div>

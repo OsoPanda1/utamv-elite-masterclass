@@ -1,4 +1,3 @@
-```tsx
 import { useState, forwardRef } from "react";
 import {
   BookOpen,
@@ -218,4 +217,3 @@ const AcademicAccordionNav = () => {
 };
 
 export { NavLink, AcademicAccordionNav };
-```
