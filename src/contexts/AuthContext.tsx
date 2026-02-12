@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import type { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import type { AppRole } from "@/integrations/supabase/types";
 
 interface AuthContextType {
   user: User | null;
@@ -15,6 +16,7 @@ interface AuthContextType {
   loading: boolean;
   isPaid: boolean;
   isAdmin: boolean;
+  role: AppRole;
   signUp: (
     email: string,
     password: string,
@@ -45,8 +47,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isPaid, setIsPaid] = useState(false);
+  const [role, setRole] = useState<AppRole>("student");
   const [isAdmin, setIsAdmin] = useState(false);
 
+  // =========================
+  // Payment status
+  // =========================
   const fetchPaymentStatus = useCallback(async (userId: string) => {
     try {
       const { data, error } = await supabase
@@ -66,33 +72,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
-  const fetchAdminStatus = useCallback(async (userId: string) => {
+  // =========================
+  // Role / Admin status
+  // =========================
+  const fetchUserRole = useCallback(async (userId: string) => {
     try {
-      const { data, error } = await supabase.rpc("has_role", {
+      const { data, error } = await supabase.rpc("get_user_role", {
         _user_id: userId,
-        _role: "admin",
       });
 
       if (error) {
-        console.error("Error fetching admin status:", error);
+        console.error("Error fetching user role:", error);
+        setRole("student");
+        setIsAdmin(false);
         return;
       }
 
-      // has_role() debe devolver boolean (según patrón recomendado supabase) [web:104]
-      setIsAdmin(data === true);
+      const resolvedRole = data ?? "student";
+      setRole(resolvedRole);
+      setIsAdmin(resolvedRole === "admin");
     } catch (err) {
-      console.error("Error fetching admin status:", err);
+      console.error("Error fetching user role:", err);
+      setRole("student");
+      setIsAdmin(false);
     }
   }, []);
 
+  // =========================
+  // Refresh combined status
+  // =========================
   const refreshPaymentStatus = useCallback(async () => {
     if (!user) return;
+
     await Promise.all([
       fetchPaymentStatus(user.id),
-      fetchAdminStatus(user.id),
+      fetchUserRole(user.id),
     ]);
-  }, [user, fetchPaymentStatus, fetchAdminStatus]);
+  }, [user, fetchPaymentStatus, fetchUserRole]);
 
+  // =========================
+  // Init + Auth listener
+  // =========================
   useEffect(() => {
     let isMounted = true;
 
@@ -100,7 +120,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const {
         data: { session },
         error,
-      } = await supabase.auth.getSession(); // patrón docs [web:100]
+      } = await supabase.auth.getSession();
 
       if (!isMounted) return;
 
@@ -114,7 +134,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (session?.user) {
         await Promise.all([
           fetchPaymentStatus(session.user.id),
-          fetchAdminStatus(session.user.id),
+          fetchUserRole(session.user.id),
         ]);
       }
 
@@ -134,22 +154,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (newSession?.user) {
         await Promise.all([
           fetchPaymentStatus(newSession.user.id),
-          fetchAdminStatus(newSession.user.id),
+          fetchUserRole(newSession.user.id),
         ]);
       } else {
         setIsPaid(false);
+        setRole("student");
         setIsAdmin(false);
       }
 
       setLoading(false);
-    }); // patrón recomendado: listener + getSession [web:99][web:101]
+    });
 
     return () => {
       isMounted = false;
       subscription.unsubscribe();
     };
-  }, [fetchPaymentStatus, fetchAdminStatus]);
+  }, [fetchPaymentStatus, fetchUserRole]);
 
+  // =========================
+  // Auth actions
+  // =========================
   const signUp = useCallback(
     async (email: string, password: string, fullName: string) => {
       const redirectUrl = `${window.location.origin}/`;
@@ -198,9 +222,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setUser(null);
     setSession(null);
     setIsPaid(false);
+    setRole("student");
     setIsAdmin(false);
   }, []);
 
+  // =========================
+  // Context value
+  // =========================
   const value = useMemo(
     () => ({
       user,
@@ -208,12 +236,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       loading,
       isPaid,
       isAdmin,
+      role,
       signUp,
       signIn,
       signOut,
       refreshPaymentStatus,
     }),
-    [user, session, loading, isPaid, isAdmin, signUp, signIn, signOut, refreshPaymentStatus],
+    [
+      user,
+      session,
+      loading,
+      isPaid,
+      isAdmin,
+      role,
+      signUp,
+      signIn,
+      signOut,
+      refreshPaymentStatus,
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
