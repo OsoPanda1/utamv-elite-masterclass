@@ -790,3 +790,35 @@ export const Constants = {
     },
   },
 } as const
+// =====================================================
+// APP-SPECIFIC FRONTEND HELPERS (NON-BREAKING EXTENSION)
+// =====================================================
+
+// Roles de la aplicación (derivados del enum real)
+export type AppRole = Database["public"]["Enums"]["app_role"]
+
+// Filas tipadas para uso en frontend
+export type ProfileRow =
+  Database["public"]["Tables"]["profiles"]["Row"]
+
+export type UserRoleRow =
+  Database["public"]["Tables"]["user_roles"]["Row"]
+
+export type LessonProgressRow =
+  Database["public"]["Tables"]["lesson_progress"]["Row"]
+
+export type ModuleProgressRow =
+  Database["public"]["Tables"]["module_progress"]["Row"]
+
+export type PaymentRow =
+  Database["public"]["Tables"]["payments"]["Row"]
+
+// RPCs tipadas (ya existen en tu DB)
+export type GetUserRoleFn =
+  Database["public"]["Functions"]["get_user_role"]
+
+export type HasRoleFn =
+  Database["public"]["Functions"]["has_role"]
+
+export type HasCourseAccessFn =
+  Database["public"]["Functions"]["has_course_access"]
