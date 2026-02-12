@@ -1,20 +1,41 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
-interface Props {
+interface RequirePaidProps {
   children: JSX.Element;
 }
 
-export const RequirePaid = ({ children }: Props) => {
-  const { isPaid, loading } = useAuth();
+/**
+ * Guard de pago:
+ * - Permite acceso si el usuario está pagado
+ * - Permite acceso SIEMPRE a admin (bypass total)
+ * - Redirige a /inscripcion si no cumple
+ */
+export const RequirePaid: React.FC<RequirePaidProps> = ({ children }) => {
+  const { loading, isPaid, isAdmin } = useAuth();
+  const location = useLocation();
 
+  // Mientras se resuelve sesión / roles
   if (loading) {
-    return null;
+    return null; // o spinner global si lo deseas
   }
 
-  if (!isPaid) {
-    return <Navigate to="/pricing" replace />;
+  // Admin SIEMPRE pasa (aunque no esté pagado)
+  if (isAdmin) {
+    return children;
   }
 
-  return children;
+  // Usuario pagado pasa
+  if (isPaid) {
+    return children;
+  }
+
+  // Usuario autenticado pero sin pago
+  return (
+    <Navigate
+      to="/inscripcion"
+      replace
+      state={{ from: location.pathname }}
+    />
+  );
 };
