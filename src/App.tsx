@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Toaster } from "@/components/ui/sonner";
 
 // Pages
 import Index from "@/pages/Index";
@@ -21,109 +22,96 @@ import { RequireAdmin } from "@/components/guards/RequireAdmin";
 
 function App() {
   return (
-    <Routes>
-      {/* ========================= */}
-      {/* RUTAS PÚBLICAS */}
-      {/* ========================= */}
-      <Route path="/" element={<Index />} />
-      <Route path="/auth" element={<Auth />} />
-      <Route path="/programa" element={<Programa />} />
-      <Route path="/inscripcion" element={<Inscripcion />} />
-      <Route path="/expertos" element={<Expertos />} />
-      <Route
-        path="/verificar-certificado"
-        element={<VerifyCertificate />}
-      />
+    <>
+      <Toaster />
+      <Routes>
+        {/* ========================= */}
+        {/* RUTAS PÚBLICAS */}
+        {/* ========================= */}
+        <Route path="/" element={<Index />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/programa" element={<Programa />} />
+        <Route path="/inscripcion" element={<Inscripcion />} />
+        <Route path="/expertos" element={<Expertos />} />
+        <Route
+          path="/verificar-certificado"
+          element={<VerifyCertificate />}
+        />
 
-      {/* ========================= */}
-      {/* RUTAS AUTENTICADAS */}
-      {/* ========================= */}
-      <Route
-        path="/dashboard"
-        element={
-          <RequireAuth>
-            <Dashboard />
-          </RequireAuth>
-        }
-      />
+        {/* ========================= */}
+        {/* RUTAS AUTENTICADAS */}
+        {/* ========================= */}
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
 
-      <Route
-        path="/settings"
-        element={
-          <RequireAuth>
-            <Settings />
-          </RequireAuth>
-        }
-      />
+        <Route
+          path="/settings"
+          element={
+            <RequireAuth>
+              <Settings />
+            </RequireAuth>
+          }
+        />
 
-      {/* ========================= */}
-      {/* RUTAS DE PAGO */}
-      {/* ========================= */}
-      <Route
-        path="/modulos"
-        element={
-          <RequireAuth>
-            <RequirePaid>
-              <Modulos />
-            </RequirePaid>
-          </RequireAuth>
-        }
-      />
+        {/* ========================= */}
+        {/* RUTAS DE PAGO */}
+        {/* ========================= */}
+        <Route
+          path="/modulos"
+          element={
+            <RequireAuth>
+              <RequirePaid>
+                <Modulos />
+              </RequirePaid>
+            </RequireAuth>
+          }
+        />
 
-      <Route
-        path="/modulos/:id"
-        element={
-          <RequireAuth>
-            <RequirePaid>
-              <ModuleViewer />
-            </RequirePaid>
-          </RequireAuth>
-        }
-      />
+        <Route
+          path="/modulos/:id"
+          element={
+            <RequireAuth>
+              <RequirePaid>
+                <ModuleViewer />
+              </RequirePaid>
+            </RequireAuth>
+          }
+        />
 
-      <Route
-        path="/module/:moduleIndex"
-        element={
-          <RequireAuth>
-            <RequirePaid>
-              <ModuleViewer />
-            </RequirePaid>
-          </RequireAuth>
-        }
-      />
+        <Route
+          path="/module/:moduleIndex"
+          element={
+            <RequireAuth>
+              <RequirePaid>
+                <ModuleViewer />
+              </RequirePaid>
+            </RequireAuth>
+          }
+        />
 
-      <Route
-        path="/certificacion"
-        element={
-          <RequireAuth>
-            <RequirePaid>
-              <Certificacion />
-            </RequirePaid>
-          </RequireAuth>
-        }
-      />
+        <Route
+          path="/certificacion"
+          element={
+            <RequireAuth>
+              <RequirePaid>
+                <Certificacion />
+              </RequirePaid>
+            </RequireAuth>
+          }
+        />
 
-      {/* ========================= */}
-      {/* RUTAS ADMIN (ESCALABLES) */}
-      {/* ========================= */}
-      {/* 
-      <Route
-        path="/admin"
-        element={
-          <RequireAuth>
-            <RequireAdmin>
-              <AdminDashboard />
-            </RequireAdmin>
-          </RequireAuth>
-        }
-      />
-      */}
-
-      {/* ========================= */}
-      {/* 404 */}
-      {/* ========================= */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        {/* ========================= */}
+        {/* RUTA 404 */}
+        {/* ========================= */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }
 
