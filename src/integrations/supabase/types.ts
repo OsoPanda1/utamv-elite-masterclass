@@ -73,6 +73,13 @@ export type Database = {
             foreignKeyName: "certificates_course_id_fkey"
             columns: ["course_id"]
             isOneToOne: false
+            referencedRelation: "admin_user_progress"
+            referencedColumns: ["course_id"]
+          },
+          {
+            foreignKeyName: "certificates_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
             referencedRelation: "courses"
             referencedColumns: ["id"]
           },
@@ -170,6 +177,51 @@ export type Database = {
         }
         Relationships: []
       }
+      lesson_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_pinned: boolean
+          lesson_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_pinned?: boolean
+          lesson_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_pinned?: boolean
+          lesson_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_comments_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "admin_user_progress"
+            referencedColumns: ["lesson_id"]
+          },
+          {
+            foreignKeyName: "lesson_comments_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lesson_progress: {
         Row: {
           completed_at: string | null
@@ -196,6 +248,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "lesson_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "admin_user_progress"
+            referencedColumns: ["lesson_id"]
+          },
           {
             foreignKeyName: "lesson_progress_lesson_id_fkey"
             columns: ["lesson_id"]
@@ -244,6 +303,13 @@ export type Database = {
             foreignKeyName: "lessons_module_id_fkey"
             columns: ["module_id"]
             isOneToOne: false
+            referencedRelation: "admin_user_progress"
+            referencedColumns: ["module_id"]
+          },
+          {
+            foreignKeyName: "lessons_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
             referencedRelation: "modules"
             referencedColumns: ["id"]
           },
@@ -269,6 +335,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "module_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "admin_user_progress"
+            referencedColumns: ["module_id"]
+          },
           {
             foreignKeyName: "module_progress_module_id_fkey"
             columns: ["module_id"]
@@ -310,6 +383,13 @@ export type Database = {
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "modules_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "admin_user_progress"
+            referencedColumns: ["course_id"]
+          },
           {
             foreignKeyName: "modules_course_id_fkey"
             columns: ["course_id"]
@@ -361,6 +441,13 @@ export type Database = {
             foreignKeyName: "payments_course_id_fkey"
             columns: ["course_id"]
             isOneToOne: false
+            referencedRelation: "admin_user_progress"
+            referencedColumns: ["course_id"]
+          },
+          {
+            foreignKeyName: "payments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
             referencedRelation: "courses"
             referencedColumns: ["id"]
           },
@@ -368,31 +455,43 @@ export type Database = {
       }
       profiles: {
         Row: {
+          ai_daily_quota_used: number
+          ai_quota_reset_at: string
+          avatar_url: string | null
           created_at: string | null
           email: string | null
           full_name: string | null
           id: string
           is_paid: boolean | null
+          role: string | null
           stripe_customer_id: string | null
           updated_at: string | null
           user_id: string
         }
         Insert: {
+          ai_daily_quota_used?: number
+          ai_quota_reset_at?: string
+          avatar_url?: string | null
           created_at?: string | null
           email?: string | null
           full_name?: string | null
           id?: string
           is_paid?: boolean | null
+          role?: string | null
           stripe_customer_id?: string | null
           updated_at?: string | null
           user_id: string
         }
         Update: {
+          ai_daily_quota_used?: number
+          ai_quota_reset_at?: string
+          avatar_url?: string | null
           created_at?: string | null
           email?: string | null
           full_name?: string | null
           id?: string
           is_paid?: boolean | null
+          role?: string | null
           stripe_customer_id?: string | null
           updated_at?: string | null
           user_id?: string
@@ -502,6 +601,13 @@ export type Database = {
             foreignKeyName: "quiz_scores_module_id_fkey"
             columns: ["module_id"]
             isOneToOne: false
+            referencedRelation: "admin_user_progress"
+            referencedColumns: ["module_id"]
+          },
+          {
+            foreignKeyName: "quiz_scores_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
             referencedRelation: "modules"
             referencedColumns: ["id"]
           },
@@ -547,8 +653,22 @@ export type Database = {
             foreignKeyName: "quizzes_course_id_fkey"
             columns: ["course_id"]
             isOneToOne: false
+            referencedRelation: "admin_user_progress"
+            referencedColumns: ["course_id"]
+          },
+          {
+            foreignKeyName: "quizzes_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
             referencedRelation: "courses"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quizzes_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "admin_user_progress"
+            referencedColumns: ["module_id"]
           },
           {
             foreignKeyName: "quizzes_module_id_fkey"
@@ -615,6 +735,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_progress: {
+        Row: {
+          completed: boolean
+          created_at: string | null
+          id: string
+          last_accessed_at: string | null
+          lesson_id: string
+          module_id: string
+          progress: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          lesson_id: string
+          module_id: string
+          progress?: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          lesson_id?: string
+          module_id?: string
+          progress?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -638,7 +794,23 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      admin_user_progress: {
+        Row: {
+          completed: boolean | null
+          course_id: string | null
+          course_title: string | null
+          email: string | null
+          full_name: string | null
+          lesson_id: string | null
+          lesson_title: string | null
+          module_id: string | null
+          module_title: string | null
+          progress: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_user_role: {
@@ -790,35 +962,3 @@ export const Constants = {
     },
   },
 } as const
-// =====================================================
-// APP-SPECIFIC FRONTEND HELPERS (NON-BREAKING EXTENSION)
-// =====================================================
-
-// Roles de la aplicación (derivados del enum real)
-export type AppRole = Database["public"]["Enums"]["app_role"]
-
-// Filas tipadas para uso en frontend
-export type ProfileRow =
-  Database["public"]["Tables"]["profiles"]["Row"]
-
-export type UserRoleRow =
-  Database["public"]["Tables"]["user_roles"]["Row"]
-
-export type LessonProgressRow =
-  Database["public"]["Tables"]["lesson_progress"]["Row"]
-
-export type ModuleProgressRow =
-  Database["public"]["Tables"]["module_progress"]["Row"]
-
-export type PaymentRow =
-  Database["public"]["Tables"]["payments"]["Row"]
-
-// RPCs tipadas (ya existen en tu DB)
-export type GetUserRoleFn =
-  Database["public"]["Functions"]["get_user_role"]
-
-export type HasRoleFn =
-  Database["public"]["Functions"]["has_role"]
-
-export type HasCourseAccessFn =
-  Database["public"]["Functions"]["has_course_access"]

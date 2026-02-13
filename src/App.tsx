@@ -82,6 +82,17 @@ function App() {
       />
 
       <Route
+        path="/module/:moduleIndex"
+        element={
+          <RequireAuth>
+            <RequirePaid>
+              <ModuleViewer />
+            </RequirePaid>
+          </RequireAuth>
+        }
+      />
+
+      <Route
         path="/certificacion"
         element={
           <RequireAuth>
