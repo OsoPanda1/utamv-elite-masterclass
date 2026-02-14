@@ -679,6 +679,30 @@ export type Database = {
           },
         ]
       }
+      rate_limits: {
+        Row: {
+          count: number
+          endpoint: string
+          id: number
+          user_id: string
+          window_start: string
+        }
+        Insert: {
+          count?: number
+          endpoint: string
+          id?: number
+          user_id: string
+          window_start: string
+        }
+        Update: {
+          count?: number
+          endpoint?: string
+          id?: number
+          user_id?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       room_members: {
         Row: {
           id: string
@@ -813,6 +837,10 @@ export type Database = {
       }
     }
     Functions: {
+      check_rate_limit: {
+        Args: { endpoint: string; max_requests: number; window_seconds: number }
+        Returns: boolean
+      }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
@@ -821,13 +849,15 @@ export type Database = {
         Args: { p_course_id: string; p_user_id: string }
         Returns: boolean
       }
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
+      has_role:
+        | {
+            Args: {
+              _role: Database["public"]["Enums"]["app_role"]
+              _user_id: string
+            }
+            Returns: boolean
+          }
+        | { Args: { target_role: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "instructor" | "student"
