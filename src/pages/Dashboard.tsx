@@ -180,7 +180,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleModuleClick = (moduleId: string, moduleIndex: number) => {
+  const handleModuleClick = (moduleId: string, orderIndex: number) => {
     if (!hasAccess) {
       toast({
         title: 'Acceso restringido',
@@ -188,7 +188,7 @@ const Dashboard = () => {
       });
       return;
     }
-    navigate(`/module/${moduleId}`);
+    navigate(`/module/${orderIndex}`);
   };
 
   const isModuleCompleted = (moduleId: string) => {
@@ -423,7 +423,7 @@ const Dashboard = () => {
                     <div 
                       key={module.id}
                       className={`module-card cursor-pointer transition-all hover:scale-[1.02] ${completed ? 'border-silver-primary/50' : ''} ${locked ? 'opacity-60' : ''}`}
-                      onClick={() => handleModuleClick(module.id, index)}
+                      onClick={() => handleModuleClick(module.id, module.order_index)}
                     >
                       {/* Module Image */}
                       <div className="relative h-40 overflow-hidden">
@@ -519,11 +519,11 @@ const Dashboard = () => {
           </>
         )}
 
-        {activeTab === 'chat' && isPaid && (
+        {activeTab === 'chat' && hasAccess && (
           <GeneralChat />
         )}
 
-        {activeTab === 'support' && isPaid && (
+        {activeTab === 'support' && hasAccess && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <AISupportChat />
             <div className="space-y-6">
