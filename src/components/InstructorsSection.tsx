@@ -13,7 +13,7 @@ const InstructorsSection = () => {
       specialty: "CEO Fundador – TAMV Enterprise",
       expertise: "Metadatos, SEO, AEO, Inteligencia Artificial aplicada al marketing, Ecosistemas Civilizatorios",
       image: edwinCastillo,
-      orcid: "0009-0000-5715-9993",
+      orcid: "0009-0008-5050-1539",
       highlight:
         "Diseña arquitecturas de posicionamiento avanzado para empresas latinoamericanas con enfoque en datos y metadatos. Arquiecto Fullstack al mando del proyecto civilizatorio TAMV MD-X4 PRIMER ECOSISTEMA FEDERADO NATIVO XR, VR, 3D Y 4D A NIVEL MUNDIAL",
     },
