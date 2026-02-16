@@ -25,23 +25,37 @@ const Inscripcion = () => {
     {
       name: 'Certificado Profesional',
       price: 60,
-      description: 'Programa introductorio de fundamentos de marketing digital.',
-      features: ['5 horas de formación', 'Certificado de finalización', 'Acceso a recursos básicos'],
-      slug: 'fundamentos-marketing-digital',
+      description: 'Programa introductorio en áreas específicas del marketing digital.',
+      features: ['5-8 horas de formación', 'Certificado de finalización', 'Acceso a recursos básicos', 'Evaluación continua'],
+      slug: 'certificado-profesional',
+    },
+    {
+      name: 'Diplomado',
+      price: 399,
+      description: 'Programa intensivo de especialización en marketing digital.',
+      features: ['25-40 horas de formación', 'Diplomado UTAMV', 'Proyectos prácticos', 'Tutoría semanal', 'Comunidad exclusiva'],
+      slug: 'diplomado-marketing-digital',
     },
     {
       name: 'Máster Profesional',
-      price: 199,
-      description: 'Programa insignia de formación avanzada en marketing digital.',
-      features: ['50+ horas de formación', 'Certificación UTAMV completa', 'Comunidad de estudiantes', 'Tutoría con IA'],
+      price: 799,
+      description: 'Programa insignia de formación avanzada en marketing digital 360.',
+      features: ['50+ horas de formación', 'Certificación UTAMV completa', 'Proyecto integrador', 'Tutoría personalizada', 'Comunidad VIP', 'Acceso permanente'],
       slug: 'master-marketing-digital-2026',
       featured: true,
     },
     {
+      name: 'Maestría',
+      price: 2499,
+      description: 'Programa de posgrado con profundización en áreas especializadas.',
+      features: ['160+ horas de formación', 'Tesis de maestría', 'Mentoría académica', 'Publicación en revistas', 'Red de profesionales'],
+      slug: 'maestria-marketing-digital',
+    },
+    {
       name: 'Doctorado Profesional',
-      price: 1750,
+      price: 4999,
       description: 'Programa de investigación aplicada y dirección estratégica.',
-      features: ['120+ horas de formación', 'Tesis doctoral', 'Mentoría personalizada', 'Publicación académica'],
+      features: ['120+ horas de formación', 'Tesis doctoral', 'Mentoría personalizada', 'Publicación académica', 'Acceso a congresos'],
       slug: 'doctorado-inteligencia-estrategica',
     },
   ];
@@ -87,16 +101,16 @@ const Inscripcion = () => {
         {/* Tiers */}
         <section className="py-12">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {tiers.map((tier, i) => (
                 <div
                   key={i}
                   className={`relative rounded-xl border overflow-hidden ${
-                    tier.featured ? 'border-silver/40 ring-1 ring-silver/20 bg-card/60' : 'border-border bg-card/30'
+                    tier.featured ? 'border-platinum/40 ring-1 ring-platinum/20 bg-card/60' : 'border-border bg-card/30'
                   }`}
                 >
                   {tier.featured && (
-                    <div className="bg-silver/10 text-silver text-[10px] font-bold tracking-[0.2em] text-center py-1.5 uppercase">
+                    <div className="bg-platinum/10 text-platinum text-[10px] font-bold tracking-[0.2em] text-center py-1.5 uppercase">
                       Programa insignia
                     </div>
                   )}
@@ -114,7 +128,7 @@ const Inscripcion = () => {
                     <ul className="space-y-2.5 mb-6">
                       {tier.features.map((f, j) => (
                         <li key={j} className="flex items-center gap-2 text-xs">
-                          <Check className="w-3.5 h-3.5 text-silver shrink-0" />
+                          <Check className="w-3.5 h-3.5 text-platinum shrink-0" />
                           <span className="text-foreground">{f}</span>
                         </li>
                       ))}
