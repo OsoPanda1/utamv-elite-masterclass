@@ -85,7 +85,7 @@ const Certificacion = () => {
             <div className="w-20 h-20 mx-auto mb-6 rounded-2xl overflow-hidden border-2 border-silver/50 shadow-silver">
               <img src={utamvLogo} alt="UTAMV" className="w-full h-full object-cover" />
             </div>
-            <span className="inline-block px-4 py-1 rounded-full bg-gold/20 text-gold text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 rounded-full bg-platinum/20 text-platinum text-sm font-medium mb-4">
               Acreditación Académica
             </span>
             <h1 className="section-title">Certificación UTAMV</h1>
@@ -127,8 +127,8 @@ const Certificacion = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {validationFeatures.map((feature, index) => (
               <div key={index} className="text-center p-6 rounded-2xl bg-card border border-border">
-                <div className="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="w-7 h-7 text-gold" />
+                <div className="w-14 h-14 rounded-xl bg-platinum/10 flex items-center justify-center mx-auto mb-4">
+                  <feature.icon className="w-7 h-7 text-platinum" />
                 </div>
                 <h3 className="font-semibold mb-2 text-foreground">{feature.title}</h3>
                 <p className="text-sm text-muted-foreground">{feature.description}</p>

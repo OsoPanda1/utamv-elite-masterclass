@@ -90,13 +90,13 @@ const Index = () => {
           </div>
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
-              <div className="w-28 h-28 mx-auto mb-8 rounded-2xl overflow-hidden shadow-gold animate-float">
+              <div className="w-28 h-28 mx-auto mb-8 rounded-2xl overflow-hidden shadow-platinum animate-float">
                 <img src={utamvLogo} alt="UTAMV" className="w-full h-full object-contain" />
               </div>
               <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-tight">
                 UTAMV
               </h1>
-              <p className="text-xl md:text-2xl text-gold/90 max-w-2xl mx-auto mb-4 leading-relaxed font-serif">
+              <p className="text-xl md:text-2xl text-platinum/90 max-w-2xl mx-auto mb-4 leading-relaxed font-serif">
                 Universidad Tecnológica Avanzada del Marketing Virtual
               </p>
               <p className="text-lg text-white/70 max-w-xl mx-auto mb-12 leading-relaxed">
@@ -108,7 +108,7 @@ const Index = () => {
                   variant="outline" 
                   size="lg" 
                   asChild
-                  className="px-8 py-6 border-2 border-gold text-gold hover:bg-gold/10 hover:border-gold/80 text-lg font-semibold tracking-wider"
+                  className="px-8 py-6 border-2 border-platinum text-platinum hover:bg-platinum/10 hover:border-platinum/80 text-lg font-semibold tracking-wider"
                 >
                   <Link to="/programas">EXPLORAR PROGRAMAS</Link>
                 </Button>
@@ -116,7 +116,7 @@ const Index = () => {
                   variant="ghost" 
                   size="lg" 
                   asChild
-                  className="px-8 py-6 text-white/80 hover:text-gold hover:bg-white/5 border border-transparent hover:border-gold/30 text-lg font-semibold tracking-wider"
+                  className="px-8 py-6 text-white/80 hover:text-platinum hover:bg-white/5 border border-transparent hover:border-platinum/30 text-lg font-semibold tracking-wider"
                 >
                   <Link to="/admisiones">ADMISIONES</Link>
                 </Button>
@@ -155,7 +155,7 @@ const Index = () => {
                   Denominación Oficial
                 </h3>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-gold mb-2">UNIVERSIDAD DE TECNOLOGÍA AVANZADA, MARKETING Y VERSATILIDAD</p>
+                  <p className="text-2xl font-bold text-platinum mb-2">UNIVERSIDAD DE TECNOLOGÍA AVANZADA, MARKETING Y VERSATILIDAD</p>
                   <p className="text-lg text-foreground mb-4">Acrónimo: UTAMV</p>
                   <p className="text-sm text-muted-foreground">Nombre comercial: UTAMV Campus Online</p>
                 </div>
@@ -246,7 +246,7 @@ const Index = () => {
 
               {/* Eslogan */}
               <div className="mt-12 text-center">
-                <p className="text-xl font-bold text-gold italic">
+                <p className="text-xl font-bold text-platinum italic">
                   "Innovación, conocimiento y versatilidad para el futuro."
                 </p>
                 <p className="text-sm text-muted-foreground mt-2">Eslogan Institucional Oficial</p>

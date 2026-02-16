@@ -143,8 +143,8 @@ const Programas = () => {
                   onClick={() => setFilterType(type)}
                   className={`px-4 py-2 rounded-lg text-xs font-semibold tracking-wider whitespace-nowrap transition-all duration-300 ${
                     filterType === type
-                      ? 'bg-gold text-[#0A1128] shadow-gold'
-                      : 'bg-white/5 text-white/70 hover:text-gold hover:bg-white/10 border border-transparent hover:border-gold/20'
+                      ? 'bg-platinum text-[#0A1128] shadow-platinum'
+                      : 'bg-white/5 text-white/70 hover:text-platinum hover:bg-white/10 border border-transparent hover:border-platinum/20'
                   }`}
                 >
                   {type.toUpperCase()}
@@ -163,11 +163,11 @@ const Programas = () => {
                   key={prog.slug}
                   to={`/programas/${prog.slug}`}
                   className={`group block rounded-xl border bg-card/50 hover:bg-card transition-all duration-300 overflow-hidden ${
-                    prog.featured ? 'border-gold/40 ring-1 ring-gold/20' : 'border-border'
+                    prog.featured ? 'border-platinum/40 ring-1 ring-gold/20' : 'border-border'
                   }`}
                 >
                   {prog.featured && (
-                    <div className="bg-gold/10 text-gold text-[10px] font-bold tracking-[0.2em] text-center py-1.5 uppercase">
+                    <div className="bg-platinum/10 text-platinum text-[10px] font-bold tracking-[0.2em] text-center py-1.5 uppercase">
                       Programa insignia
                     </div>
                   )}
@@ -175,7 +175,7 @@ const Programas = () => {
                     <span className="text-[10px] font-semibold tracking-[0.15em] text-muted-foreground uppercase">
                       {prog.type}
                     </span>
-                    <h3 className="font-display text-lg font-bold text-foreground mt-2 mb-3 group-hover:text-gold transition-colors">
+                    <h3 className="font-display text-lg font-bold text-foreground mt-2 mb-3 group-hover:text-platinum transition-colors">
                       {prog.title}
                     </h3>
                     <p className="text-xs text-muted-foreground mb-4 leading-relaxed line-clamp-3">
@@ -199,7 +199,7 @@ const Programas = () => {
                         <span>{prog.duration}</span>
                       </div>
                     </div>
-                    <div className="mt-4 text-xs font-semibold text-gold tracking-wider group-hover:translate-x-1 transition-transform">
+                    <div className="mt-4 text-xs font-semibold text-platinum tracking-wider group-hover:translate-x-1 transition-transform">
                       Ver ficha académica →
                     </div>
                   </div>
