@@ -31,7 +31,7 @@ const HeroSection = () => {
 
     setIsPlaying(true);
     const utterance = new SpeechSynthesisUtterance(
-      "Bienvenido al Master Elite Profesional en Marketing Digital 2026. Soy Isabella Villaseñor, tu guía académica de inteligencia artificial. Estás a punto de comenzar una transformación que te posicionará como líder en el mundo digital. Prepárate para dominar el SEO, los metadatos, el geo-targeting y las estrategias más avanzadas del marketing del futuro. Universidad TAMV, formando líderes digitales desde Latinoamérica para el mundo."
+      "Bienvenido a UTAMV Campus Online. Soy Isabella Villaseñor, tu guía académica de inteligencia artificial. Estás a punto de comenzar una transformación que te posicionará como líder en el mundo digital. Prepárate para dominar las estrategias más avanzadas de nueva generacion. Universidad TAMV, formando líderes digitales desde Latinoamérica para el mundo."
     );
     utterance.lang = 'es-MX';
     utterance.rate = 0.95;
@@ -43,9 +43,9 @@ const HeroSection = () => {
       const name = v.name.toLowerCase();
       const isSpanish = v.lang.includes('es');
       const isFemale = name.includes('female') || 
-                       name.includes('paulina') || 
-                       name.includes('monica') || 
-                       name.includes('helena') || 
+                       name.includes('alexa') || 
+                       name.includes('Claudia') || 
+                       name.includes('Maria') || 
                        name.includes('sabina') ||
                        name.includes('conchita') ||
                        name.includes('lucia') ||
