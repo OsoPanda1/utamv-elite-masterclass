@@ -62,7 +62,7 @@ const IntroScreen = ({ onComplete }: IntroScreenProps) => {
               />
             </div>
             <p className="text-[10px] md:text-xs tracking-[0.35em] text-muted-foreground/70 uppercase">
-              UTAMV • UNIVERSIDAD TECNOLÓGICA AVANZADA
+              Universidad TAMV Campus Online
             </p>
           </motion.div>
 
@@ -73,21 +73,21 @@ const IntroScreen = ({ onComplete }: IntroScreenProps) => {
               opacity: phase >= 1 ? 1 : 0,
               y: phase >= 1 ? 0 : 24,
             }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
             className="text-center z-10 px-4"
           >
             <motion.h1
               className="font-display text-[2.6rem] md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-[0.25em] md:tracking-[0.35em] uppercase"
               style={{
                 background:
-                  "linear-gradient(135deg, #F5F5F7 0%, #D0D4E4 30%, #FFFFFF 55%, #B7BCCF 80%, #E0E3F0 100%)",
+                  "linear-gradient(135deg, #F5F5F7 0%, #D0D4E5 30%, #FFFFFF 55%, #B7BCCF 80%, #E0E3F0 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
                 textShadow: "0 0 80px rgba(210,210,220,0.35)",
               }}
             >
-              MASTER 360
+              CAMPUS ONLINE UTAMV
             </motion.h1>
 
             <motion.div
@@ -96,11 +96,11 @@ const IntroScreen = ({ onComplete }: IntroScreenProps) => {
                 opacity: phase >= 1 ? 1 : 0,
                 scaleX: phase >= 1 ? 1 : 0,
               }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 1.8, delay: 0.4 }}
               className="h-[2px] w-40 md:w-64 lg:w-80 mx-auto my-4 md:my-6"
               style={{
                 background:
-                  "linear-gradient(90deg, transparent 10%, #D0D4E4 50%, transparent 100%)",
+                  "linear-gradient(80deg, transparent 20%, #D0D4E4 50%, transparent 100%)",
               }}
             />
 
@@ -110,19 +110,19 @@ const IntroScreen = ({ onComplete }: IntroScreenProps) => {
                 opacity: phase >= 1 ? 1 : 0,
                 y: phase >= 1 ? 0 : 12,
               }}
-              transition={{ duration: 0.9, delay: 0.7 }}
+              transition={{ duration: 1.2, delay: 0.7 }}
               className="font-display text-xl md:text-3xl lg:text-4xl font-light tracking-[0.4em] md:tracking-[0.5em] text-silver uppercase"
             >
-              ELITE 2026
+              Exelencia Academica
             </motion.h2>
 
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: phase >= 2 ? 1 : 0 }}
-              transition={{ duration: 0.9, delay: 1.2 }}
+              transition={{ duration: 1.5, delay: 1.2 }}
               className="mt-4 text-[11px] md:text-xs tracking-[0.35em] text-muted-foreground/80 uppercase"
             >
-              MÁSTER EN MARKETING DIGITAL • COHORTE FUNDADORA
+              Generando profesionales nextgen desde Latinoamerica
             </motion.p>
           </motion.div>
 
@@ -137,11 +137,11 @@ const IntroScreen = ({ onComplete }: IntroScreenProps) => {
             className="mt-10 md:mt-14 text-center z-10 px-6"
           >
             <p className="text-base md:text-xl lg:text-2xl text-muted-foreground font-light tracking-wide max-w-3xl mx-auto leading-relaxed">
-              BIENVENIDO AL PROGRAMA QUE FORMA A LOS ESTRATEGAS
-              DIGITALES QUE DIRIGIRÁN LATINOAMÉRICA.
+              BIENVENIDO AL CAMPUS UTAMV
+              EDUCACION DE CLASE MUNDIAL DIRIGIDA DESDE LATINOAMÉRICA.
             </p>
             <p className="text-sm md:text-lg lg:text-xl text-silver/85 font-light tracking-[0.32em] md:tracking-[0.4em] mt-3 uppercase">
-              UTAMV ELEVA TU CARRERA AL NIVEL DE DIRECCIÓN ESTRATÉGICA
+               ELEVA TU CARRERA AL NIVEL DE DIRECCIÓN ESTRATÉGICA
             </p>
           </motion.div>
 
@@ -167,7 +167,7 @@ const IntroScreen = ({ onComplete }: IntroScreenProps) => {
             whileHover={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
             onClick={handleSkip}
-            className="absolute bottom-8 right-8 text-[10px] md:text-xs tracking-[0.3em] text-muted-foreground hover:text-silver transition-colors uppercase"
+            className="absolute bottom-6 right-8 text-[10px] md:text-xs tracking-[0.3em] text-muted-foreground hover:text-silver transition-colors uppercase"
           >
             Saltar introducción →
           </motion.button>
