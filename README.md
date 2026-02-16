@@ -1,133 +1,159 @@
-# UTAMV - Universidad Tecnológica Avanzada del Marketing Virtual
+# DOCUMENTACIÓN INSTITUCIONAL OFICIAL UTAMV (VERSIÓN UNIFICADA Y BLINDADA)
 
-## Plataforma de Campus Universitario Online
+## UNIVERSIDAD DE TECNOLOGÍA AVANZADA, MARKETING Y VERSATILIDAD
 
-UTAMV es una plataforma educativa innovadora especializada en formación de alto nivel en marketing digital, inteligencia artificial y estrategia empresarial. Diseñada para profesionales que buscan desarrollar competencias avanzadas en entornos digitales.
+### UTAMV Campus Online
 
-## Características Principales
+---
 
-### 1. Sistema de Autenticación y Autorización
-- **Login/Registro**: Validación de formularios con Zod
-- **Roles de Usuario**: Estudiante, Admin, Pagado/No Pagado
-- **Protección de Rutas**: Guards para acceso controlado
-- **Recuperación de Cuenta**: (Próximamente)
+> **Naturaleza institucional:** La Universidad de Tecnología Avanzada, Marketing y Versatilidad (UTAMV) es una institución particular de educación superior de carácter privado. Opera bajo un modelo educativo propio y se encuentra en **fase de preparación y, en su caso, solicitud de Reconocimiento de Validez Oficial de Estudios (RVOE)** ante las autoridades educativas competentes.
+>
+> Los estudios impartidos actualmente tienen **carácter institucional** y **no cuentan con reconocimiento de validez oficial**, salvo que exista resolución expresa y vigente emitida por la autoridad educativa correspondiente para un programa específico.
 
-### 2. Dashboard Académico
-- **Visualización de Progreso**: Gráficos interactivos con Recharts
-- **Certificación**: Generación automática de PDFs con pdf-lib
-- **Chat Integrado**: Comunidad en tiempo real y soporte IA
-- **Evaluación**: Sistema de exámenes con anti-plagio
-- **Contenido Multimedia**: Lecciones estructuradas con audio y visuales
+Este documento constituye el **bloque normativo, académico y legal único** de UTAMV, diseñado para su publicación íntegra en la plataforma institucional, repositorio académico y expedientes pre-RVOE, evitando cualquier forma de publicidad engañosa, simulación de acreditación o autoproclamación de validez oficial.
 
-### 3. Sistema de Certificación
-- **Generación Automática**: Certificados PDF con diseño institucional
-- **Verificación Digital**: QR únicos para validación pública
-- **Niveles de Certificación**: Profesional, Master Elite, Doctorado
-- **Registro Académico**: Almacenamiento seguro de credenciales
+---
 
-### 4. Chat y Soporte
-- **Chat General**: Comunidad de estudiantes (solo pagados)
-- **AI Support**: Asistente virtual "Isabella" con límite diario
-- **Human Support**: Tickets de soporte con email backup
-- **Moderación**: Detección de spam y contenido no permitido
+## ÍNDICE GENERAL
 
-### 5. Sistema de Evaluación
-- **Anti-plagio**: Deshabilitación de copy/paste y context menu
-- **Timer**: Límites de tiempo según tipo de examen
-- **Resultados**: Feedback inmediato con revisión de respuestas
-- **Aprobación**: 70% mínimo para aprobación
+1. Estatuto Orgánico de la UTAMV
+2. Modelo Educativo UTAMV NextGen 2026
+3. Reglamento Académico General UTAMV
+4. Código de Ética e Integridad Académica
+5. Política de Educación Online y Tutorías
+6. Manual de Evaluación Académica (OBE)
+7. Política de Propiedad Intelectual y Antiplagio
+8. Aviso Legal Institucional Pre-RVOE
 
-## Programas Académicos
+---
 
-### Certificado Profesional
-- **Duración**: 1 semana (5 horas)
-- **Nivel**: Introductorio
-- **Contenido**: Fundamentos de Marketing Digital
-- **Precio**: $60 USD
+# 1. ESTATUTO ORGÁNICO DE LA UTAMV
 
-### Master Profesional (Programa Insignia)
-- **Duración**: 6 meses (50+ horas)
-- **Nivel**: Avanzado
-- **Contenido**: Marketing Digital 2026
-- **Precio**: $199 USD
+## Capítulo I. Naturaleza Jurídica y Marco de Actuación
 
-### Doctorado Profesional
-- **Duración**: 12 meses (120+ horas)
-- **Nivel**: Especialización
-- **Contenido**: Inteligencia Estratégica Digital
-- **Precio**: $1,750 USD
+**Artículo 1.** La Universidad de Tecnología Avanzada, Marketing y Versatilidad (UTAMV) es una institución particular de educación superior de carácter privado, con personalidad jurídica y patrimonio propios, que se rige por la legislación educativa aplicable en los Estados Unidos Mexicanos, por el presente Estatuto Orgánico y por los reglamentos internos que de él emanen.
 
-## Tecnologías Utilizadas
+**Artículo 2.** UTAMV ejerce autonomía académica y de gestión interna para el diseño, implementación y evaluación de sus modelos educativos, planes y programas de estudio, sin perjuicio de la observancia estricta de los requisitos, procedimientos y autorizaciones que establezcan las autoridades educativas competentes para la obtención del Reconocimiento de Validez Oficial de Estudios (RVOE).
 
-### Frontend
-- React 18 con TypeScript
-- Vite para desarrollo rápido
-- Tailwind CSS para estilos
-- shadcn-ui para componentes UI
-- Lucide React para iconos
-- Recharts para gráficos
+## Capítulo II. Fines Institucionales
 
-### Backend
-- Supabase (PostgreSQL + autenticación)
-- Functions Serverless
-- Storage de archivos
+**Artículo 3.** Son fines esenciales de UTAMV:
 
-### Integrations
-- Stripe para procesamiento de pagos
-- pdf-lib para generación de PDFs
-- QRCode para códigos QR
-- Speech Synthesis para audio
+a) Impartir educación superior de calidad mediante modelos pedagógicos basados en competencias y resultados de aprendizaje medibles (Outcome-Based Education, OBE).
 
-## Arquitectura del Proyecto
+b) Desarrollar conocimiento aplicado, innovación tecnológica y educación digital avanzada, con énfasis en tecnología, marketing estratégico y versatilidad profesional.
 
-```
-src/
-├── pages/           # 15 páginas principales
-├── components/      # UI components y dashboard
-├── contexts/       # Auth context
-├── integrations/   # Supabase client
-├── hooks/          # Custom hooks
-└── data/           # Contenido estático
-```
+c) Formar personas profesionales con pensamiento crítico, ética, responsabilidad social y capacidad de adaptación a entornos digitales, híbridos y emergentes.
 
-## Instalación y Configuración
+d) Contribuir al desarrollo social, económico y tecnológico mediante programas educativos, formación continua, investigación aplicada y vinculación con sectores productivos.
 
-### Requisitos
-- Node.js 16+
-- npm o yarn
-- Cuenta de Supabase
+## Capítulo III. Estructura de Gobierno
 
-### Pasos de Instalación
-1. Clonar el repositorio
-2. Instalar dependencias: `npm install`
-3. Configurar variables de entorno en `.env` (base de datos Supabase)
-4. Iniciar servidor de desarrollo: `npm run dev`
-5. Acceder a `http://localhost:5173`
+**Artículo 4.** Son órganos de gobierno de UTAMV:
 
-## Despliegue
+a) Consejo de Fundadores.
+b) Consejo Académico.
+c) Rectoría.
+d) Direcciones Académicas y Administrativas.
 
-### Producción
-1. Construir el proyecto: `npm run build`
-2. Desplegar en Vercel, Netlify o similar
-3. Configurar variables de entorno en el servidor
+**Artículo 5.** El Consejo de Fundadores es la máxima autoridad estratégica y patrimonial de UTAMV.
 
-## Contribución
+**Artículo 6.** El Consejo Académico es el órgano colegiado responsable de la conducción, supervisión y mejora continua de la calidad académica.
 
-1. Crear una rama para la funcionalidad
-2. Implementar cambios
-3. Crear pull request
-4. Revisión y mergue
+## Capítulo IV. Rectoría
 
-## Licencia
+**Artículo 7.** La persona titular de la Rectoría será designada por el Consejo de Fundadores y representará legal, académica y administrativamente a UTAMV.
 
-Este proyecto está bajo licencia MIT.
+**Artículo 8.** Para ocupar la Rectoría se requiere:
 
-## Contacto
+a) Título profesional de licenciatura y grado preferente de maestría o superior.
+b) Experiencia comprobable en docencia, gestión académica o dirección educativa.
+c) Solvencia ética, profesional y legal.
 
-- Email: info@utamv.edu
-- Soporte: tamvonlinenetwork@outlook.es
-- Página web: https://utamv.edu
+---
 
-## Derechos Reservados
+# 2. MODELO EDUCATIVO UTAMV NEXTGEN 2026
 
-© 2026 UTAMV - Universidad Tecnológica Avanzada del Marketing Virtual. Todos los derechos reservados.
+## Capítulo I. Fundamentación Pedagógica
+
+**Artículo 9.** El Modelo Educativo UTAMV NextGen 2026 se fundamenta en:
+
+a) Educación basada en resultados (OBE).
+b) Aprendizaje centrado en el estudiante.
+c) Innovación tecnológica y educación digital.
+d) Evaluación continua, formativa y verificable.
+
+## Capítulo II. Ejes Formativos
+
+**Artículo 10.** Los ejes del modelo educativo son:
+
+a) Tecnología Avanzada.
+b) Marketing Estratégico.
+c) Versatilidad Profesional.
+d) Ética y Responsabilidad Social.
+
+## Capítulo III. Metodología Académica
+
+**Artículo 11.** La metodología académica incorpora aprendizaje basado en proyectos, estudios de caso, simulaciones, portafolios de evidencias y tutoría académica permanente.
+
+---
+
+# 3. REGLAMENTO ACADÉMICO GENERAL UTAMV
+
+## Capítulo I. Disposiciones Generales
+
+**Artículo 12.** El presente Reglamento regula los procesos académicos y las relaciones entre estudiantes, docentes y autoridades universitarias.
+
+## Capítulo II. Admisión e Inscripción
+
+**Artículo 13.** Los procesos de admisión serán transparentes, equitativos y documentados, sin discriminación.
+
+## Capítulo III. Evaluación Académica
+
+**Artículo 14.** La evaluación será continua, formativa y basada en competencias y evidencias verificables.
+
+## Capítulo IV. Régimen Disciplinario
+
+**Artículo 15.** Las faltas académicas serán sancionadas conforme a su gravedad y al debido proceso.
+
+---
+
+# 4. CÓDIGO DE ÉTICA E INTEGRIDAD ACADÉMICA
+
+**Artículo 16.** UTAMV promueve honestidad, integridad, legalidad y respeto.
+
+**Artículo 17.** Se consideran faltas graves: plagio, fraude académico, falsificación documental y suplantación de identidad.
+
+---
+
+# 5. POLÍTICA DE EDUCACIÓN ONLINE Y TUTORÍAS
+
+**Artículo 18.** UTAMV garantiza acceso a plataformas digitales, tutoría académica y seguimiento personalizado en programas en línea e híbridos.
+
+---
+
+# 6. MANUAL DE EVALUACIÓN ACADÉMICA (OBE)
+
+**Artículo 19.** La evaluación se basa en resultados de aprendizaje, evidencias verificables, rúbricas estandarizadas y retroalimentación continua.
+
+---
+
+# 7. POLÍTICA DE PROPIEDAD INTELECTUAL Y ANTIPLAGIO
+
+**Artículo 20.** UTAMV protege los derechos de autor y sanciona el plagio y el uso indebido de obras.
+
+---
+
+# 8. AVISO LEGAL INSTITUCIONAL PRE-RVOE
+
+**Artículo 21.** UTAMV es una institución privada en proceso de preparación y, en su caso, solicitud de RVOE.
+
+**Artículo 22.** Salvo resolución oficial expresa, los estudios impartidos no cuentan con reconocimiento de validez oficial.
+
+**Artículo 23.** Toda publicidad y documentación institucional deberá incluir la siguiente leyenda cuando aplique:
+
+> **“Estudios sin reconocimiento de validez oficial. La formación educativa ofrecida no cuenta con reconocimiento por parte de la autoridad educativa competente.”**
+
+---
+
+**Documento institucional único, unificado y blindado. Apto para publicación oficial y expedientes pre-RVOE.**

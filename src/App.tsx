@@ -15,6 +15,7 @@ import Inscripcion from "@/pages/Inscripcion";
 import Settings from "@/pages/Settings";
 import VerifyCertificate from "@/pages/VerifyCertificate";
 import Expertos from "@/pages/Expertos";
+import PreguntasFrecuentes from "@/pages/PreguntasFrecuentes";
 import NotFound from "@/pages/NotFound";
 
 // Route Guards
@@ -33,6 +34,7 @@ function App() {
       <Route path="/investigacion" element={<Investigacion />} />
       <Route path="/admisiones" element={<Inscripcion />} />
       <Route path="/ayuda" element={<Ayuda />} />
+      <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
       <Route path="/verificar-certificado" element={<VerifyCertificate />} />
 
       {/* Redirects de rutas antiguas */}

@@ -57,35 +57,56 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // UTAMV Custom Colors - Silver Platinum Palette
+        // UTAMV Custom Colors - Academic Luxury Palette
+        ivory: {
+          DEFAULT: "#F5F1E8",
+          light: "#FAF7F0",
+          dark: "#E8E4D9",
+        },
+        gold: {
+          DEFAULT: "#D4AF37",
+          light: "#E8C870",
+          dark: "#B8941F",
+          subtle: "rgba(212, 175, 55, 0.1)",
+        },
         navy: {
-          deep: "hsl(var(--navy-deep))",
-          medium: "hsl(var(--navy-medium))",
+          deep: "#0A1128",
+          medium: "#1A365D",
+          light: "#2D527F",
+        },
+        burgundy: {
+          DEFAULT: "#4A148C",
+          light: "#6A1B9A",
+          dark: "#380E6C",
         },
         silver: {
-          DEFAULT: "hsl(var(--silver-primary))",
-          light: "hsl(var(--silver-light))",
-          dark: "hsl(var(--silver-dark))",
-          metallic: "hsl(var(--silver-metallic))",
+          DEFAULT: "#C0C0C0",
+          light: "#D4D4D4",
+          dark: "#A8A8A8",
+          metallic: "#B0BEC5",
         },
         teal: {
-          DEFAULT: "hsl(var(--teal-primary))",
-          light: "hsl(var(--teal-light))",
-          dark: "hsl(var(--teal-dark))",
+          DEFAULT: "#008080",
+          light: "#4DB8B0",
+          dark: "#006666",
         },
-        cream: {
-          DEFAULT: "hsl(var(--cream))",
-          muted: "hsl(var(--cream-muted))",
+        charcoal: {
+          DEFAULT: "#36454F",
+          light: "#52606D",
+          dark: "#1F2933",
         },
       },
       fontFamily: {
         display: ["Playfair Display", "Georgia", "serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
+        serif: ["Merriweather", "Georgia", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xl: "1.5rem",
+        "2xl": "2rem",
       },
       keyframes: {
         "accordion-down": {
@@ -112,9 +133,13 @@ export default {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-10px)" },
         },
-        "pulse-silver": {
-          "0%, 100%": { boxShadow: "0 0 20px -5px hsla(210, 20%, 70%, 0.45)" },
-          "50%": { boxShadow: "0 0 40px -5px hsla(210, 20%, 70%, 0.75)" },
+        "pulse-gold": {
+          "0%, 100%": { boxShadow: "0 0 20px -5px rgba(212, 175, 55, 0.45)" },
+          "50%": { boxShadow: "0 0 40px -5px rgba(212, 175, 55, 0.75)" },
+        },
+        "shimmer": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
         },
       },
       animation: {
@@ -124,7 +149,19 @@ export default {
         "slide-up": "slide-up 0.8s ease-out forwards",
         "slide-in-right": "slide-in-right 0.8s ease-out forwards",
         float: "float 6s ease-in-out infinite",
-        "pulse-silver": "pulse-silver 3s ease-in-out infinite",
+        "pulse-gold": "pulse-gold 3s ease-in-out infinite",
+        "shimmer": "shimmer 2s infinite",
+      },
+      backgroundImage: {
+        "gold-gradient": "linear-gradient(135deg, #D4AF37 0%, #E8C870 50%, #D4AF37 100%)",
+        "navy-gradient": "linear-gradient(135deg, #0A1128 0%, #1A365D 100%)",
+        "academic-gradient": "linear-gradient(135deg, #F5F1E8 0%, #E8E4D9 50%, #D4D4D4 100%)",
+        "shimmer-gradient": "linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent)",
+      },
+      boxShadow: {
+        "gold": "0 10px 30px -10px rgba(212, 175, 55, 0.3)",
+        "navy": "0 10px 30px -10px rgba(10, 17, 40, 0.2)",
+        "elegant": "0 20px 40px rgba(0, 0, 0, 0.1)",
       },
     },
   },

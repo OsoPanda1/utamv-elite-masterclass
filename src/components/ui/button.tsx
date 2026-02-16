@@ -15,9 +15,10 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-muted hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        elite: "relative overflow-hidden bg-gradient-to-r from-[hsl(210,15%,55%)] via-[hsl(210,20%,75%)] to-[hsl(210,15%,55%)] text-[hsl(220,30%,8%)] shadow-[0_4px_30px_-5px_hsla(210,20%,70%,0.35)] hover:shadow-[0_8px_40px_-5px_hsla(210,20%,70%,0.55)] hover:-translate-y-0.5",
+        elite: "relative overflow-hidden bg-gradient-to-r from-[hsl(43,38%,47%)] via-[hsl(43,45%,60%)] to-[hsl(43,35%,35%)] text-[hsl(220,30%,8%)] shadow-[0_4px_30px_-5px_hsla(43,38%,47%,0.4)] hover:shadow-[0_8px_40px_-5px_hsla(43,38%,47%,0.6)] hover:-translate-y-0.5",
+        gold: "border-2 border-[hsl(43,38%,47%)] bg-transparent text-[hsl(43,38%,47%)] hover:bg-[hsl(43,38%,47%)] hover:text-[hsl(210,20%,95%)]",
+        goldOutline: "border-2 border-[hsl(43,38%,47%)] bg-transparent text-[hsl(43,38%,47%)] hover:bg-[hsl(43,38%,47%)]/10",
         teal: "border-2 border-[hsl(185,50%,40%)] bg-transparent text-[hsl(185,50%,40%)] hover:bg-[hsl(185,50%,40%)] hover:text-[hsl(210,20%,95%)]",
-        silverOutline: "border-2 border-[hsl(210,15%,65%)] bg-transparent text-[hsl(210,15%,65%)] hover:bg-[hsl(210,15%,65%)]/10",
       },
       size: {
         default: "h-10 px-4 py-2",

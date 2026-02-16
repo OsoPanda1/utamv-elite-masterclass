@@ -27,6 +27,16 @@ const Certificacion = () => {
       title: 'Registro Académico',
       description: 'Tu certificación queda registrada en el sistema académico UTAMV.',
     },
+    {
+      icon: Shield,
+      title: 'Seguridad Social en la Web',
+      description: 'Cuentas con protección de datos y cumplimiento normativo GDPR/LGPD.',
+    },
+    {
+      icon: Globe,
+      title: 'Validez Internacional',
+      description: 'Reconocimiento en más de 15 países con verificación digital.',
+    },
   ];
 
   const certificationLevels = [
@@ -75,7 +85,7 @@ const Certificacion = () => {
             <div className="w-20 h-20 mx-auto mb-6 rounded-2xl overflow-hidden border-2 border-silver/50 shadow-silver">
               <img src={utamvLogo} alt="UTAMV" className="w-full h-full object-cover" />
             </div>
-            <span className="inline-block px-4 py-1 rounded-full bg-silver/20 text-silver text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 rounded-full bg-gold/20 text-gold text-sm font-medium mb-4">
               Acreditación Académica
             </span>
             <h1 className="section-title">Certificación UTAMV</h1>
@@ -114,11 +124,11 @@ const Certificacion = () => {
           <h2 className="font-display text-3xl font-bold text-center mb-12 text-foreground">
             Sistema de Validación
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {validationFeatures.map((feature, index) => (
               <div key={index} className="text-center p-6 rounded-2xl bg-card border border-border">
-                <div className="w-14 h-14 rounded-xl bg-silver/10 flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="w-7 h-7 text-silver" />
+                <div className="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mx-auto mb-4">
+                  <feature.icon className="w-7 h-7 text-gold" />
                 </div>
                 <h3 className="font-semibold mb-2 text-foreground">{feature.title}</h3>
                 <p className="text-sm text-muted-foreground">{feature.description}</p>
@@ -138,7 +148,7 @@ const Certificacion = () => {
             {certificationLevels.map((cert, index) => (
               <div key={index} className="card-elite p-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-silver flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-gradient-gold flex items-center justify-center flex-shrink-0">
                     <Award className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div className="flex-1">
@@ -172,8 +182,8 @@ const Certificacion = () => {
             ¿Necesitas verificar la autenticidad de un certificado UTAMV? 
             Usa nuestro sistema de validación pública.
           </p>
-          <Button variant="silverOutline" size="lg" asChild>
-            <Link to="/verify">
+          <Button variant="goldOutline" size="lg" asChild>
+            <Link to="/verificar-certificado">
               <Shield className="w-5 h-5 mr-2" />
               Verificar Certificado
             </Link>

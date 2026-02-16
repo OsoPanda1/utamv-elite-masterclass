@@ -44,11 +44,11 @@ const Ayuda = () => (
       {/* Quick links */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <a href="mailto:info@utamv.edu" className="p-6 rounded-xl border border-border bg-card/30 text-center hover:bg-card/60 transition-colors">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <a href="mailto:utamv.master@atomicmail.io" className="p-6 rounded-xl border border-border bg-card/30 text-center hover:bg-card/60 transition-colors">
               <Mail className="w-6 h-6 text-silver mx-auto mb-3" />
               <h3 className="text-sm font-semibold text-foreground mb-1">Correo electrónico</h3>
-              <p className="text-xs text-muted-foreground">info@utamv.edu</p>
+              <p className="text-xs text-muted-foreground">utamv.master@atomicmail.io</p>
             </a>
             <Link to="/campus-virtual" className="p-6 rounded-xl border border-border bg-card/30 text-center hover:bg-card/60 transition-colors">
               <MessageCircle className="w-6 h-6 text-silver mx-auto mb-3" />
@@ -59,6 +59,11 @@ const Ayuda = () => (
               <FileText className="w-6 h-6 text-silver mx-auto mb-3" />
               <h3 className="text-sm font-semibold text-foreground mb-1">Verificar certificado</h3>
               <p className="text-xs text-muted-foreground">Validación en línea</p>
+            </Link>
+            <Link to="/preguntas-frecuentes" className="p-6 rounded-xl border border-border bg-card/30 text-center hover:bg-card/60 transition-colors">
+              <HelpCircle className="w-6 h-6 text-silver mx-auto mb-3" />
+              <h3 className="text-sm font-semibold text-foreground mb-1">Preguntas Frecuentes</h3>
+              <p className="text-xs text-muted-foreground">Respuestas rápidas</p>
             </Link>
           </div>
         </div>

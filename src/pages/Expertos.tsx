@@ -1,40 +1,74 @@
-import { ArrowLeft, Award, Globe, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Award, Globe, ExternalLink, Shield, Code } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import edwinCastillo from '@/assets/edwin-castillo.jpg';
 import renataJazmin from '@/assets/renata-jazmin.jpg';
 import aiAssistant from '@/assets/ai-assistant.jpg';
+import instructor1 from '@/assets/instructor-1.jpg';
+import instructor2 from '@/assets/instructor-2.jpg';
 
 const Expertos = () => {
   const instructors = [
     {
       name: 'Edwin Oswaldo Castillo Trejo',
-      role: 'Director del Programa',
-      company: 'CEO Fundador – TAMV Enterprise',
+      role: 'Rector del Campus',
+      company: 'Universidad UTAMV',
       specialty: 'Metadatos, SEO, AEO, IA, Ecosistemas Digitales',
-      bio: 'Profesional con experiencia aplicada en más de 7 ramas tecnológicas, especializado en posicionamiento digital, metadatos estratégicos e inteligencia artificial. Fundador de TAMV Enterprise y director académico del programa de Marketing Digital UTAMV.',
+      bio: 'Rector y fundador de la Universidad Tecnológica Avanzada del Marketing Virtual. Profesional con más de 15 años de experiencia en marketing digital, tecnología y educación superior. Especializado en posicionamiento digital, metadatos estratégicos e inteligencia artificial aplicada. Arquitecto del ecosistema educativo TAMV MD-X4 y pionero en Answer Engine Optimization (AEO).',
       image: edwinCastillo,
       orcid: '0009-0008-5050-1539',
       achievements: [
-        'CEO y Fundador de TAMV Enterprise',
+        'Rector y Fundador de la Universidad UTAMV',
         'Especialista en Metadatos y SEO Avanzado',
         'Pionero en AEO (Answer Engine Optimization)',
         'Arquitecto del ecosistema TAMV MD-X4',
+        'Consultor estratégico para empresas Fortune 500',
       ],
     },
     {
       name: 'Renata Jazmin',
-      role: 'Co-Directora Académica',
-      company: 'CEO Fundadora – Órbita Digital',
-      specialty: 'Marketing Internacional',
-      bio: 'Profesional en estrategias de marketing internacional con experiencia en mercados latinoamericanos y europeos. Especialista en expansión de marcas y posicionamiento global.',
+      role: 'Vicerrectora Académica',
+      company: 'Universidad UTAMV',
+      specialty: 'Marketing Internacional y Estrategia',
+      bio: 'Vicerrectora Académica con más de 10 años de experiencia en educación superior y marketing global. Especializada en expansión de marcas, posicionamiento internacional y desarrollo de programas educativos innovadores. Consultora para empresas de Latinoamérica y Europa en estrategias de crecimiento digital.',
       image: renataJazmin,
       achievements: [
-        'CEO y Fundadora de Órbita Digital',
+        'Vicerrectora Académica de la Universidad UTAMV',
         'Especialista en Marketing Internacional',
         'Consultora de marcas globales',
         'Experta en expansión de mercados LATAM',
+        'Desarrolladora de programas educativos innovadores',
+      ],
+    },
+    {
+      name: 'Dr. Carlos Méndez',
+      role: 'Director de Tecnología',
+      company: 'Universidad UTAMV',
+      specialty: 'Seguridad Social en la Web y Ciberseguridad',
+      bio: 'Especialista en seguridad informática y protección de datos con más de 12 años de experiencia en empresas tecnológicas líderes. Desarrollador de sistemas de autenticación avanzada y modelos de seguridad para plataformas educativas. Experto en cumplimiento normativo GDPR y LGPD.',
+      image: instructor1,
+      achievements: [
+        'Director de Tecnología UTAMV',
+        'Especialista en Ciberseguridad Avanzada',
+        'Desarrollador de sistemas de autenticación',
+        'Experto en normativas de seguridad GDPR/LGPD',
+        'Consultor de seguridad para organizaciones educativas',
+      ],
+    },
+    {
+      name: 'Ing. Ana Rodriguez',
+      role: 'Directora de Programación',
+      company: 'Universidad UTAMV',
+      specialty: 'Desarrollo Full Stack y Tecnologías Emergentes',
+      bio: 'Ingeniera de software con experiencia en desarrollo de aplicaciones web y móviles. Especializada en JavaScript, Python y Node.js, con más de 10 años de experiencia en empresas de tecnología. Desarrolladora de frameworks educativos y plataformas de aprendizaje.',
+      image: instructor2,
+      achievements: [
+        'Directora de Programación UTAMV',
+        'Especialista en JavaScript, Python y Node.js',
+        'Desarrolladora de plataformas educativas',
+        'Instructora de bootcamps de programación',
+        'Contribuidora a proyectos open source',
       ],
     },
     {
@@ -42,7 +76,7 @@ const Expertos = () => {
       role: 'Asistente Académica Virtual',
       company: 'UTAMV – Inteligencia Artificial',
       specialty: 'Tutoría Académica y Soporte',
-      bio: 'Sistema de inteligencia artificial diseñado para acompañar el proceso de aprendizaje. Proporciona orientación académica, retroalimentación en evaluaciones y soporte continuo.',
+      bio: 'Sistema de inteligencia artificial diseñado para acompañar el proceso de aprendizaje en la Universidad UTAMV. Proporciona orientación académica personalizada, retroalimentación en evaluaciones y soporte continuo 24/7. Desarrollado específicamente para el contexto educativo latinoamericano.',
       image: aiAssistant,
       isAI: true,
       achievements: [
@@ -50,6 +84,7 @@ const Expertos = () => {
         'Soporte disponible 24/7',
         'Retroalimentación en evaluaciones',
         'Guía de navegación del programa',
+        'Optimizada para contexto latinoamericano',
       ],
     },
   ];
@@ -102,6 +137,21 @@ const Expertos = () => {
                             <span className="text-foreground">{a}</span>
                           </div>
                         ))}
+                      </div>
+
+                      <div className="flex gap-3 mb-4">
+                        {inst.specialty.includes('Seguridad') && (
+                          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-xs text-muted-foreground">
+                            <Shield className="w-3.5 h-3.5" />
+                            Seguridad Social en la Web
+                          </div>
+                        )}
+                        {inst.specialty.includes('Programación') && (
+                          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-xs text-muted-foreground">
+                            <Code className="w-3.5 h-3.5" />
+                            JavaScript, Python, Node.js
+                          </div>
+                        )}
                       </div>
 
                       {inst.orcid && (

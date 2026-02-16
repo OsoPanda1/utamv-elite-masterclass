@@ -19,7 +19,20 @@ const AISupportChat = () => {
     {
       id: "1",
       role: "assistant",
-      content: `¡Hola! Soy Isabella, tu asistente IA del Master Marketing Digital Elite 360.\n\nPuedo ayudarte con:\n• Información sobre el programa y módulos.\n• Dudas sobre certificación.\n• Preguntas sobre exámenes.\n• Información de pago.\n• Contacto con soporte humano.\n\n¿En qué puedo ayudarte hoy?`,
+      content: `¡Hola! Soy Isabella, tu asistente IA de la Universidad UTAMV.
+
+Puedo ayudarte con:
+• Información sobre los programas (certificaciones, diplomados, másteres).
+• Dudas sobre certificación y proceso de obtención.
+• Preguntas sobre exámenes y evaluaciones.
+• Información de pago y opciones de financiamiento.
+• Contacto con soporte humano y docentes.
+• Guía de estudios y procesos académicos.
+• Seguridad social en la web y ciberseguridad.
+• Tecnologías y programación: JavaScript, Python, Node.js.
+• Requisitos de admisión y proceso de inscripción.
+
+¿En qué puedo ayudarte hoy?`,
       timestamp: new Date(),
     },
   ]);
@@ -110,6 +123,10 @@ const AISupportChat = () => {
     "¿Cómo funcionan los exámenes?",
     "¿Cuál es el precio?",
     "¿Cómo contacto soporte?",
+    "¿Qué es la seguridad social en la web?",
+    "¿Qué tecnologías se enseñan?",
+    "¿Cuál es el proceso de admisión?",
+    "¿Hay opciones de financiamiento?",
   ];
 
   const remaining = quotaLimit - quotaUsed;

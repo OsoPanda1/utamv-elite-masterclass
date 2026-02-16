@@ -28,6 +28,7 @@ const Header = () => {
     { href: '/investigacion', label: 'INVESTIGACIÓN' },
     { href: '/admisiones', label: 'ADMISIONES' },
     { href: '/campus-virtual', label: 'CAMPUS VIRTUAL' },
+    { href: '/preguntas-frecuentes', label: 'PREGUNTAS FRECUENTES' },
     { href: '/ayuda', label: 'AYUDA' },
   ];
 
@@ -40,15 +41,15 @@ const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-lg'
-          : 'bg-background/80 backdrop-blur-sm border-b border-border/50'
+          ? 'bg-[#0A1128]/95 backdrop-blur-md border-b border-gold/30 shadow-lg'
+          : 'bg-[#0A1128]/80 backdrop-blur-sm border-b border-gold/20'
       }`}
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-24">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 rounded-lg overflow-hidden transition-transform duration-300 group-hover:scale-105">
+          <Link to="/" className="flex items-center gap-4 group">
+            <div className="w-14 h-14 rounded-xl overflow-hidden transition-transform duration-500 group-hover:scale-110 shadow-gold">
               <img
                 src={utamvLogo}
                 alt="UTAMV"
@@ -56,11 +57,11 @@ const Header = () => {
               />
             </div>
             <div className="hidden sm:block">
-              <p className="font-display text-lg font-bold tracking-widest text-foreground leading-tight">
+              <p className="font-display text-xl font-bold tracking-widest text-white leading-tight">
                 UTAMV
               </p>
-              <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                Universidad Tecnológica
+              <p className="text-[10px] uppercase tracking-[0.25em] text-gold/80">
+                Universidad de Tecnología Avanzada, Marketing y Versatilidad
               </p>
             </div>
           </Link>
@@ -71,10 +72,10 @@ const Header = () => {
               <Link
                 key={link.href}
                 to={link.href}
-                className={`px-3 py-2 text-xs font-semibold tracking-[0.12em] transition-colors duration-300 rounded-md ${
+                className={`px-4 py-3 text-xs font-semibold tracking-[0.12em] transition-all duration-300 rounded-lg ${
                   isActive(link.href)
-                    ? 'text-foreground bg-muted'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                    ? 'text-gold bg-gold/10 border border-gold/30'
+                    : 'text-white/70 hover:text-gold hover:bg-white/5 border border-transparent hover:border-gold/20'
                 }`}
               >
                 {link.label}
@@ -83,13 +84,18 @@ const Header = () => {
           </nav>
 
           {/* Desktop auth */}
-          <div className="hidden xl:flex items-center gap-3">
+          <div className="hidden xl:flex items-center gap-4">
             {user ? (
               <>
-                <span className="text-xs text-muted-foreground max-w-[160px] truncate">
+                <span className="text-xs text-white/60 max-w-[160px] truncate">
                   {user.email}
                 </span>
-                <Button variant="outline" size="sm" asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  asChild
+                  className="border-gold/50 text-gold hover:bg-gold/10 hover:border-gold"
+                >
                   <Link to={isPaid ? '/campus-virtual' : '/admisiones'}>
                     {isPaid ? 'Campus Virtual' : 'Admisiones'}
                   </Link>
@@ -97,10 +103,20 @@ const Header = () => {
               </>
             ) : (
               <>
-                <Button variant="ghost" size="sm" asChild>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  asChild
+                  className="text-white/70 hover:text-gold hover:bg-white/5"
+                >
                   <Link to="/auth">Iniciar sesión</Link>
                 </Button>
-                <Button variant="outline" size="sm" asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  asChild
+                  className="border-gold/50 text-gold hover:bg-gold/10 hover:border-gold"
+                >
                   <Link to="/admisiones">Admisiones</Link>
                 </Button>
               </>
@@ -110,7 +126,7 @@ const Header = () => {
           {/* Mobile toggle */}
           <button
             onClick={() => setIsMobileMenuOpen((o) => !o)}
-            className="xl:hidden p-2 text-foreground hover:text-silver transition-colors"
+            className="xl:hidden p-2 text-white/70 hover:text-gold transition-colors"
             aria-label="Menú de navegación"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -119,34 +135,46 @@ const Header = () => {
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
-          <div className="xl:hidden absolute top-20 left-0 right-0 bg-background/98 backdrop-blur-md border-b border-border animate-slide-up">
-            <nav className="flex flex-col p-4 gap-1">
+          <div className="xl:hidden absolute top-24 left-0 right-0 bg-[#0A1128]/98 backdrop-blur-md border-b border-gold/30 animate-slide-up">
+            <nav className="flex flex-col p-6 gap-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
-                  className={`py-3 px-4 rounded-lg text-sm font-semibold tracking-wider transition-all ${
+                  className={`py-4 px-6 rounded-xl text-sm font-semibold tracking-wider transition-all ${
                     isActive(link.href)
-                      ? 'bg-muted text-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                      ? 'bg-gold/10 text-gold border border-gold/30'
+                      : 'text-white/70 hover:text-gold hover:bg-white/5 border border-transparent hover:border-gold/20'
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-border">
+              <div className="flex flex-col gap-3 mt-6 pt-6 border-t border-gold/20">
                 {user ? (
-                  <Button variant="outline" asChild>
+                  <Button 
+                    variant="outline" 
+                    asChild
+                    className="border-gold/50 text-gold hover:bg-gold/10 hover:border-gold"
+                  >
                     <Link to={isPaid ? '/campus-virtual' : '/admisiones'}>
                       {isPaid ? 'Campus Virtual' : 'Admisiones'}
                     </Link>
                   </Button>
                 ) : (
                   <>
-                    <Button variant="ghost" asChild>
+                    <Button 
+                      variant="ghost" 
+                      asChild
+                      className="text-white/70 hover:text-gold hover:bg-white/5"
+                    >
                       <Link to="/auth">Iniciar sesión</Link>
                     </Button>
-                    <Button variant="outline" asChild>
+                    <Button 
+                      variant="outline" 
+                      asChild
+                      className="border-gold/50 text-gold hover:bg-gold/10 hover:border-gold"
+                    >
                       <Link to="/admisiones">Admisiones</Link>
                     </Button>
                   </>
