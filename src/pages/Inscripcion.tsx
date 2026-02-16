@@ -168,7 +168,7 @@ const Inscripcion = () => {
                 {features.map((f, i) => (
                   <div key={i} className="flex items-center gap-3 p-4 rounded-xl border border-border bg-card/30">
                     <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                      <f.icon className="w-4 h-4 text-silver" />
+                      <f.icon className="w-4 h-4 text-platinum" />
                     </div>
                     <span className="text-sm text-foreground">{f.text}</span>
                   </div>
