@@ -60,7 +60,7 @@ const Header = () => {
                 UTAMV
               </p>
               <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                Campus Universitario
+                Universidad Tecnológica
               </p>
             </div>
           </Link>
