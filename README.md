@@ -1,73 +1,133 @@
-# Welcome to your Lovable project
+# UTAMV - Universidad Tecnológica Avanzada del Marketing Virtual
 
-## Project info
+## Plataforma de Campus Universitario Online
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+UTAMV es una plataforma educativa innovadora especializada en formación de alto nivel en marketing digital, inteligencia artificial y estrategia empresarial. Diseñada para profesionales que buscan desarrollar competencias avanzadas en entornos digitales.
 
-## How can I edit this code?
+## Características Principales
 
-There are several ways of editing your application.
+### 1. Sistema de Autenticación y Autorización
+- **Login/Registro**: Validación de formularios con Zod
+- **Roles de Usuario**: Estudiante, Admin, Pagado/No Pagado
+- **Protección de Rutas**: Guards para acceso controlado
+- **Recuperación de Cuenta**: (Próximamente)
 
-**Use Lovable**
+### 2. Dashboard Académico
+- **Visualización de Progreso**: Gráficos interactivos con Recharts
+- **Certificación**: Generación automática de PDFs con pdf-lib
+- **Chat Integrado**: Comunidad en tiempo real y soporte IA
+- **Evaluación**: Sistema de exámenes con anti-plagio
+- **Contenido Multimedia**: Lecciones estructuradas con audio y visuales
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### 3. Sistema de Certificación
+- **Generación Automática**: Certificados PDF con diseño institucional
+- **Verificación Digital**: QR únicos para validación pública
+- **Niveles de Certificación**: Profesional, Master Elite, Doctorado
+- **Registro Académico**: Almacenamiento seguro de credenciales
 
-Changes made via Lovable will be committed automatically to this repo.
+### 4. Chat y Soporte
+- **Chat General**: Comunidad de estudiantes (solo pagados)
+- **AI Support**: Asistente virtual "Isabella" con límite diario
+- **Human Support**: Tickets de soporte con email backup
+- **Moderación**: Detección de spam y contenido no permitido
 
-**Use your preferred IDE**
+### 5. Sistema de Evaluación
+- **Anti-plagio**: Deshabilitación de copy/paste y context menu
+- **Timer**: Límites de tiempo según tipo de examen
+- **Resultados**: Feedback inmediato con revisión de respuestas
+- **Aprobación**: 70% mínimo para aprobación
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Programas Académicos
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Certificado Profesional
+- **Duración**: 1 semana (5 horas)
+- **Nivel**: Introductorio
+- **Contenido**: Fundamentos de Marketing Digital
+- **Precio**: $60 USD
 
-Follow these steps:
+### Master Profesional (Programa Insignia)
+- **Duración**: 6 meses (50+ horas)
+- **Nivel**: Avanzado
+- **Contenido**: Marketing Digital 2026
+- **Precio**: $199 USD
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Doctorado Profesional
+- **Duración**: 12 meses (120+ horas)
+- **Nivel**: Especialización
+- **Contenido**: Inteligencia Estratégica Digital
+- **Precio**: $1,750 USD
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Tecnologías Utilizadas
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Frontend
+- React 18 con TypeScript
+- Vite para desarrollo rápido
+- Tailwind CSS para estilos
+- shadcn-ui para componentes UI
+- Lucide React para iconos
+- Recharts para gráficos
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+### Backend
+- Supabase (PostgreSQL + autenticación)
+- Functions Serverless
+- Storage de archivos
+
+### Integrations
+- Stripe para procesamiento de pagos
+- pdf-lib para generación de PDFs
+- QRCode para códigos QR
+- Speech Synthesis para audio
+
+## Arquitectura del Proyecto
+
+```
+src/
+├── pages/           # 15 páginas principales
+├── components/      # UI components y dashboard
+├── contexts/       # Auth context
+├── integrations/   # Supabase client
+├── hooks/          # Custom hooks
+└── data/           # Contenido estático
 ```
 
-**Edit a file directly in GitHub**
+## Instalación y Configuración
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Requisitos
+- Node.js 16+
+- npm o yarn
+- Cuenta de Supabase
 
-**Use GitHub Codespaces**
+### Pasos de Instalación
+1. Clonar el repositorio
+2. Instalar dependencias: `npm install`
+3. Configurar variables de entorno en `.env` (base de datos Supabase)
+4. Iniciar servidor de desarrollo: `npm run dev`
+5. Acceder a `http://localhost:5173`
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Despliegue
 
-## What technologies are used for this project?
+### Producción
+1. Construir el proyecto: `npm run build`
+2. Desplegar en Vercel, Netlify o similar
+3. Configurar variables de entorno en el servidor
 
-This project is built with:
+## Contribución
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Crear una rama para la funcionalidad
+2. Implementar cambios
+3. Crear pull request
+4. Revisión y mergue
 
-## How can I deploy this project?
+## Licencia
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Este proyecto está bajo licencia MIT.
 
-## Can I connect a custom domain to my Lovable project?
+## Contacto
 
-Yes, you can!
+- Email: info@utamv.edu
+- Soporte: tamvonlinenetwork@outlook.es
+- Página web: https://utamv.edu
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Derechos Reservados
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+© 2026 UTAMV - Universidad Tecnológica Avanzada del Marketing Virtual. Todos los derechos reservados.

@@ -56,7 +56,7 @@ const Index = () => {
                 <img src={utamvLogo} alt="UTAMV" className="w-full h-full object-contain" />
               </div>
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6 leading-tight">
-                UTAMV Campus
+                UTAMV
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
                 Universidad Tecnológica Avanzada del Marketing Virtual

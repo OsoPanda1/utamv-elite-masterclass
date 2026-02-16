@@ -51,28 +51,68 @@ const VerifyCertificate = () => {
 
   const verifyCertificate = async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('verify-certificate', {
-        body: {},
-        headers: {},
-      });
+      // Validar formato de número de certificado
+      const validCertFormat = /^UTAMV-\d+-.+/.test(certificateNumber!);
+      if (!validCertFormat) {
+        setResult({
+          valid: false,
+          error: 'Formato de certificado inválido',
+          message: 'El número de certificado debe seguir el formato UTAMV-YYYYMMDD-XXXX',
+        });
+        setLoading(false);
+        return;
+      }
 
-      // Try with query params approach
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/verify-certificate?cert=${encodeURIComponent(certificateNumber!)}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-          }
-        }
-      );
+      // Buscar certificado en la base de datos
+      const { data: certificate, error } = await supabase
+        .from('certificates')
+        .select('*')
+        .eq('certificate_number', certificateNumber)
+        .single();
 
-      const result = await response.json();
-      setResult(result);
+      if (error) {
+        throw new Error('Certificado no encontrado');
+      }
+
+      // Obtener datos del usuario
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name, email')
+        .eq('user_id', certificate.user_id)
+        .single();
+
+      // Obtener datos del curso
+      const { data: course } = await supabase
+        .from('courses')
+        .select('title')
+        .eq('id', certificate.course_id)
+        .single();
+
+      // Generar resultado de verificación
+      const verificationResult: VerificationResult = {
+        valid: true,
+        certificate: {
+          number: certificate.certificate_number,
+          issued_at: certificate.generated_at,
+          holder: profile?.full_name || 'Estudiante UTAMV',
+          program: course?.title || 'Programa no especificado',
+          institution: 'UTAMV - Universidad Tecnológica Avanzada del Marketing Virtual',
+          status: 'Activo',
+        },
+        verification: {
+          timestamp: new Date().toISOString(),
+          method: 'Online Verification System',
+          issuer: 'UTAMV Academic Registry',
+        },
+      };
+
+      setResult(verificationResult);
     } catch (err) {
       console.error('Verification error:', err);
       setResult({
         valid: false,
-        error: 'Error de conexión. Intente de nuevo.',
+        error: 'Certificado no válido',
+        message: 'El certificado no se encuentra registrado en el sistema académico UTAMV.',
       });
     } finally {
       setLoading(false);
