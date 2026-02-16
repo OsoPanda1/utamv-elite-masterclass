@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import utamvLogo from '@/assets/utamv-logo-campus.png';
@@ -23,10 +23,42 @@ const Header = () => {
   }, [location.pathname]);
 
   const navLinks = [
-    { href: '/programas', label: 'PROGRAMAS' },
-    { href: '/docentes', label: 'DOCENTES' },
-    { href: '/investigacion', label: 'INVESTIGACIÓN' },
-    { href: '/admisiones', label: 'ADMISIONES' },
+    { 
+      href: '/programas', 
+      label: 'PROGRAMAS', 
+      submenu: [
+        { href: '/programas/maestrias', label: 'Maestrías' },
+        { href: '/programas/master-profesional', label: 'Máster Profesional' },
+        { href: '/programas/diplomados', label: 'Diplomados' },
+        { href: '/programas/certificaciones', label: 'Certificaciones' }
+      ]
+    },
+    { 
+      href: '/docentes', 
+      label: 'DOCENTES',
+      submenu: [
+        { href: '/docentes/rectoria', label: 'Rectoría' },
+        { href: '/docentes/directivos', label: 'Directivos' },
+        { href: '/docentes/profesores', label: 'Profesores' }
+      ]
+    },
+    { 
+      href: '/investigacion', 
+      label: 'INVESTIGACIÓN',
+      submenu: [
+        { href: '/investigacion/proyectos', label: 'Proyectos' },
+        { href: '/investigacion/publicaciones', label: 'Publicaciones' }
+      ]
+    },
+    { 
+      href: '/admisiones', 
+      label: 'ADMISIONES',
+      submenu: [
+        { href: '/admisiones/requisitos', label: 'Requisitos' },
+        { href: '/admisiones/processo', label: 'Proceso' },
+        { href: '/admisiones/contacto', label: 'Contacto' }
+      ]
+    },
     { href: '/campus-virtual', label: 'CAMPUS VIRTUAL' },
     { href: '/preguntas-frecuentes', label: 'PREGUNTAS FRECUENTES' },
     { href: '/ayuda', label: 'AYUDA' },
@@ -69,17 +101,45 @@ const Header = () => {
           {/* Desktop nav */}
           <nav className="hidden xl:flex items-center gap-1">
             {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={`px-4 py-3 text-xs font-semibold tracking-[0.12em] transition-all duration-300 rounded-lg ${
-                  isActive(link.href)
-                    ? 'text-platinum bg-platinum/10 border border-platinum/30'
-                    : 'text-white/70 hover:text-platinum hover:bg-white/5 border border-transparent hover:border-platinum/20'
-                }`}
-              >
-                {link.label}
-              </Link>
+              <div key={link.href} className="relative group">
+                {link.submenu ? (
+                  <div className="flex items-center gap-1 px-4 py-3 text-xs font-semibold tracking-[0.12em] transition-all duration-300 rounded-lg hover:bg-platinum/5 cursor-pointer">
+                    <span className={`${
+                      isActive(link.href)
+                        ? 'text-platinum'
+                        : 'text-white/70 hover:text-platinum'
+                    }`}>
+                      {link.label}
+                    </span>
+                    <ChevronDown className="w-3 h-3 opacity-60" />
+                  </div>
+                ) : (
+                  <Link
+                    to={link.href}
+                    className={`px-4 py-3 text-xs font-semibold tracking-[0.12em] transition-all duration-300 rounded-lg ${
+                      isActive(link.href)
+                        ? 'text-platinum bg-platinum/10 border border-platinum/30'
+                        : 'text-white/70 hover:text-platinum hover:bg-white/5 border border-transparent hover:border-platinum/20'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )}
+                
+                {link.submenu && (
+                  <div className="absolute top-full left-0 mt-2 w-56 bg-[#0A1128]/95 backdrop-blur-md border border-platinum/30 rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform -translate-y-2 group-hover:translate-y-0">
+                    {link.submenu.map((subLink) => (
+                      <Link
+                        key={subLink.href}
+                        to={subLink.href}
+                        className="block px-4 py-3 text-xs text-white/70 hover:text-platinum hover:bg-platinum/5 transition-all duration-200"
+                      >
+                        {subLink.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
 
@@ -138,17 +198,37 @@ const Header = () => {
           <div className="xl:hidden absolute top-24 left-0 right-0 bg-[#0A1128]/98 backdrop-blur-md border-b border-platinum/30 animate-slide-up">
             <nav className="flex flex-col p-6 gap-2">
               {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className={`py-4 px-6 rounded-xl text-sm font-semibold tracking-wider transition-all ${
-                    isActive(link.href)
-                      ? 'bg-platinum/10 text-platinum border border-platinum/30'
-                      : 'text-white/70 hover:text-platinum hover:bg-white/5 border border-transparent hover:border-platinum/20'
-                  }`}
-                >
-                  {link.label}
-                </Link>
+                <div key={link.href} className="space-y-2">
+                  {link.submenu ? (
+                    <div className="space-y-1">
+                      <div className="py-4 px-6 rounded-xl text-sm font-semibold tracking-wider text-white/70 hover:text-platinum hover:bg-white/5 transition-all">
+                        {link.label}
+                      </div>
+                      <div className="pl-8 space-y-1">
+                        {link.submenu.map((subLink) => (
+                          <Link
+                            key={subLink.href}
+                            to={subLink.href}
+                            className="block py-3 px-6 rounded-lg text-xs text-white/60 hover:text-platinum hover:bg-platinum/5 transition-all border-l-2 border-transparent hover:border-platinum/50"
+                          >
+                            {subLink.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      to={link.href}
+                      className={`py-4 px-6 rounded-xl text-sm font-semibold tracking-wider transition-all ${
+                        isActive(link.href)
+                          ? 'bg-platinum/10 text-platinum border border-platinum/30'
+                          : 'text-white/70 hover:text-platinum hover:bg-white/5 border border-transparent hover:border-platinum/20'
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  )}
+                </div>
               ))}
               <div className="flex flex-col gap-3 mt-6 pt-6 border-t border-platinum/20">
                 {user ? (

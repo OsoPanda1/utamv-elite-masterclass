@@ -139,8 +139,8 @@ const Index = () => {
                 <h3 className="font-display text-lg font-semibold text-foreground mb-4 tracking-wider uppercase text-center">
                   Naturaleza Institucional
                 </h3>
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/50 rounded-lg p-4 mb-4">
-                  <p className="text-sm text-yellow-800 dark:text-yellow-200 leading-relaxed">
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-lg p-4 mb-4">
+                  <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed">
                     <strong>IMPORTANTE:</strong> La Universidad de Tecnología Avanzada, Marketing y Versatilidad (UTAMV) es una institución particular de educación superior de carácter privado. Opera bajo un modelo educativo propio y se encuentra en <strong>fase de preparación y, en su caso, solicitud de Reconocimiento de Validez Oficial de Estudios (RVOE)</strong> ante las autoridades educativas competentes.
                   </p>
                 </div>
@@ -250,6 +250,35 @@ const Index = () => {
                   "Innovación, conocimiento y versatilidad para el futuro."
                 </p>
                 <p className="text-sm text-muted-foreground mt-2">Eslogan Institucional Oficial</p>
+              </div>
+
+              {/* Documento Maestro UTAMV */}
+              <div className="mt-16 p-8 rounded-2xl bg-card border border-border">
+                <h3 className="font-display text-lg font-semibold text-foreground mb-6 tracking-wider uppercase text-center">
+                  Documento Maestro UTAMV 2026
+                </h3>
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-lg p-6">
+                  <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed mb-4">
+                    <strong>DOCUMENTO INSTITUCIONAL ÚNICO:</strong> Disponible para revisión en el repositorio académico de UTAMV
+                  </p>
+                  <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-2">
+                    <li>• Integración directa en la plataforma oficial del Campus Online UTAMV</li>
+                    <li>• Uso como documento maestro institucional 2026</li>
+                    <li>• Revisión por abogados, auditores académicos y autoridades educativas</li>
+                    <li>• Respaldo normativo, ético y académico sin publicidad engañosa</li>
+                    <li>• Evidencia documental en procesos nacionales e internacionales</li>
+                  </ul>
+                  <div className="mt-6 text-center">
+                    <a 
+                      href="/docs/UTAMV-Masterclass-Manual.md" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-block px-6 py-3 rounded-lg bg-platinum text-[#0A1128] text-sm font-semibold tracking-wider hover:bg-platinum/90 transition-all"
+                    >
+                      Ver Documento Maestro UTAMV
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

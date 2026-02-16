@@ -5,21 +5,47 @@ import { Link } from 'react-router-dom';
 import { Clock, BarChart3, Monitor, GraduationCap } from 'lucide-react';
 
 const allPrograms = [
+  // Maestrías
   {
-    slug: 'fundamentos-marketing-digital',
-    type: 'Certificado Profesional',
-    title: 'Fundamentos de Marketing Digital',
-    description: 'Programa introductorio que cubre los conceptos esenciales del marketing digital, herramientas básicas de análisis y fundamentos de posicionamiento en línea.',
-    hours: '5',
-    duration: '1 semana',
-    modality: '100% en línea',
-    level: 'Introductorio',
+    slug: 'maestria-marketing-digital',
+    type: 'Maestría',
+    title: 'Maestría en Marketing Digital Estratégico',
+    description: 'Programa de posgrado avanzado enfocado en estrategias digitales, analítica de datos y gestión de campañas omnicanal. Incluye proyecto de investigación y diplomado internacional.',
+    hours: '200+',
+    duration: '12 meses',
+    modality: 'Híbrido',
+    level: 'Posgrado',
     area: 'Marketing Digital',
+    featured: true,
   },
+  {
+    slug: 'maestria-ia-empresarial',
+    type: 'Maestría',
+    title: 'Maestría en Inteligencia Artificial Aplicada',
+    description: 'Formación avanzada en desarrollo y aplicación de IA en entornos empresariales. Aprendizaje de algoritmos, automatización y análisis predictivo.',
+    hours: '180+',
+    duration: '12 meses',
+    modality: '100% en línea',
+    level: 'Posgrado',
+    area: 'Inteligencia Artificial',
+  },
+  {
+    slug: 'maestria-negocios-digitales',
+    type: 'Maestría',
+    title: 'Maestría en Negocios Digitales',
+    description: 'Gestión de empresas en entornos digitales. Estrategia empresarial, innovación tecnológica y liderazgo digital.',
+    hours: '160+',
+    duration: '10 meses',
+    modality: 'Híbrido',
+    level: 'Posgrado',
+    area: 'Estrategia Digital',
+  },
+
+  // Máster Profesional
   {
     slug: 'master-marketing-digital-2026',
     type: 'Máster Profesional',
-    title: 'Marketing Digital 2026',
+    title: 'Máster Profesional en Marketing Digital',
     description: 'Programa insignia de formación avanzada en SEO, AEO, metadatos, geo-targeting, automatización con IA y estrategia omnicanal. 10 módulos con evaluación continua y proyecto integrador.',
     hours: '50+',
     duration: '6 meses',
@@ -29,20 +55,22 @@ const allPrograms = [
     featured: true,
   },
   {
-    slug: 'doctorado-inteligencia-estrategica',
-    type: 'Doctorado Profesional',
-    title: 'Inteligencia Estratégica Digital',
-    description: 'Programa de investigación aplicada orientado a la dirección estratégica digital. Incluye tesis doctoral, mentoría personalizada y publicación académica.',
-    hours: '120+',
-    duration: '12 meses',
+    slug: 'master-analitica-digital',
+    type: 'Máster Profesional',
+    title: 'Máster Profesional en Analítica Digital',
+    description: 'Especialización en análisis de datos, dashboards y toma de decisiones basada en evidencia para campañas digitales.',
+    hours: '45+',
+    duration: '5 meses',
     modality: '100% en línea',
-    level: 'Especialización',
-    area: 'Inteligencia Artificial',
+    level: 'Avanzado',
+    area: 'Estrategia Digital',
   },
+
+  // Diplomados
   {
     slug: 'diplomado-seo-avanzado',
     type: 'Diplomado',
-    title: 'SEO Avanzado y AEO',
+    title: 'Diplomado en SEO y AEO Avanzado',
     description: 'Formación especializada en optimización para motores de búsqueda tradicionales y motores de respuesta con inteligencia artificial.',
     hours: '30',
     duration: '2 meses',
@@ -53,7 +81,7 @@ const allPrograms = [
   {
     slug: 'diplomado-ia-marketing',
     type: 'Diplomado',
-    title: 'Inteligencia Artificial para Marketing',
+    title: 'Diplomado en Inteligencia Artificial para Marketing',
     description: 'Aplicación práctica de herramientas de IA en automatización de campañas, análisis predictivo y generación de contenido.',
     hours: '25',
     duration: '2 meses',
@@ -62,31 +90,9 @@ const allPrograms = [
     area: 'Inteligencia Artificial',
   },
   {
-    slug: 'curso-analitica-digital',
-    type: 'Curso',
-    title: 'Analítica Digital y KPIs',
-    description: 'Medición de resultados, configuración de dashboards y toma de decisiones basada en datos para campañas digitales.',
-    hours: '10',
-    duration: '3 semanas',
-    modality: '100% en línea',
-    level: 'Introductorio',
-    area: 'Estrategia Digital',
-  },
-  {
-    slug: 'certificado-seguridad-web',
-    type: 'Certificado Profesional',
-    title: 'Seguridad Social en la Web',
-    description: 'Formación en protección de datos, ciberseguridad, cumplimiento normativo GDPR/LGPD y seguridad en plataformas educativas.',
-    hours: '8',
-    duration: '2 semanas',
-    modality: '100% en línea',
-    level: 'Introductorio',
-    area: 'Tecnología',
-  },
-  {
     slug: 'diplomado-programacion-fullstack',
     type: 'Diplomado',
-    title: 'Programación Full Stack',
+    title: 'Diplomado en Programación Full Stack',
     description: 'Desarrollo web completo desde cero: JavaScript, Python y Node.js. Aplicaciones reales y proyectos profesionales.',
     hours: '40',
     duration: '3 meses',
@@ -94,20 +100,68 @@ const allPrograms = [
     level: 'Intermedio',
     area: 'Tecnología',
   },
+
+  // Certificaciones
   {
-    slug: 'master-tecnologias-digitales',
-    type: 'Máster Profesional',
-    title: 'Tecnologías Digitales y Programación',
-    description: 'Especialización en desarrollo web, seguridad informática y aplicaciones de IA. Programación desde cero a experto.',
-    hours: '60+',
-    duration: '4 meses',
+    slug: 'certificado-marketing-digital',
+    type: 'Certificado Profesional',
+    title: 'Certificado Profesional en Marketing Digital',
+    description: 'Programa introductorio que cubre los conceptos esenciales del marketing digital, herramientas básicas de análisis y fundamentos de posicionamiento en línea.',
+    hours: '5',
+    duration: '1 semana',
     modality: '100% en línea',
-    level: 'Avanzado',
+    level: 'Introductorio',
+    area: 'Marketing Digital',
+  },
+  {
+    slug: 'certificado-analitica-digital',
+    type: 'Certificado Profesional',
+    title: 'Certificado Profesional en Analítica Digital',
+    description: 'Medición de resultados, configuración de dashboards y toma de decisiones basada en datos para campañas digitales.',
+    hours: '8',
+    duration: '2 semanas',
+    modality: '100% en línea',
+    level: 'Introductorio',
+    area: 'Estrategia Digital',
+  },
+  {
+    slug: 'certificado-seguridad-web',
+    type: 'Certificado Profesional',
+    title: 'Certificado Profesional en Seguridad Web',
+    description: 'Formación en protección de datos, ciberseguridad, cumplimiento normativo GDPR/LGPD y seguridad en plataformas educativas.',
+    hours: '6',
+    duration: '2 semanas',
+    modality: '100% en línea',
+    level: 'Introductorio',
     area: 'Tecnología',
+  },
+  {
+    slug: 'certificado-ia-basica',
+    type: 'Certificado Profesional',
+    title: 'Certificado Profesional en Inteligencia Artificial Básica',
+    description: 'Fundamentos de IA, machine learning y aplicaciones prácticas para profesionales no técnicos.',
+    hours: '5',
+    duration: '1 semana',
+    modality: '100% en línea',
+    level: 'Introductorio',
+    area: 'Inteligencia Artificial',
+  },
+
+  // Doctorado
+  {
+    slug: 'doctorado-inteligencia-estrategica',
+    type: 'Doctorado Profesional',
+    title: 'Doctorado Profesional en Inteligencia Estratégica Digital',
+    description: 'Programa de investigación aplicada orientado a la dirección estratégica digital. Incluye tesis doctoral, mentoría personalizada y publicación académica.',
+    hours: '120+',
+    duration: '12 meses',
+    modality: '100% en línea',
+    level: 'Especialización',
+    area: 'Inteligencia Artificial',
   },
 ];
 
-const types = ['Todos', 'Máster Profesional', 'Doctorado Profesional', 'Diplomado', 'Curso', 'Certificado Profesional'];
+const types = ['Todos', 'Maestría', 'Máster Profesional', 'Doctorado Profesional', 'Diplomado', 'Certificado Profesional'];
 
 const Programas = () => {
   const [filterType, setFilterType] = useState('Todos');
@@ -163,7 +217,7 @@ const Programas = () => {
                   key={prog.slug}
                   to={`/programas/${prog.slug}`}
                   className={`group block rounded-xl border bg-card/50 hover:bg-card transition-all duration-300 overflow-hidden ${
-                    prog.featured ? 'border-platinum/40 ring-1 ring-gold/20' : 'border-border'
+                    prog.featured ? 'border-platinum/40 ring-1 ring-platinum/20' : 'border-border'
                   }`}
                 >
                   {prog.featured && (
