@@ -1,11 +1,11 @@
-import { Check, Sparkles, Shield, Clock, Award, Users, FileText, Headphones, ArrowLeft } from 'lucide-react';
+import { Check, Shield, Clock, Award, Users, FileText, Headphones, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useState } from 'react';
-import studentsCelebrating from '@/assets/students-celebrating.jpg';
-import utamvLogo from '@/assets/utamv-logo-official.jpg';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const Inscripcion = () => {
   const navigate = useNavigate();
@@ -13,40 +13,36 @@ const Inscripcion = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const features = [
-    { icon: FileText, text: '10 Módulos Completos con Video y Audio IA' },
-    { icon: Clock, text: '+50 Horas de Contenido Premium' },
-    { icon: Award, text: 'Certificación UTAMV con Validación Académica' },
-    { icon: Users, text: 'Acceso a Comunidad Exclusiva de Alumnos' },
-    { icon: Headphones, text: 'Soporte Académico Personalizado' },
-    { icon: Shield, text: 'Acceso Vitalicio al Programa' },
-    { icon: Sparkles, text: 'Actualizaciones Gratuitas 2026-2027' },
-    { icon: Check, text: 'Proyecto Final con Clientes Reales' },
+    { icon: FileText, text: '10 módulos con contenido multimedia estructurado' },
+    { icon: Clock, text: '50+ horas de formación académica' },
+    { icon: Award, text: 'Certificación UTAMV con verificación digital' },
+    { icon: Users, text: 'Acceso a la comunidad de estudiantes' },
+    { icon: Headphones, text: 'Soporte académico y tutoría IA' },
+    { icon: Shield, text: 'Acceso permanente al contenido del programa' },
   ];
 
-  const pricingTiers = [
+  const tiers = [
     {
-      name: 'Módulo Individual',
+      name: 'Certificado Profesional',
       price: 60,
-      originalPrice: 120,
-      description: 'Acceso a 1 módulo de tu elección',
-      features: ['1 módulo completo', 'Certificado de módulo', 'Audio IA incluido'],
-      isPopular: false,
+      description: 'Programa introductorio de fundamentos de marketing digital.',
+      features: ['5 horas de formación', 'Certificado de finalización', 'Acceso a recursos básicos'],
+      slug: 'fundamentos-marketing-digital',
     },
     {
-      name: 'Master Completo',
+      name: 'Máster Profesional',
       price: 199,
-      originalPrice: 499,
-      description: 'Acceso completo al programa',
-      features: ['10 módulos completos', 'Certificación UTAMV', 'Comunidad exclusiva', 'Soporte prioritario'],
-      isPopular: true,
+      description: 'Programa insignia de formación avanzada en marketing digital.',
+      features: ['50+ horas de formación', 'Certificación UTAMV completa', 'Comunidad de estudiantes', 'Tutoría con IA'],
+      slug: 'master-marketing-digital-2026',
+      featured: true,
     },
     {
       name: 'Doctorado Profesional',
       price: 1750,
-      originalPrice: 3500,
-      description: 'Programa de investigación aplicada',
-      features: ['Todo el Master', 'Tesis doctoral', 'Mentoría 1:1', 'Publicación académica'],
-      isPopular: false,
+      description: 'Programa de investigación aplicada y dirección estratégica.',
+      features: ['120+ horas de formación', 'Tesis doctoral', 'Mentoría personalizada', 'Publicación académica'],
+      slug: 'doctorado-inteligencia-estrategica',
     },
   ];
 
@@ -54,31 +50,18 @@ const Inscripcion = () => {
     setIsLoading(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      
       if (!user) {
-        toast({
-          title: 'Inicia sesión primero',
-          description: 'Necesitas una cuenta para inscribirte.',
-        });
+        toast({ title: 'Inicia sesión primero', description: 'Necesitas una cuenta para solicitar admisión.' });
         navigate('/auth');
         return;
       }
-
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: { origin: window.location.origin, tier },
       });
-
       if (error) throw error;
-      if (data?.url) {
-        window.location.href = data.url;
-      }
-    } catch (err) {
-      console.error('Checkout error:', err);
-      toast({
-        title: 'Error',
-        description: 'No se pudo iniciar el pago. Intenta de nuevo.',
-        variant: 'destructive',
-      });
+      if (data?.url) window.location.href = data.url;
+    } catch {
+      toast({ title: 'Error', description: 'No se pudo iniciar el proceso. Intenta nuevamente.', variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }
@@ -86,166 +69,126 @@ const Inscripcion = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Volver al inicio
-          </Link>
-        </div>
-      </header>
-
-      {/* Hero */}
-      <section className="py-16 bg-gradient-to-b from-background to-muted/30 relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-full h-1/2 opacity-10">
-          <img 
-            src={studentsCelebrating} 
-            alt="" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-12">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl overflow-hidden border-2 border-silver/50 shadow-silver">
-              <img src={utamvLogo} alt="UTAMV" className="w-full h-full object-cover" />
-            </div>
-            <span className="inline-block px-4 py-1 rounded-full bg-teal/20 text-teal text-sm font-medium mb-4">
-              Cohorte Fundadora - 50% Descuento
-            </span>
-            <h1 className="section-title">Elige tu Plan de Estudios</h1>
-            <p className="section-subtitle">
-              Primeros 5,000 estudiantes fundadores obtienen acceso preferencial y precio especial de lanzamiento.
+      <Header />
+      <main className="pt-20">
+        {/* Hero */}
+        <section className="py-20 bg-muted/20">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4 tracking-tight">
+              ADMISIONES
+            </h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Selecciona el programa que mejor se adapte a tu perfil profesional y nivel de formación. 
+              Todos los programas incluyen certificación UTAMV con verificación digital.
             </p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Pricing Tiers */}
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {pricingTiers.map((tier, index) => (
-              <div 
-                key={index}
-                className={`relative rounded-2xl border-2 overflow-hidden ${
-                  tier.isPopular 
-                    ? 'border-silver bg-gradient-to-b from-silver/10 to-card' 
-                    : 'border-border bg-card'
-                }`}
-              >
-                {tier.isPopular && (
-                  <div className="absolute top-0 left-0 right-0 bg-silver text-primary-foreground text-center py-2 text-sm font-bold">
-                    MÁS POPULAR
-                  </div>
-                )}
-
-                <div className={`p-6 ${tier.isPopular ? 'pt-12' : ''}`}>
-                  <h3 className="font-display text-xl font-bold text-foreground mb-2">
-                    {tier.name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {tier.description}
-                  </p>
-
-                  <div className="mb-6">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg text-muted-foreground line-through">
-                        ${tier.originalPrice} USD
-                      </span>
-                      <span className="px-2 py-0.5 rounded bg-teal/20 text-teal text-xs font-bold">
-                        -50%
-                      </span>
+        {/* Tiers */}
+        <section className="py-12">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {tiers.map((tier, i) => (
+                <div
+                  key={i}
+                  className={`relative rounded-xl border overflow-hidden ${
+                    tier.featured ? 'border-silver/40 ring-1 ring-silver/20 bg-card/60' : 'border-border bg-card/30'
+                  }`}
+                >
+                  {tier.featured && (
+                    <div className="bg-silver/10 text-silver text-[10px] font-bold tracking-[0.2em] text-center py-1.5 uppercase">
+                      Programa insignia
                     </div>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-4xl font-display font-bold text-gradient-silver">
-                        ${tier.price}
-                      </span>
-                      <span className="text-muted-foreground">USD</span>
+                  )}
+                  <div className="p-6">
+                    <span className="text-[10px] font-semibold tracking-[0.15em] text-muted-foreground uppercase">
+                      {tier.name}
+                    </span>
+                    <p className="text-sm text-muted-foreground mt-2 mb-4">{tier.description}</p>
+
+                    <div className="flex items-baseline gap-1 mb-6">
+                      <span className="text-3xl font-display font-bold text-foreground">${tier.price}</span>
+                      <span className="text-sm text-muted-foreground">USD</span>
+                    </div>
+
+                    <ul className="space-y-2.5 mb-6">
+                      {tier.features.map((f, j) => (
+                        <li key={j} className="flex items-center gap-2 text-xs">
+                          <Check className="w-3.5 h-3.5 text-silver shrink-0" />
+                          <span className="text-foreground">{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="space-y-2">
+                      <Button
+                        variant={tier.featured ? 'outline' : 'ghost'}
+                        className="w-full"
+                        onClick={() => handleEnroll(tier.name)}
+                        disabled={isLoading}
+                      >
+                        Solicitar admisión
+                      </Button>
+                      <Link
+                        to={`/programas/${tier.slug}`}
+                        className="block text-center text-[10px] text-muted-foreground hover:text-foreground tracking-wider transition-colors"
+                      >
+                        Ver ficha académica →
+                      </Link>
                     </div>
                   </div>
-
-                  <ul className="space-y-3 mb-6">
-                    {tier.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm">
-                        <Check className="w-4 h-4 text-teal flex-shrink-0" />
-                        <span className="text-foreground">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Button 
-                    variant={tier.isPopular ? 'elite' : 'silverOutline'} 
-                    className="w-full"
-                    onClick={() => handleEnroll(tier.name)}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-current" />
-                    ) : (
-                      <>Inscribirme</>
-                    )}
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* All Features */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="font-display text-2xl font-bold text-center mb-8 text-foreground">
-              Todos los planes incluyen
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {features.map((feature, index) => (
-                <div key={index} className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border">
-                  <div className="w-10 h-10 rounded-full bg-silver/10 flex items-center justify-center shrink-0">
-                    <feature.icon className="w-5 h-5 text-silver" />
-                  </div>
-                  <span className="text-foreground">{feature.text}</span>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Trust elements */}
-      <section className="py-12 bg-background">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-sm text-muted-foreground mb-4">Métodos de pago aceptados</p>
-          <div className="flex justify-center gap-4 items-center opacity-60 flex-wrap">
-            <div className="px-4 py-2 rounded-lg bg-card border border-border text-sm font-medium">
-              💳 Visa
-            </div>
-            <div className="px-4 py-2 rounded-lg bg-card border border-border text-sm font-medium">
-              💳 Mastercard
-            </div>
-            <div className="px-4 py-2 rounded-lg bg-card border border-border text-sm font-medium">
-              💳 American Express
-            </div>
-            <div className="px-4 py-2 rounded-lg bg-card border border-border text-sm font-medium">
-              🏦 PayPal
-            </div>
-          </div>
-          <div className="mt-8 flex items-center justify-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-teal" />
-              <span>Pago Seguro SSL</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-teal" />
-              <span>Garantía 30 días</span>
+        {/* Features */}
+        <section className="py-16 bg-muted/20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="font-display text-xl font-bold text-center mb-8 text-foreground tracking-wider uppercase">
+                Incluido en todos los programas
+              </h2>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {features.map((f, i) => (
+                  <div key={i} className="flex items-center gap-3 p-4 rounded-xl border border-border bg-card/30">
+                    <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                      <f.icon className="w-4 h-4 text-silver" />
+                    </div>
+                    <span className="text-sm text-foreground">{f.text}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Payment trust */}
+        <section className="py-12">
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-xs text-muted-foreground mb-4">Procesamiento de pago seguro</p>
+            <div className="flex justify-center gap-4 items-center flex-wrap">
+              {['Visa', 'Mastercard', 'American Express', 'PayPal'].map(m => (
+                <div key={m} className="px-3 py-1.5 rounded-lg bg-muted border border-border text-xs text-muted-foreground">
+                  {m}
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 flex items-center justify-center gap-6 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1.5">
+                <Shield className="w-3.5 h-3.5" />
+                <span>Conexión SSL</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5" />
+                <span>Garantía 30 días</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
     </div>
   );
 };
