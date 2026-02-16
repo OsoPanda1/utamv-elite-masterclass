@@ -95,9 +95,7 @@ const PricingSection = () => {
             Tu decisión de hoy marca la dirección de tu carrera
           </h2>
           <p className="section-subtitle mt-3">
-            Inscríbete al Master Elite Profesional en Marketing Digital 2026 y
-            accede a la experiencia académica completa de UTAMV, sin cuotas
-            recurrentes ni renovaciones ocultas.
+            UTAMV Campus Online | Ficha académica estándar 
           </p>
         </div>
 
@@ -111,10 +109,10 @@ const PricingSection = () => {
               {/* Header */}
               <div className="bg-gradient-to-r from-silver-primary/18 via-teal-primary/10 to-silver-primary/18 p-8 text-center border-b border-border">
                 <span className="inline-block px-4 py-1 rounded-full bg-silver-primary text-primary-foreground text-xs md:text-sm font-bold tracking-[0.22em] uppercase mb-4">
-                  Acceso completo al programa
+                  Inscripciones de acceso al Campus
                 </span>
                 <h3 className="font-display text-3xl font-bold mb-2 text-foreground">
-                  Master Elite Profesional
+                  Master 2.0 Community Manager NextGen 2026
                 </h3>
                 <p className="text-muted-foreground text-sm md:text-base">
                   Máster en Marketing Digital • Edición 2026
@@ -138,7 +136,7 @@ const PricingSection = () => {
                   <span className="text-xl text-muted-foreground">USD</span>
                 </div>
                 <p className="text-xs md:text-sm text-muted-foreground mt-2">
-                  Pago único • Acceso vitalicio • Certificación incluida
+                  Validacion en CV • Respaldo Academico • Certificación incluida
                 </p>
               </div>
 
@@ -180,11 +178,11 @@ const PricingSection = () => {
                 <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-xs md:text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Shield className="w-4 h-4 text-teal-primary" />
-                    <span>Pago seguro con plataformas internacionales</span>
+                    <span>Inscripciones seguras con plataformas internacionales</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-teal-primary" />
-                    <span>Garantía de satisfacción de 30 días</span>
+                    <span>Garantías de Educacion Profesional NextGen</span>
                   </div>
                 </div>
               </div>
