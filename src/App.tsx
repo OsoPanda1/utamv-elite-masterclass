@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 // Pages
 import Index from "@/pages/Index";
@@ -7,7 +7,10 @@ import Dashboard from "@/pages/Dashboard";
 import Modulos from "@/pages/Modulos";
 import ModuleViewer from "@/pages/ModuleViewer";
 import Certificacion from "@/pages/Certificacion";
-import Programa from "@/pages/Programa";
+import Programas from "@/pages/Programas";
+import ProgramDetail from "@/pages/ProgramDetail";
+import Investigacion from "@/pages/Investigacion";
+import Ayuda from "@/pages/Ayuda";
 import Inscripcion from "@/pages/Inscripcion";
 import Settings from "@/pages/Settings";
 import VerifyCertificate from "@/pages/VerifyCertificate";
@@ -17,36 +20,37 @@ import NotFound from "@/pages/NotFound";
 // Route Guards
 import { RequireAuth } from "@/components/guards/RequireAuth";
 import { RequirePaid } from "@/components/guards/RequirePaid";
-import { RequireAdmin } from "@/components/guards/RequireAdmin";
 
 function App() {
   return (
     <Routes>
-      {/* ========================= */}
       {/* RUTAS PÚBLICAS */}
-      {/* ========================= */}
       <Route path="/" element={<Index />} />
       <Route path="/auth" element={<Auth />} />
-      <Route path="/programa" element={<Programa />} />
-      <Route path="/inscripcion" element={<Inscripcion />} />
-      <Route path="/expertos" element={<Expertos />} />
-      <Route
-        path="/verificar-certificado"
-        element={<VerifyCertificate />}
-      />
+      <Route path="/programas" element={<Programas />} />
+      <Route path="/programas/:slug" element={<ProgramDetail />} />
+      <Route path="/docentes" element={<Expertos />} />
+      <Route path="/investigacion" element={<Investigacion />} />
+      <Route path="/admisiones" element={<Inscripcion />} />
+      <Route path="/ayuda" element={<Ayuda />} />
+      <Route path="/verificar-certificado" element={<VerifyCertificate />} />
 
-      {/* ========================= */}
-      {/* RUTAS AUTENTICADAS */}
-      {/* ========================= */}
+      {/* Redirects de rutas antiguas */}
+      <Route path="/programa" element={<Navigate to="/programas/master-marketing-digital-2026" replace />} />
+      <Route path="/expertos" element={<Navigate to="/docentes" replace />} />
+      <Route path="/inscripcion" element={<Navigate to="/admisiones" replace />} />
+      <Route path="/certificacion" element={<Navigate to="/campus-virtual" replace />} />
+      <Route path="/dashboard" element={<Navigate to="/campus-virtual" replace />} />
+
+      {/* CAMPUS VIRTUAL (autenticado + pagado) */}
       <Route
-        path="/dashboard"
+        path="/campus-virtual"
         element={
           <RequireAuth>
             <Dashboard />
           </RequireAuth>
         }
       />
-
       <Route
         path="/settings"
         element={
@@ -55,10 +59,6 @@ function App() {
           </RequireAuth>
         }
       />
-
-      {/* ========================= */}
-      {/* RUTAS DE PAGO */}
-      {/* ========================= */}
       <Route
         path="/modulos"
         element={
@@ -69,7 +69,6 @@ function App() {
           </RequireAuth>
         }
       />
-
       <Route
         path="/modulos/:id"
         element={
@@ -80,7 +79,6 @@ function App() {
           </RequireAuth>
         }
       />
-
       <Route
         path="/module/:moduleIndex"
         element={
@@ -92,36 +90,7 @@ function App() {
         }
       />
 
-      <Route
-        path="/certificacion"
-        element={
-          <RequireAuth>
-            <RequirePaid>
-              <Certificacion />
-            </RequirePaid>
-          </RequireAuth>
-        }
-      />
-
-      {/* ========================= */}
-      {/* RUTAS ADMIN (ESCALABLES) */}
-      {/* ========================= */}
-      {/* 
-      <Route
-        path="/admin"
-        element={
-          <RequireAuth>
-            <RequireAdmin>
-              <AdminDashboard />
-            </RequireAdmin>
-          </RequireAuth>
-        }
-      />
-      */}
-
-      {/* ========================= */}
       {/* 404 */}
-      {/* ========================= */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
