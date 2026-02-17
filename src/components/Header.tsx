@@ -55,7 +55,7 @@ const Header = () => {
       label: 'ADMISIONES',
       submenu: [
         { href: '/admisiones/requisitos', label: 'Requisitos' },
-        { href: '/admisiones/processo', label: 'Proceso' },
+        { href: '/admisiones/proceso', label: 'Proceso' },
         { href: '/admisiones/contacto', label: 'Contacto' }
       ]
     },

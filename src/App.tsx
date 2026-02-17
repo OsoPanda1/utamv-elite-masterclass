@@ -17,6 +17,7 @@ import VerifyCertificate from "@/pages/VerifyCertificate";
 import Expertos from "@/pages/Expertos";
 import PreguntasFrecuentes from "@/pages/PreguntasFrecuentes";
 import NotFound from "@/pages/NotFound";
+import PlaceholderPage from "@/pages/PlaceholderPage";
 
 // Route Guards
 import { RequireAuth } from "@/components/guards/RequireAuth";
@@ -28,11 +29,33 @@ function App() {
       {/* RUTAS PÚBLICAS */}
       <Route path="/" element={<Index />} />
       <Route path="/auth" element={<Auth />} />
+      
+      {/* Programas */}
       <Route path="/programas" element={<Programas />} />
       <Route path="/programas/:slug" element={<ProgramDetail />} />
+      <Route path="/programas/maestrias" element={<PlaceholderPage />} />
+      <Route path="/programas/master-profesional" element={<PlaceholderPage />} />
+      <Route path="/programas/diplomados" element={<PlaceholderPage />} />
+      <Route path="/programas/certificaciones" element={<PlaceholderPage />} />
+      
+      {/* Docentes */}
       <Route path="/docentes" element={<Expertos />} />
+      <Route path="/docentes/rectoria" element={<PlaceholderPage />} />
+      <Route path="/docentes/directivos" element={<PlaceholderPage />} />
+      <Route path="/docentes/profesores" element={<PlaceholderPage />} />
+      
+      {/* Investigación */}
       <Route path="/investigacion" element={<Investigacion />} />
+      <Route path="/investigacion/proyectos" element={<PlaceholderPage />} />
+      <Route path="/investigacion/publicaciones" element={<PlaceholderPage />} />
+      
+      {/* Admisiones */}
       <Route path="/admisiones" element={<Inscripcion />} />
+      <Route path="/admisiones/requisitos" element={<PlaceholderPage />} />
+      <Route path="/admisiones/proceso" element={<PlaceholderPage />} />
+      <Route path="/admisiones/contacto" element={<PlaceholderPage />} />
+      
+      {/* Otras rutas públicas */}
       <Route path="/ayuda" element={<Ayuda />} />
       <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
       <Route path="/verificar-certificado" element={<VerifyCertificate />} />
