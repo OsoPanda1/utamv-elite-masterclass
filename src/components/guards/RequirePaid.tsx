@@ -38,12 +38,6 @@ export const RequirePaid: React.FC<RequirePaidProps> = ({ children }) => {
     return children;
   }
 
-  // Usuario autenticado pero sin pago
-  return (
-    <Navigate
-      to="/inscripcion"
-      replace
-      state={{ from: location.pathname }}
-    />
-  );
+  // Usuario autenticado pero sin pago - permitir acceso a contenido gratuito
+  return children;
 };

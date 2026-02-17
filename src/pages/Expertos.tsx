@@ -17,7 +17,7 @@ const Expertos = () => {
       specialty: 'Metadatos, SEO, AEO, IA, Ecosistemas Digitales',
       bio: 'Rector y fundador de la Universidad Tecnológica Avanzada del Marketing Virtual. Profesional con más de 15 años de experiencia en marketing digital, tecnología y educación superior. Especializado en posicionamiento digital, metadatos estratégicos e inteligencia artificial aplicada. Arquitecto del ecosistema educativo TAMV MD-X4 y pionero en Answer Engine Optimization (AEO).',
       image: edwinCastillo,
-      orcid: '0009-0008-5050-1539',
+      orcid: '0009-0008-5050-1539', // ORCID de Edwin Oswaldo Castillo Trejo (Anubis Villaseñor) CEO Fundador de TAMV ONLINE
       achievements: [
         'Rector y Fundador de la Universidad UTAMV',
         'Especialista en Metadatos y SEO Avanzado',
