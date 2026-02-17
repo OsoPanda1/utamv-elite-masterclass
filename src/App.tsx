@@ -18,6 +18,18 @@ import Expertos from "@/pages/Expertos";
 import PreguntasFrecuentes from "@/pages/PreguntasFrecuentes";
 import NotFound from "@/pages/NotFound";
 import PlaceholderPage from "@/pages/PlaceholderPage";
+import Maestrias from "@/pages/programs/Maestrias";
+import MasterProfesional from "@/pages/programs/MasterProfesional";
+import Diplomados from "@/pages/programs/Diplomados";
+import Certificaciones from "@/pages/programs/Certificaciones";
+import Rectoria from "@/pages/docentes/Rectoria";
+import Directivos from "@/pages/docentes/Directivos";
+import Profesores from "@/pages/docentes/Profesores";
+import Proyectos from "@/pages/investigacion/Proyectos";
+import Publicaciones from "@/pages/investigacion/Publicaciones";
+import Requisitos from "@/pages/admisiones/Requisitos";
+import Proceso from "@/pages/admisiones/Proceso";
+import Contacto from "@/pages/admisiones/Contacto";
 
 // Route Guards
 import { RequireAuth } from "@/components/guards/RequireAuth";
@@ -33,27 +45,27 @@ function App() {
       {/* Programas */}
       <Route path="/programas" element={<Programas />} />
       <Route path="/programas/:slug" element={<ProgramDetail />} />
-      <Route path="/programas/maestrias" element={<PlaceholderPage />} />
-      <Route path="/programas/master-profesional" element={<PlaceholderPage />} />
-      <Route path="/programas/diplomados" element={<PlaceholderPage />} />
-      <Route path="/programas/certificaciones" element={<PlaceholderPage />} />
+      <Route path="/programas/maestrias" element={<Maestrias />} />
+      <Route path="/programas/master-profesional" element={<MasterProfesional />} />
+      <Route path="/programas/diplomados" element={<Diplomados />} />
+      <Route path="/programas/certificaciones" element={<Certificaciones />} />
       
       {/* Docentes */}
       <Route path="/docentes" element={<Expertos />} />
-      <Route path="/docentes/rectoria" element={<PlaceholderPage />} />
-      <Route path="/docentes/directivos" element={<PlaceholderPage />} />
-      <Route path="/docentes/profesores" element={<PlaceholderPage />} />
+      <Route path="/docentes/rectoria" element={<Rectoria />} />
+      <Route path="/docentes/directivos" element={<Directivos />} />
+      <Route path="/docentes/profesores" element={<Profesores />} />
       
       {/* Investigación */}
       <Route path="/investigacion" element={<Investigacion />} />
-      <Route path="/investigacion/proyectos" element={<PlaceholderPage />} />
-      <Route path="/investigacion/publicaciones" element={<PlaceholderPage />} />
+      <Route path="/investigacion/proyectos" element={<Proyectos />} />
+      <Route path="/investigacion/publicaciones" element={<Publicaciones />} />
       
       {/* Admisiones */}
       <Route path="/admisiones" element={<Inscripcion />} />
-      <Route path="/admisiones/requisitos" element={<PlaceholderPage />} />
-      <Route path="/admisiones/proceso" element={<PlaceholderPage />} />
-      <Route path="/admisiones/contacto" element={<PlaceholderPage />} />
+      <Route path="/admisiones/requisitos" element={<Requisitos />} />
+      <Route path="/admisiones/proceso" element={<Proceso />} />
+      <Route path="/admisiones/contacto" element={<Contacto />} />
       
       {/* Otras rutas públicas */}
       <Route path="/ayuda" element={<Ayuda />} />

@@ -65,6 +65,28 @@ const allPrograms = [
     level: 'Avanzado',
     area: 'Estrategia Digital',
   },
+  {
+    slug: 'master-ia-empresarial',
+    type: 'Máster Profesional',
+    title: 'Máster Profesional en IA para Negocios',
+    description: 'Aplicación práctica de inteligencia artificial en automatización, análisis predictivo y optimización de procesos empresariales.',
+    hours: '55+',
+    duration: '6 meses',
+    modality: '100% en línea',
+    level: 'Avanzado',
+    area: 'Inteligencia Artificial',
+  },
+  {
+    slug: 'master-transformacion-digital',
+    type: 'Máster Profesional',
+    title: 'Máster Profesional en Transformación Digital',
+    description: 'Liderazgo en procesos de transformación digital, innovación tecnológica y adaptación a entornos disruptivos.',
+    hours: '50+',
+    duration: '6 meses',
+    modality: '100% en línea',
+    level: 'Avanzado',
+    area: 'Estrategia Digital',
+  },
 
   // Diplomados
   {
