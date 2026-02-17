@@ -1,0 +1,23 @@
+name: Course Integrity Cron
+
+on:
+  schedule:
+    - cron: '0 8 * * *' # Todos los días a las 8am UTC
+
+jobs:
+  check_courses:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Install deps
+        run: npm install
+      - name: Run course integrity check
+        run: node supabase/functions/cron/check_course_integrity/index.ts
+        env:
+          ADMIN_ALERT_WEBHOOK: ${{ secrets.ADMIN_ALERT_WEBHOOK }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
