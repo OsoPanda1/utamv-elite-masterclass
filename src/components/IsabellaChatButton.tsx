@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Bot, Sparkles, MessageCircle, X } from "lucide-react";
+import { Bot, Sparkles, MessageCircle } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import AISupportChat from "./dashboard/AISupportChat";
+import PublicVisitorChat from "./VisitorChat";
 
 /**
  * IsabellaChatButton - Floating AI Chat Button
  * Provides access to Isabella AI assistant from anywhere in the application
+ * - Authenticated users: Full chat with higher limits
+ * - Visitors: Limited chat with rate limiting
  * Based on UTAMV AI Academic Core 2026 principles
  */
 const IsabellaChatButton = () => {
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -46,7 +51,7 @@ const IsabellaChatButton = () => {
                       <Sparkles className="w-4 h-4 text-teal" />
                     </SheetTitle>
                     <p className="text-xs text-muted-foreground">
-                      Guía Académica IA UTAMV
+                      {user ? "Guía Académica IA UTAMV" : "Chat para Visitantes"}
                     </p>
                   </div>
                 </div>
@@ -59,11 +64,23 @@ const IsabellaChatButton = () => {
                   No sustituye asesoría profesional ni evaluación académica oficial.
                 </p>
               </div>
+              
+              {/* User status indicator */}
+              {!user && (
+                <div className="mt-2 flex items-center gap-2 text-xs text-teal">
+                  <MessageCircle className="w-3 h-3" />
+                  <span>Modo visitante - Regístrate para más mensajes</span>
+                </div>
+              )}
             </SheetHeader>
             
-            {/* Chat Component */}
+            {/* Chat Component - Different for visitors vs authenticated users */}
             <div className="h-[calc(100vh-180px)]">
-              <AISupportChat />
+              {user ? (
+                <AISupportChat />
+              ) : (
+                <PublicVisitorChat />
+              )}
             </div>
           </SheetContent>
         </Sheet>

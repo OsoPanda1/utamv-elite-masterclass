@@ -365,6 +365,32 @@ CREATE INDEX IF NOT EXISTS idx_user_progress_user_module ON user_progress(user_i
 CREATE INDEX IF NOT EXISTS idx_rate_limits_expires ON rate_limits(expires_at);
 
 -- =====================================================
+-- 12. Visitor AI Usage Tracking (for public chat)
+-- =====================================================
+
+CREATE TABLE IF NOT EXISTS visitor_ai_usage (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id TEXT NOT NULL,
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
+  count INTEGER DEFAULT 1,
+  message_hash TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(session_id, date)
+);
+
+-- Index for efficient rate limit lookups
+CREATE INDEX IF NOT EXISTS idx_visitor_ai_usage_session_date ON visitor_ai_usage(session_id, date);
+CREATE INDEX IF NOT EXISTS idx_visitor_ai_usage_created ON visitor_ai_usage(created_at);
+
+-- Enable RLS
+ALTER TABLE visitor_ai_usage ENABLE ROW LEVEL SECURITY;
+
+-- No direct access from frontend - only through edge functions
+CREATE POLICY "visitor_ai_usage_no_access" ON visitor_ai_usage
+  FOR ALL
+  USING (false);
+
+-- =====================================================
 -- COMPLETION MESSAGE
 -- =====================================================
 
@@ -379,4 +405,5 @@ BEGIN
   RAISE NOTICE '  5. Rate limiting system';
   RAISE NOTICE '  6. Course access control';
   RAISE NOTICE '  7. Avatar access logging';
+  RAISE NOTICE '  8. Visitor AI usage tracking';
 END $$;
