@@ -158,8 +158,8 @@ const HeroSection = () => {
               {/* Glow effect - Silver */}
               <div className="absolute -inset-4 bg-gradient-to-r from-silver/30 via-teal/20 to-silver/30 rounded-full blur-2xl opacity-50 group-hover:opacity-75 transition-opacity duration-500 animate-pulse-silver" />
               
-              {/* AI Image */}
-              <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-silver/50 shadow-silver animate-float">
+              {/* AI Image - Logo increased by 50% */}
+              <div className="relative w-96 h-96 md:w-[480px] md:h-[480px] rounded-full overflow-hidden border-4 border-silver/50 shadow-silver animate-float">
                 <img 
                   src={aiAssistant} 
                   alt="Isabella Villaseñor - AI Guide" 
