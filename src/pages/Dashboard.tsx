@@ -181,13 +181,16 @@ const Dashboard = () => {
   };
 
   const handleModuleClick = (moduleId: string, orderIndex: number) => {
-    if (!hasAccess) {
+    const isFreeModule = orderIndex < 2; // First 2 modules are free
+    
+    if (!hasAccess && !isFreeModule) {
       toast({
-        title: 'Acceso restringido',
-        description: 'Inscríbete para acceder al contenido del programa.',
+        title: 'Acceso Premium',
+        description: 'Este módulo es exclusivo para estudiantes premium. Inscríbete para acceder.',
       });
       return;
     }
+    
     navigate(`/module/${orderIndex}`);
   };
 
@@ -292,21 +295,48 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* Quick Status - Only show if not paid AND not admin */}
+        {/* Welcome Section for Free Users */}
         {!hasAccess && (
-          <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-silver-primary/10 to-silver-accent/10 border border-silver-primary/30">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <Lock className="w-10 h-10 text-silver-primary" />
-                <div>
-                  <h3 className="font-display text-xl font-bold text-foreground">Acceso Premium Bloqueado</h3>
-                  <p className="text-muted-foreground">Inscríbete para desbloquear todos los módulos y certificación</p>
+          <div className="mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="p-6 rounded-2xl bg-gradient-to-r from-platinum/10 to-silver-primary/10 border border-platinum/30">
+                <h3 className="font-display text-xl font-bold text-foreground mb-4">¡Bienvenido a UTAMV!</h3>
+                <p className="text-muted-foreground mb-6">
+                  Explora nuestra plataforma educativa y descubre todo lo que tenemos para ofrecer. 
+                  Accede a contenido gratuito, recursos educativos y una comunidad de aprendizaje.
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    <span className="text-sm text-foreground">Contenido gratuito y recursos educativos</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    <span className="text-sm text-foreground">Acceso a la comunidad de aprendizaje</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    <span className="text-sm text-foreground">Pruebas gratuitas de nuestros programas</span>
+                  </div>
                 </div>
               </div>
-              <Button variant="elite" size="lg" onClick={handleEnroll}>
-                <Sparkles className="w-5 h-5 mr-2" />
-                Inscribirme - $199 USD
-              </Button>
+              
+              <div className="p-6 rounded-2xl bg-gradient-to-r from-silver-primary/10 to-silver-accent/10 border border-silver-primary/30">
+                <h3 className="font-display text-xl font-bold text-foreground mb-4">Programas Premium</h3>
+                <p className="text-muted-foreground mb-6">
+                  Desbloquea todo el contenido premium y accede a programas completos con certificación oficial.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-foreground">Máster Profesional en Marketing Digital</span>
+                    <span className="font-bold text-silver-primary">$4,999 USD</span>
+                  </div>
+                  <Button variant="elite" size="lg" onClick={handleEnroll} className="w-full">
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    Inscribirme Ahora
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -414,10 +444,12 @@ const Dashboard = () => {
                 </span>
               </div>
 
+              {/* Show free modules for non-paid users, all modules for paid users */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {modules.map((module, index) => {
                   const completed = isModuleCompleted(module.id);
-                  const locked = !hasAccess;
+                  const isFreeModule = index < 2; // First 2 modules are free
+                  const locked = !hasAccess && !isFreeModule;
                   
                   return (
                     <div 
@@ -442,7 +474,12 @@ const Dashboard = () => {
                           {locked ? (
                             <div className="px-3 py-1 rounded-full bg-card/90 border border-border flex items-center gap-1">
                               <Lock className="w-3 h-3 text-muted-foreground" />
-                              <span className="text-xs text-muted-foreground">Bloqueado</span>
+                              <span className="text-xs text-muted-foreground">Premium</span>
+                            </div>
+                          ) : isFreeModule && !hasAccess ? (
+                            <div className="px-3 py-1 rounded-full bg-green-500/90 flex items-center gap-1">
+                              <PlayCircle className="w-3 h-3 text-background" />
+                              <span className="text-xs text-background font-medium">Gratis</span>
                             </div>
                           ) : completed ? (
                             <div className="px-3 py-1 rounded-full bg-silver-primary/90 flex items-center gap-1">
