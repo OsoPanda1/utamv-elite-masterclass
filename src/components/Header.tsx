@@ -115,7 +115,7 @@ const Header = () => {
                   </div>
                 ) : (
                   <Link
-                    to={link.href}
+                    to={link.href === '/campus-virtual' && !user ? '/auth' : link.href}
                     className={`px-4 py-3 text-xs font-semibold tracking-[0.12em] transition-all duration-300 rounded-lg ${
                       isActive(link.href)
                         ? 'text-platinum bg-platinum/10 border border-platinum/30'
@@ -218,7 +218,7 @@ const Header = () => {
                     </div>
                   ) : (
                     <Link
-                      to={link.href}
+                      to={link.href === '/campus-virtual' && !user ? '/auth' : link.href}
                       className={`py-4 px-6 rounded-xl text-sm font-semibold tracking-wider transition-all ${
                         isActive(link.href)
                           ? 'bg-platinum/10 text-platinum border border-platinum/30'

@@ -133,16 +133,16 @@ const Auth = () => {
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-card border-2 border-primary mb-4 shadow-glow">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-card border-2 border-platinum mb-4 shadow-platinum">
               <img src={utamvSeal} alt="UTAMV" className="w-14 h-14 object-contain" />
             </div>
-            <h1 className="font-display text-3xl font-bold text-gradient-gold">
-              {isLogin ? 'Bienvenido de Vuelta' : 'Únete al Master Elite'}
+            <h1 className="font-display text-3xl font-bold text-gradient-silver">
+              {isLogin ? 'Bienvenido de Vuelta' : 'Únete a UTAMV'}
             </h1>
             <p className="text-muted-foreground mt-2">
               {isLogin 
                 ? 'Accede a tu dashboard académico' 
-                : 'Crea tu cuenta para comenzar tu transformación'}
+                : 'Crea tu cuenta para comenzar tu educación'}
             </p>
           </div>
 
@@ -206,13 +206,13 @@ const Auth = () => {
 
             <Button
               type="submit"
-              variant="elite"
+              variant="outline"
               size="lg"
-              className="w-full"
+              className="w-full border-platinum text-platinum hover:bg-platinum/10 hover:border-platinum"
               disabled={isLoading}
             >
               {isLoading ? (
-                <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-foreground" />
+                <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-platinum" />
               ) : (
                 <>
                   {isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
@@ -255,39 +255,39 @@ const Auth = () => {
 
       {/* Right side - Decorative */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-br from-card via-background to-card items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-platinum/5 via-transparent to-platinum/10" />
         
         {/* Academic elements */}
         <div className="relative z-10 text-center px-12">
-          <div className="w-40 h-40 mx-auto mb-8 rounded-full bg-card border-4 border-primary/30 flex items-center justify-center shadow-glow animate-float">
-            <GraduationCap className="w-20 h-20 text-primary" />
+          <div className="w-40 h-40 mx-auto mb-8 rounded-full bg-card border-4 border-platinum/30 flex items-center justify-center shadow-platinum animate-float">
+            <GraduationCap className="w-20 h-20 text-platinum" />
           </div>
           
-          <h2 className="font-display text-4xl font-bold text-gradient-gold mb-4">
-            Master Elite Profesional
+          <h2 className="font-display text-4xl font-bold text-gradient-silver mb-4">
+            Universidad UTAMV
           </h2>
           <p className="text-xl text-muted-foreground mb-6">
-            Marketing Digital 2026
+            Educación Superior de Calidad
           </p>
           
           <div className="space-y-4">
             <div className="flex items-center gap-3 text-foreground">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-primary font-bold">✓</span>
+              <div className="w-8 h-8 rounded-full bg-platinum/10 flex items-center justify-center">
+                <span className="text-platinum font-bold">✓</span>
               </div>
               <span>Certificación Académica Internacional</span>
             </div>
             <div className="flex items-center gap-3 text-foreground">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-primary font-bold">✓</span>
+              <div className="w-8 h-8 rounded-full bg-platinum/10 flex items-center justify-center">
+                <span className="text-platinum font-bold">✓</span>
               </div>
-              <span>10 Módulos de Contenido Premium</span>
+              <span>Programas de Excelencia Académica</span>
             </div>
             <div className="flex items-center gap-3 text-foreground">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-primary font-bold">✓</span>
+              <div className="w-8 h-8 rounded-full bg-platinum/10 flex items-center justify-center">
+                <span className="text-platinum font-bold">✓</span>
               </div>
-              <span>Orgullosamente desde Latinoamérica</span>
+              <span>Educación Transformadora desde Latinoamérica</span>
             </div>
           </div>
         </div>
