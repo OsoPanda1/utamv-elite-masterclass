@@ -164,9 +164,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const refreshPaymentStatus = useCallback(async () => {
     if (user?.id) {
-      await fetchPaymentStatus(user.id);
+      await Promise.all([
+        fetchPaymentStatus(user.id),
+        fetchUserRole(user.id),
+      ]);
     }
-  }, [user?.id, fetchPaymentStatus]);
+  }, [user?.id, fetchPaymentStatus, fetchUserRole]);
+
 
   // =========================
   // Auth state management
