@@ -101,137 +101,113 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   // =========================
-  // Refresh combined status
+  // Auth operations
   // =========================
-  const refreshPaymentStatus = useCallback(async () => {
-    if (!user) return;
-
-    await Promise.all([
-      fetchPaymentStatus(user.id),
-      fetchUserRole(user.id),
-    ]);
-  }, [user, fetchPaymentStatus, fetchUserRole]);
-
-  // =========================
-  // Init + Auth listener
-  // =========================
-  useEffect(() => {
-    let isMounted = true;
-
-    const initSession = async () => {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-
-      if (!isMounted) return;
-
-      if (error) {
-        console.error("Error getting session:", error);
-      }
-
-      setSession(session ?? null);
-      setUser(session?.user ?? null);
-
-      if (session?.user) {
-        await Promise.all([
-          fetchPaymentStatus(session.user.id),
-          fetchUserRole(session.user.id),
-        ]);
-      }
-
-      setLoading(false);
-    };
-
-    initSession();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
-      if (!isMounted) return;
-
-      setSession(newSession);
-      setUser(newSession?.user ?? null);
-
-      if (newSession?.user) {
-        await Promise.all([
-          fetchPaymentStatus(newSession.user.id),
-          fetchUserRole(newSession.user.id),
-        ]);
-      } else {
-        setIsPaid(false);
-        setRole("student");
-        setIsAdmin(false);
-      }
-
-      setLoading(false);
-    });
-
-    return () => {
-      isMounted = false;
-      subscription.unsubscribe();
-    };
-  }, [fetchPaymentStatus, fetchUserRole]);
-
-  // =========================
-  // Auth actions
-  // =========================
-  const signUp = useCallback(
-    async (email: string, password: string, fullName: string) => {
-      const redirectUrl = `${window.location.origin}/`;
-
-      const { data, error } = await supabase.auth.signUp({
+  const signUp = useCallback(async (
+    email: string,
+    password: string,
+    fullName: string,
+  ): Promise<{ error: Error | null }> => {
+    try {
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl,
           data: {
             full_name: fullName,
           },
         },
       });
 
-      if (!error && data.user) {
-        const { error: profileError } = await supabase.from("profiles").insert({
-          user_id: data.user.id,
-          email,
-          full_name: fullName,
-        });
-
-        if (profileError) {
-          console.error("Error creating profile:", profileError);
-        }
+      if (error) {
+        return { error };
       }
 
-      return { error: error as Error | null };
-    },
-    [],
-  );
+      return { error: null };
+    } catch (err) {
+      return { error: err as Error };
+    }
+  }, []);
 
-  const signIn = useCallback(
-    async (email: string, password: string) => {
+  const signIn = useCallback(async (
+    email: string,
+    password: string,
+  ): Promise<{ error: Error | null }> => {
+    try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      return { error: error as Error | null };
-    },
-    [],
-  );
+
+      if (error) {
+        return { error };
+      }
+
+      return { error: null };
+    } catch (err) {
+      return { error: err as Error };
+    }
+  }, []);
 
   const signOut = useCallback(async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setSession(null);
-    setIsPaid(false);
-    setRole("student");
-    setIsAdmin(false);
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      setSession(null);
+      setIsPaid(false);
+      setRole("student");
+      setIsAdmin(false);
+    } catch (err) {
+      console.error("Error signing out:", err);
+    }
   }, []);
+
+  const refreshPaymentStatus = useCallback(async () => {
+    if (user?.id) {
+      await Promise.all([
+        fetchPaymentStatus(user.id),
+        fetchUserRole(user.id),
+      ]);
+    }
+  }, [user?.id, fetchPaymentStatus, fetchUserRole]);
+
+
+  // =========================
+  // Auth state management
+  // =========================
+  useEffect(() => {
+    const setInitialSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+      setUser(data.session?.user ?? null);
+      setLoading(false);
+    };
+
+    setInitialSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+
+      if (session?.user) {
+        fetchPaymentStatus(session.user.id);
+        fetchUserRole(session.user.id);
+      } else {
+        setIsPaid(false);
+        setRole("student");
+        setIsAdmin(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [fetchPaymentStatus, fetchUserRole]);
 
   // =========================
   // Context value
   // =========================
-  const value = useMemo(
+  const value = useMemo<AuthContextType>(
     () => ({
       user,
       session,
@@ -244,18 +220,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       signOut,
       refreshPaymentStatus,
     }),
-    [
-      user,
-      session,
-      loading,
-      isPaid,
-      isAdmin,
-      role,
-      signUp,
-      signIn,
-      signOut,
-      refreshPaymentStatus,
-    ],
+    [user, session, loading, isPaid, isAdmin, role, signUp, signIn, signOut, refreshPaymentStatus],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "@/components/ui/sonner";
 
 // Pages
 import Index from "@/pages/Index";
@@ -37,99 +38,103 @@ import { RequirePaid } from "@/components/guards/RequirePaid";
 
 function App() {
   return (
-    <Routes>
-      {/* RUTAS PÚBLICAS */}
-      <Route path="/" element={<Index />} />
-      <Route path="/auth" element={<Auth />} />
-      
-      {/* Programas */}
-      <Route path="/programas" element={<Programas />} />
-      <Route path="/programas/:slug" element={<ProgramDetail />} />
-      <Route path="/programas/maestrias" element={<Maestrias />} />
-      <Route path="/programas/master-profesional" element={<MasterProfesional />} />
-      <Route path="/programas/diplomados" element={<Diplomados />} />
-      <Route path="/programas/certificaciones" element={<Certificaciones />} />
-      
-      {/* Docentes */}
-      <Route path="/docentes" element={<Expertos />} />
-      <Route path="/docentes/rectoria" element={<Rectoria />} />
-      <Route path="/docentes/directivos" element={<Directivos />} />
-      <Route path="/docentes/profesores" element={<Profesores />} />
-      
-      {/* Investigación */}
-      <Route path="/investigacion" element={<Investigacion />} />
-      <Route path="/investigacion/proyectos" element={<Proyectos />} />
-      <Route path="/investigacion/publicaciones" element={<Publicaciones />} />
-      
-      {/* Admisiones */}
-      <Route path="/admisiones" element={<Inscripcion />} />
-      <Route path="/admisiones/requisitos" element={<Requisitos />} />
-      <Route path="/admisiones/proceso" element={<Proceso />} />
-      <Route path="/admisiones/contacto" element={<Contacto />} />
-      
-      {/* Otras rutas públicas */}
-      <Route path="/ayuda" element={<Ayuda />} />
-      <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
-      <Route path="/verificar-certificado" element={<VerifyCertificate />} />
+    <>
+      <Toaster />
+      <Routes>
+        {/* RUTAS PÚBLICAS */}
+        <Route path="/" element={<Index />} />
+        <Route path="/auth" element={<Auth />} />
+        
+        {/* Programas */}
+        <Route path="/programas" element={<Programas />} />
+        <Route path="/programas/:slug" element={<ProgramDetail />} />
+        <Route path="/programas/maestrias" element={<Maestrias />} />
+        <Route path="/programas/master-profesional" element={<MasterProfesional />} />
+        <Route path="/programas/diplomados" element={<Diplomados />} />
+        <Route path="/programas/certificaciones" element={<Certificaciones />} />
+        
+        {/* Docentes */}
+        <Route path="/docentes" element={<Expertos />} />
+        <Route path="/docentes/rectoria" element={<Rectoria />} />
+        <Route path="/docentes/directivos" element={<Directivos />} />
+        <Route path="/docentes/profesores" element={<Profesores />} />
+        
+        {/* Investigación */}
+        <Route path="/investigacion" element={<Investigacion />} />
+        <Route path="/investigacion/proyectos" element={<Proyectos />} />
+        <Route path="/investigacion/publicaciones" element={<Publicaciones />} />
+        
+        {/* Admisiones */}
+        <Route path="/admisiones" element={<Inscripcion />} />
+        <Route path="/admisiones/requisitos" element={<Requisitos />} />
+        <Route path="/admisiones/proceso" element={<Proceso />} />
+        <Route path="/admisiones/contacto" element={<Contacto />} />
+        
+        {/* Otras rutas públicas */}
+        <Route path="/ayuda" element={<Ayuda />} />
+        <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
+        <Route path="/verificar-certificado" element={<VerifyCertificate />} />
 
-      {/* Redirects de rutas antiguas */}
-      <Route path="/programa" element={<Navigate to="/programas/master-marketing-digital-2026" replace />} />
-      <Route path="/expertos" element={<Navigate to="/docentes" replace />} />
-      <Route path="/inscripcion" element={<Navigate to="/admisiones" replace />} />
-      <Route path="/certificacion" element={<Navigate to="/campus-virtual" replace />} />
-      <Route path="/dashboard" element={<Navigate to="/campus-virtual" replace />} />
+        {/* Redirects de rutas antiguas */}
+        <Route path="/programa" element={<Navigate to="/programas/master-marketing-digital-2026" replace />} />
+        <Route path="/expertos" element={<Navigate to="/docentes" replace />} />
+        <Route path="/inscripcion" element={<Navigate to="/admisiones" replace />} />
+        <Route path="/certificacion" element={<Navigate to="/campus-virtual" replace />} />
+        <Route path="/dashboard" element={<Navigate to="/campus-virtual" replace />} />
 
-      {/* CAMPUS VIRTUAL (autenticado + pagado) */}
-      <Route
-        path="/campus-virtual"
-        element={
-          <RequireAuth>
-            <Dashboard />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/settings"
-        element={
-          <RequireAuth>
-            <Settings />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/modulos"
-        element={
-          <RequireAuth>
-            <RequirePaid>
-              <Modulos />
-            </RequirePaid>
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/modulos/:id"
-        element={
-          <RequireAuth>
-            <RequirePaid>
-              <ModuleViewer />
-            </RequirePaid>
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/module/:moduleIndex"
-        element={
-          <RequireAuth>
-            <RequirePaid>
-              <ModuleViewer />
-            </RequirePaid>
-          </RequireAuth>
-        }
-      />
+        {/* CAMPUS VIRTUAL (autenticado + pagado) */}
+        <Route
+          path="/campus-virtual"
+          element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <RequireAuth>
+              <Settings />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/modulos"
+          element={
+            <RequireAuth>
+              <RequirePaid>
+                <Modulos />
+              </RequirePaid>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/modulos/:id"
+          element={
+            <RequireAuth>
+              <RequirePaid>
+                <ModuleViewer />
+              </RequirePaid>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/module/:moduleIndex"
+          element={
+            <RequireAuth>
+              <RequirePaid>
+                <ModuleViewer />
+              </RequirePaid>
+            </RequireAuth>
+          }
+        />
 
-      {/* 404 */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        {/* 404 */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
+  );
   );
 }
 
