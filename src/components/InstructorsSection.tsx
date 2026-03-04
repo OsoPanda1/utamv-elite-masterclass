@@ -10,7 +10,7 @@ const InstructorsSection = () => {
     {
       name: "Dr. Edwin Oswaldo Castillo Trejo",
       role: "Rector Director, UTAMV Campus Online",
-      Bio: Fundador y CEO de TAMV Online Network; Rector fundador de UTAMV",
+      bio: "Fundador y CEO de TAMV Online Network; Rector fundador de UTAMV",
       specialty: "Tecnologías Avanzadas Aplicadas a la Educación Digital y Ecosistemas Metaversales. Esto alinea con la misión de UTAMV como campus universitario online enfocado en formación profesional de alto nivel en entornos inmersivos y digitales.",
       expertise: "Expertise: Arquitecto de Ecosistemas Metaversales Digitales | +5 años liderando TAMV/UTAMV, AI-Blockchain, Educación Inmersiva, Seguridad Federada",
       image: edwinCastillo,

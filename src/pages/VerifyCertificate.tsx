@@ -19,7 +19,7 @@ interface VerificationResult {
   valid: boolean;
   certificate?: {
     number: string;
-    issued_at: string;
+    issued_at: string | null;
     holder: string;
     program: string;
     institution: string;
@@ -67,7 +67,7 @@ const VerifyCertificate = () => {
       const { data: certificate, error } = await supabase
         .from('certificates')
         .select('*')
-        .eq('certificate_number', certificateNumber)
+        .eq('certificate_number', certificateNumber ?? '')
         .single();
 
       if (error) {
@@ -93,7 +93,7 @@ const VerifyCertificate = () => {
         valid: true,
         certificate: {
           number: certificate.certificate_number,
-          issued_at: certificate.generated_at,
+          issued_at: certificate.generated_at ?? '',
           holder: profile?.full_name || 'Estudiante UTAMV',
           program: course?.title || 'Programa no especificado',
           institution: 'UTAMV - Universidad Tecnológica Avanzada del Marketing Virtual',
@@ -232,7 +232,7 @@ const VerifyCertificate = () => {
                       <span className="text-sm">Fecha de Emisión</span>
                     </div>
                     <p className="font-semibold text-foreground">
-                      {new Date(result.certificate.issued_at).toLocaleDateString('es-ES', {
+                      {new Date(result.certificate.issued_at ?? '').toLocaleDateString('es-ES', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'

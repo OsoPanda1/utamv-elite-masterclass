@@ -603,7 +603,7 @@ export function generateAcademicAuditReport(
   report += `    Materias\n`;
   report += `      Unidades\n`;
   report += `        Recursos\n`;
-  report += '```\n\n`;
+  report += '```\n\n';
 
   report += `## Inspiración Internacional\n\n`;
   report += `| Institución | Principio |\n`;

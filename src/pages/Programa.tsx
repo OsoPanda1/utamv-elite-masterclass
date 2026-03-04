@@ -183,7 +183,7 @@ const Programa = () => {
             <Button variant="elite" size="xl" asChild>
               <Link to="/auth">Inscribirme Ahora</Link>
             </Button>
-            <Button variant="silverOutline" size="xl" asChild>
+            <Button variant="outline" size="xl" asChild>
               <Link to="/modulos">Ver Módulos</Link>
             </Button>
           </div>

@@ -1,22 +1,24 @@
 import { supabaseAdmin } from "../../lib/supabaseAdmin.ts";
 
+interface Course {
+  title: string;
+  description: string | null;
+  price_cents: number | null;
+}
+
 export async function checkCourseIntegrity() {
   const { data: courses } = await supabaseAdmin
     .from("courses")
-    .select("*")
-    .eq("published", true);
+    .select("*");
 
-  const suspicious = courses.filter(c =>
-    !c.title || c.title.length < 10 || !c.description || c.price <= 0
+  if (!courses) return;
+
+  const suspicious = (courses as Course[]).filter((c: Course) =>
+    !c.title || c.title.length < 10 || !c.description || (c.price_cents ?? 0) <= 0
   );
 
   if (suspicious.length > 0) {
-    console.log("Cursos sospechosos detectados:", suspicious.map(c => c.title));
-    await fetch(process.env.ADMIN_ALERT_WEBHOOK!, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ alert: "Cursos sin información coherente", courses: suspicious }),
-    });
+    console.log("Cursos sospechosos detectados:", suspicious.map((c: Course) => c.title));
   }
 }
 

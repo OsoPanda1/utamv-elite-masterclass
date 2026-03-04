@@ -30,20 +30,20 @@ import utamvSeal from '@/assets/utamv-seal.png';
 interface Module {
   id: string;
   title: string;
-  description: string;
+  description: string | null;
   order_index: number;
-  image_url: string;
+  image_url: string | null;
 }
 
 interface ModuleProgress {
   module_id: string;
-  completed_at: string;
+  completed_at: string | null;
 }
 
 interface Certificate {
   id: string;
   certificate_number: string;
-  generated_at: string;
+  generated_at: string | null;
 }
 
 interface QuizScore {
@@ -109,30 +109,30 @@ const Dashboard = () => {
         .select('*')
         .order('order_index');
       
-      if (modulesData) setModules(modulesData);
+      if (modulesData) setModules(modulesData as Module[]);
 
       // Fetch progress
       const { data: progressData } = await supabase
         .from('module_progress')
         .select('*')
-        .eq('user_id', user?.id);
+        .eq('user_id', user?.id ?? '');
       
-      if (progressData) setProgress(progressData);
+      if (progressData) setProgress(progressData as ModuleProgress[]);
 
       // Fetch certificate
       const { data: certData } = await supabase
         .from('certificates')
         .select('*')
-        .eq('user_id', user?.id)
+        .eq('user_id', user?.id ?? '')
         .maybeSingle();
       
-      if (certData) setCertificate(certData);
+      if (certData) setCertificate(certData as Certificate);
 
       // Fetch quiz scores for average calculation
       const { data: scoresData } = await supabase
         .from('quiz_attempts')
         .select('score')
-        .eq('user_id', user?.id);
+        .eq('user_id', user?.id ?? '');
       
       if (scoresData) {
         setQuizScores(scoresData);
@@ -405,11 +405,11 @@ const Dashboard = () => {
                   studentName={user?.user_metadata?.full_name || 'Estudiante UTAMV'}
                   certificateNumber={certificate.certificate_number}
                   courseTitle="Master Elite Profesional en Marketing Digital 2026"
-                  completionDate={new Date(certificate.generated_at).toLocaleDateString('es-ES', {
+                  completionDate={certificate.generated_at ? new Date(certificate.generated_at).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
-                  })}
+                  }) : 'Fecha no disponible'}
                   verificationUrl={`${window.location.origin}/verify?cert=${certificate.certificate_number}`}
                 />
               </div>
