@@ -108,7 +108,7 @@ const Directivos = () => {
                 </div>
                 <div className="text-center p-6 rounded-xl border border-platinum/20">
                   <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-platinum/20 flex items-center justify-center">
-                    <UserTie className="w-6 h-6 text-platinum" />
+                    <User className="w-6 h-6 text-platinum" />
                   </div>
                   <h3 className="font-semibold text-foreground mb-2">Gestión</h3>
                   <p className="text-sm text-muted-foreground">
@@ -147,7 +147,7 @@ const Directivos = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <UserTie className="w-5 h-5 text-platinum mt-1" />
+                  <User className="w-5 h-5 text-platinum mt-1" />
                   <div>
                     <h3 className="font-semibold text-foreground mb-2">Ética</h3>
                     <p className="text-sm text-muted-foreground">

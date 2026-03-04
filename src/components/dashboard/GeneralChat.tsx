@@ -18,8 +18,8 @@ interface ChatMessage {
   user_id: string;
   user_name: string | null;
   message: string;
-  created_at: string;
-  is_flagged: boolean;
+  created_at: string | null;
+  is_flagged: boolean | null;
 }
 
 // Forbidden words/patterns for spam detection
@@ -214,7 +214,7 @@ const GeneralChat = () => {
                       {msg.message}
                     </p>
                     <p className={`text-xs mt-1 ${isOwn ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
-                      {formatTime(msg.created_at)}
+                      {formatTime(msg.created_at ?? '')}
                     </p>
                   </div>
                 </div>

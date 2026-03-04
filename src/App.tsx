@@ -75,66 +75,24 @@ function App() {
         <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
         <Route path="/verificar-certificado" element={<VerifyCertificate />} />
 
-        {/* Redirects de rutas antiguas */}
+        {/* Redirects */}
         <Route path="/programa" element={<Navigate to="/programas/master-marketing-digital-2026" replace />} />
         <Route path="/expertos" element={<Navigate to="/docentes" replace />} />
         <Route path="/inscripcion" element={<Navigate to="/admisiones" replace />} />
         <Route path="/certificacion" element={<Navigate to="/campus-virtual" replace />} />
         <Route path="/dashboard" element={<Navigate to="/campus-virtual" replace />} />
 
-        {/* CAMPUS VIRTUAL (autenticado + pagado) */}
-        <Route
-          path="/campus-virtual"
-          element={
-            <RequireAuth>
-              <Dashboard />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <RequireAuth>
-              <Settings />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/modulos"
-          element={
-            <RequireAuth>
-              <RequirePaid>
-                <Modulos />
-              </RequirePaid>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/modulos/:id"
-          element={
-            <RequireAuth>
-              <RequirePaid>
-                <ModuleViewer />
-              </RequirePaid>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/module/:moduleIndex"
-          element={
-            <RequireAuth>
-              <RequirePaid>
-                <ModuleViewer />
-              </RequirePaid>
-            </RequireAuth>
-          }
-        />
+        {/* CAMPUS VIRTUAL */}
+        <Route path="/campus-virtual" element={<RequireAuth><Dashboard /></RequireAuth>} />
+        <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
+        <Route path="/modulos" element={<RequireAuth><RequirePaid><Modulos /></RequirePaid></RequireAuth>} />
+        <Route path="/modulos/:id" element={<RequireAuth><RequirePaid><ModuleViewer /></RequirePaid></RequireAuth>} />
+        <Route path="/module/:moduleIndex" element={<RequireAuth><RequirePaid><ModuleViewer /></RequirePaid></RequireAuth>} />
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
-  );
   );
 }
 
