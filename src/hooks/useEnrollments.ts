@@ -1,41 +1,20 @@
 // ============================================
 // UTAMV Campus - Hook de Matrículas
+// Basado en la tabla payments como proxy de enrollment
 // ============================================
 
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 export interface Enrollment {
   id: string;
-  program_id: string;
-  order_id: string | null;
-  status: 
-    | "preinscrito"
-    | "inscrito"
-    | "en_curso"
-    | "completado"
-    | "egresado"
-    | "titulado"
-    | "suspendido"
-    | "baja"
-    | "revocado";
-  progress_percent: number;
-  final_grade: number | null;
-  started_at: string;
-  completed_at: string | null;
-  program?: {
-    id: string;
-    name: string;
-    slug: string;
-    description: string;
-  };
-  order?: {
-    id: string;
-    status: string;
-    total_amount_cents: number;
-    currency: string;
-  };
+  course_id: string;
+  status: string;
+  amount_cents: number;
+  currency: string;
+  created_at: string;
+  course_title?: string;
 }
 
 interface UseEnrollmentsReturn {
@@ -43,109 +22,67 @@ interface UseEnrollmentsReturn {
   loading: boolean;
   error: string | null;
   refresh: () => Promise<void>;
-  getEnrollmentByProgramId: (programId: string) => Enrollment | undefined;
-  hasActiveEnrollment: (programId: string) => boolean;
+  hasActiveEnrollment: (courseId: string) => boolean;
 }
 
 /**
  * Hook para manejar las matrículas del usuario
+ * Usa la tabla payments como proxy de enrollment
  */
 export function useEnrollments(): UseEnrollmentsReturn {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const fetchEnrollments = useCallback(async () => {
+    if (!user) {
+      setEnrollments([]);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
       const { data, error: fetchError } = await supabase
-        .from("enrollments")
-        .select(`
-          *,
-          programs(id, name, slug, description),
-          orders(id, status, total_amount_cents, currency)
-        `)
-        .order("started_at", { ascending: false });
+        .from("payments")
+        .select("id, course_id, status, amount_cents, currency, created_at")
+        .eq("user_id", user.id)
+        .eq("status", "succeeded")
+        .order("created_at", { ascending: false });
 
       if (fetchError) {
         throw new Error(fetchError.message);
       }
 
-      const mappedEnrollments: Enrollment[] = (data || []).map((row: any) => ({
+      const mapped: Enrollment[] = (data || []).map((row) => ({
         id: row.id,
-        program_id: row.program_id,
-        order_id: row.order_id,
-        status: row.status,
-        progress_percent: row.progress_percent,
-        final_grade: row.final_grade,
-        started_at: row.started_at,
-        completed_at: row.completed_at,
-        program: row.programs ? {
-          id: row.programs.id,
-          name: row.programs.name,
-          slug: row.programs.slug,
-          description: row.programs.description,
-        } : undefined,
-        order: row.orders ? {
-          id: row.orders.id,
-          status: row.orders.status,
-          total_amount_cents: row.orders.total_amount_cents,
-          currency: row.orders.currency,
-        } : undefined,
+        course_id: row.course_id,
+        status: row.status || "pending",
+        amount_cents: row.amount_cents,
+        currency: row.currency || "usd",
+        created_at: row.created_at || "",
       }));
 
-      setEnrollments(mappedEnrollments);
+      setEnrollments(mapped);
     } catch (err: any) {
-      const message = err.message || "Error al cargar matrículas";
-      setError(message);
-      toast.error(message);
+      setError(err.message || "Error al cargar matrículas");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     fetchEnrollments();
-
-    // Suscribirse a cambios en tiempo real
-    const subscription = supabase
-      .channel("enrollments_changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "enrollments",
-        },
-        () => {
-          fetchEnrollments();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
   }, [fetchEnrollments]);
 
-  const getEnrollmentByProgramId = useCallback(
-    (programId: string) => {
-      return enrollments.find((e) => e.program_id === programId);
+  const hasActiveEnrollment = useCallback(
+    (courseId: string) => {
+      return enrollments.some((e) => e.course_id === courseId);
     },
     [enrollments]
-  );
-
-  const hasActiveEnrollment = useCallback(
-    (programId: string) => {
-      const enrollment = getEnrollmentByProgramId(programId);
-      return (
-        !!enrollment &&
-        ["inscrito", "en_curso", "completado", "egresado"].includes(enrollment.status)
-      );
-    },
-    [getEnrollmentByProgramId]
   );
 
   return {
@@ -153,7 +90,6 @@ export function useEnrollments(): UseEnrollmentsReturn {
     loading,
     error,
     refresh: fetchEnrollments,
-    getEnrollmentByProgramId,
     hasActiveEnrollment,
   };
 }

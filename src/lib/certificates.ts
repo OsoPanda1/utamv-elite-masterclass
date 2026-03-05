@@ -9,95 +9,81 @@ export interface CertificateContext {
   programName: string;
   issueDate: string;
   grade?: string;
-  publicId: string;
+  certificateNumber: string;
   verifyUrl: string;
   extra?: Record<string, string>;
 }
 
 export interface Certificate {
   id: string;
-  public_id: string;
   user_id: string;
-  enrollment_id: string;
-  program_id: string;
-  template_id: string;
-  status: "valid" | "revoked";
-  issue_date: string;
-  revoke_date: string | null;
-  grade: number | null;
-  final_average: number | null;
-  extra_data: Record<string, any>;
-  pdf_url: string | null;
-  created_at: string;
-  programs?: {
-    name: string;
-    slug: string;
-  };
-}
-
-export interface CertificateTemplate {
-  id: string;
-  code: string;
-  name: string;
-  description: string | null;
-  program_type: string;
-  html_template: string;
-  css_styles: string | null;
-  is_active: boolean;
-}
-
-export interface CertificateRequest {
-  id: string;
-  enrollment_id: string;
-  requested_by: string;
-  status: "pending" | "approved" | "rejected" | "processing";
-  reason: string | null;
-  reviewed_at: string | null;
-  reviewed_by: string | null;
-  notes: string | null;
-  created_at: string;
+  course_id: string;
+  certificate_number: string;
+  generated_at: string | null;
 }
 
 /**
- * Genera un ID público único para certificados
- * Formato: 12 caracteres alfanuméricos (excluye 0, O, I, 1 para evitar confusiones)
+ * Genera un número de certificado único
  */
-export function generatePublicCertificateId(): string {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let code = "";
-  for (let i = 0; i < 12; i++) {
-    code += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return code;
+export function generateCertificateNumber(userId: string): string {
+  return `UTAMV-${Date.now()}-${userId.slice(0, 8).toUpperCase()}`;
 }
 
 /**
- * Verifica un certificado públicamente por su ID
+ * Formatea un número de certificado para visualización
+ */
+export function formatCertificateNumber(certNumber: string): string {
+  return certNumber;
+}
+
+/**
+ * Verifica un certificado públicamente por su número
  */
 export async function verifyCertificatePublic(
-  publicId: string
+  certificateNumber: string
 ): Promise<{
-  public_id: string;
+  certificate_number: string;
   student_name: string;
   program_name: string;
-  issue_date: string;
-  status: string;
-  final_average: number | null;
+  generated_at: string | null;
 } | null> {
-  const { data, error } = await supabase.rpc("verify_certificate_public", {
-    p_public_id: publicId,
-  });
+  // Query certificates table joined with profiles and courses
+  const { data, error } = await supabase
+    .from("certificates")
+    .select(`
+      certificate_number,
+      generated_at,
+      user_id,
+      course_id
+    `)
+    .eq("certificate_number", certificateNumber)
+    .maybeSingle();
 
-  if (error) {
+  if (error || !data) {
     console.error("Error verifying certificate:", error);
     return null;
   }
 
-  if (!data || data.length === 0) {
-    return null;
-  }
+  // Fetch student name
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("full_name")
+    .eq("user_id", data.user_id)
+    .maybeSingle();
 
-  return data[0];
+  // Fetch course name
+  const { data: course } = await supabase
+    .from("courses")
+    .select("title")
+    .eq("id", data.course_id)
+    .maybeSingle();
+
+  return {
+    certificate_number: data.certificate_number,
+    student_name: profile?.full_name || "Estudiante UTAMV",
+    program_name: course?.title || "Programa UTAMV",
+    generated_at: data.generated_at,
+  };
 }
 
 /**
@@ -106,92 +92,33 @@ export async function verifyCertificatePublic(
 export async function getUserCertificates(): Promise<Certificate[]> {
   const { data, error } = await supabase
     .from("certificates")
-    .select(`
-      *,
-      programs(name, slug)
-    `)
-    .eq("status", "valid")
-    .order("issue_date", { ascending: false });
+    .select("*")
+    .order("generated_at", { ascending: false });
 
   if (error) {
     throw new Error(`Error al obtener certificados: ${error.message}`);
   }
 
-  return (data || []).map((cert) => ({
-    ...cert,
-    programs: cert.programs ? {
-      name: (cert.programs as any).name,
-      slug: (cert.programs as any).slug,
-    } : undefined,
-  }));
+  return data || [];
 }
 
 /**
- * Obtiene un certificado específico por ID público (para usuarios autenticados)
+ * Obtiene un certificado específico por número
  */
-export async function getCertificateByPublicId(
-  publicId: string
+export async function getCertificateByNumber(
+  certNumber: string
 ): Promise<Certificate | null> {
   const { data, error } = await supabase
     .from("certificates")
-    .select(`
-      *,
-      programs(name, slug)
-    `)
-    .eq("public_id", publicId)
-    .single();
+    .select("*")
+    .eq("certificate_number", certNumber)
+    .maybeSingle();
 
   if (error) {
-    if (error.code === "PGRST116") return null;
     throw new Error(`Error al obtener certificado: ${error.message}`);
   }
 
-  return {
-    ...data,
-    programs: data.programs ? {
-      name: (data.programs as any).name,
-      slug: (data.programs as any).slug,
-    } : undefined,
-  };
-}
-
-/**
- * Solicita la emisión de un certificado
- */
-export async function requestCertificate(
-  enrollmentId: string,
-  reason?: string
-): Promise<CertificateRequest> {
-  const { data, error } = await supabase
-    .from("certificate_requests")
-    .insert({
-      enrollment_id: enrollmentId,
-      reason: reason || null,
-    })
-    .select()
-    .single();
-
-  if (error) {
-    throw new Error(`Error al solicitar certificado: ${error.message}`);
-  }
-
-  return data;
-}
-
-/**
- * Obtiene las solicitudes de certificado del usuario
- */
-export async function getUserCertificateRequests(): Promise<CertificateRequest[]> {
-  const { data, error } = await supabase
-    .from("certificate_requests")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    throw new Error(`Error al obtener solicitudes: ${error.message}`);
-  }
-
-  return data || [];
+  return data || null;
 }
 
 /**
@@ -207,7 +134,7 @@ export function renderCertificateHtml(
     programName: context.programName,
     issueDate: context.issueDate,
     grade: context.grade ?? "",
-    publicId: context.publicId,
+    certificateNumber: context.certificateNumber,
     verifyUrl: context.verifyUrl,
     ...context.extra,
   };
@@ -221,79 +148,11 @@ export function renderCertificateHtml(
 }
 
 /**
- * Genera el HTML de un certificado para impresión/PDF
+ * Valida si un certificado puede generarse
  */
-export async function generateCertificateHtml(
-  certificateId: string
-): Promise<string | null> {
-  // Obtener el certificado con template
-  const { data: cert, error: certError } = await supabase
-    .from("certificates")
-    .select(`
-      *,
-      certificate_templates(html_template),
-      profiles(full_name),
-      programs(name)
-    `)
-    .eq("id", certificateId)
-    .single();
-
-  if (certError || !cert) {
-    console.error("Error fetching certificate:", certError);
-    return null;
-  }
-
-  const template = (cert.certificate_templates as any)?.html_template;
-  const studentName = (cert.profiles as any)?.full_name;
-  const programName = (cert.programs as any)?.name;
-
-  if (!template || !studentName || !programName) {
-    return null;
-  }
-
-  const verifyUrl = `${window.location.origin}/verificar-certificado/${cert.public_id}`;
-
-  return renderCertificateHtml(template, {
-    studentName,
-    programName,
-    issueDate: new Date(cert.issue_date).toLocaleDateString("es-MX", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }),
-    grade: cert.final_average ? `${cert.final_average}/100` : undefined,
-    publicId: cert.public_id,
-    verifyUrl,
-  });
-}
-
-/**
- * Formatea un ID público para visualización (grupos de 4 caracteres)
- */
-export function formatPublicId(publicId: string): string {
-  return publicId.match(/.{1,4}/g)?.join("-") || publicId;
-}
-
-/**
- * Valida si un certificado puede solicitarse para una matrícula
- */
-export function canRequestCertificate(enrollmentStatus: string): boolean {
-  return ["completado", "egresado"].includes(enrollmentStatus);
-}
-
-/**
- * Obtiene las plantillas de certificado activas
- */
-export async function getCertificateTemplates(): Promise<CertificateTemplate[]> {
-  const { data, error } = await supabase
-    .from("certificate_templates")
-    .select("*")
-    .eq("is_active", true)
-    .order("name");
-
-  if (error) {
-    throw new Error(`Error al obtener plantillas: ${error.message}`);
-  }
-
-  return data || [];
+export function canGenerateCertificate(
+  progressPercent: number,
+  isPaid: boolean
+): boolean {
+  return progressPercent >= 100 && isPaid;
 }
