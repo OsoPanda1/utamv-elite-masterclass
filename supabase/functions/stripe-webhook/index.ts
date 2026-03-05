@@ -1,163 +1,167 @@
-import Stripe from "https://esm.sh/stripe@14.21.0";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+// ============================================
+// UTAMV Campus - Edge Function: Stripe Webhook
+// ============================================
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, stripe-signature",
-};
+import { serve } from "https://deno.land/std@0.192.0/http/server.ts";
+import Stripe from "https://esm.sh/stripe@13.10.0?target=deno";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.47.4";
 
-Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
+  apiVersion: "2023-10-16",
+});
 
+const endpointSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET")!;
+const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+serve(async (req) => {
+  const sig = req.headers.get("Stripe-Signature");
+  const body = await req.text();
+
+  let event: Stripe.Event;
+  
   try {
-    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
-    const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
-    const supabaseUrl = Deno.env.get("SUPABASE_URL");
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-
-    // Validar configuración crítica
-    if (!stripeKey || !webhookSecret || !supabaseUrl || !serviceRoleKey) {
-      console.error("Missing critical environment variables for webhook", {
-        hasStripeKey: !!stripeKey,
-        hasWebhookSecret: !!webhookSecret,
-        hasSupabaseUrl: !!supabaseUrl,
-        hasServiceRoleKey: !!serviceRoleKey,
-      });
-      return new Response("Webhook misconfigured", {
-        status: 500,
-        headers: corsHeaders,
-      });
-    }
-
-    const stripe = new Stripe(stripeKey, {
-      apiVersion: "2023-10-16",
-    });
-
-    const signature = req.headers.get("stripe-signature");
-    const body = await req.text();
-
-    if (!signature) {
-      console.error("Missing Stripe signature header");
-      return new Response("Missing signature", {
-        status: 400,
-        headers: corsHeaders,
-      });
-    }
-
-    let event: Stripe.Event;
-
-    // Validación ESTRICTA de firma (sin fallback)
-    try {
-      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-    } catch (err) {
-      console.error("Webhook signature verification failed:", err);
-      return new Response("Invalid signature", {
-        status: 400,
-        headers: corsHeaders,
-      });
-    }
-
-    console.log("✅ Received Stripe event:", event.id, event.type);
-
-    const supabase = createClient(supabaseUrl, serviceRoleKey, {
-      auth: { persistSession: false },
-    });
-
-    switch (event.type) {
-      case "checkout.session.completed": {
-        const session = event.data.object as Stripe.Checkout.Session;
-        console.log("Checkout completed:", {
-          session_id: session.id,
-          payment_intent: session.payment_intent,
-        });
-
-        const userId = session.metadata?.user_id;
-        const courseId = session.metadata?.course_id;
-
-        if (!userId) {
-          console.error("❌ No user_id in session metadata, aborting update");
-          break;
-        }
-
-        // Actualizar registro de pagos si existe
-        const { error: paymentError } = await supabase
-          .from("payments")
-          .update({
-            status: "completed",
-            stripe_payment_intent_id: session.payment_intent as string,
-          })
-          .eq("stripe_session_id", session.id);
-
-        if (paymentError) {
-          console.error("Error updating payment:", paymentError);
-        }
-
-        // Marcar usuario como pagado (solo vía service role)
-        const { error: profileError } = await supabase
-          .from("profiles")
-          .update({ is_paid: true })
-          .eq("user_id", userId);
-
-        if (profileError) {
-          console.error("Error updating profile:", profileError);
-        } else {
-          console.log("✅ User marked as paid:", { user_id: userId, courseId });
-        }
-
-        break;
-      }
-
-      case "checkout.session.expired": {
-        const session = event.data.object as Stripe.Checkout.Session;
-        console.log("Checkout expired:", { session_id: session.id });
-
-        const { error } = await supabase
-          .from("payments")
-          .update({ status: "expired" })
-          .eq("stripe_session_id", session.id);
-
-        if (error) {
-          console.error("Error updating expired payment:", error);
-        }
-
-        break;
-      }
-
-      case "payment_intent.payment_failed": {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        console.log("Payment failed:", { payment_intent_id: paymentIntent.id });
-
-        const { error } = await supabase
-          .from("payments")
-          .update({ status: "failed" })
-          .eq("stripe_payment_intent_id", paymentIntent.id);
-
-        if (error) {
-          console.error("Error updating failed payment:", error);
-        }
-
-        break;
-      }
-
-      default:
-        // No hacemos nada para otros eventos, solo log
-        console.log("Unhandled event type:", event.type);
-    }
-
-    return new Response(JSON.stringify({ received: true }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 200,
-    });
-  } catch (error: unknown) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error";
-    console.error("Webhook error:", error);
-    return new Response(JSON.stringify({ error: errorMessage }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 400,
-    });
+    event = stripe.webhooks.constructEvent(body, sig!, endpointSecret);
+  } catch (err: any) {
+    console.error("Webhook signature verification failed:", err.message);
+    return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
+
+  const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+  // Manejar evento checkout.session.completed
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object as Stripe.Checkout.Session;
+    const metadata = session.metadata || {};
+    const orderId = metadata.order_id;
+    const programId = metadata.program_id;
+    const userId = metadata.user_id;
+
+    if (!orderId || !programId || !userId) {
+      console.error("Missing metadata in checkout session");
+      return new Response("Missing metadata", { status: 400 });
+    }
+
+    try {
+      // Verificar que la orden existe y está pendiente
+      const { data: existingOrder } = await supabase
+        .from("orders")
+        .select("id, status")
+        .eq("id", orderId)
+        .single();
+
+      if (!existingOrder) {
+        console.error("Order not found:", orderId);
+        return new Response("Order not found", { status: 404 });
+      }
+
+      if (existingOrder.status === "paid") {
+        console.log("Order already processed:", orderId);
+        return new Response("OK", { status: 200 });
+      }
+
+      // Registrar el pago
+      const paymentIntentId = session.payment_intent as string;
+      const amount = session.amount_total ?? 0;
+      const currency = session.currency ?? "mxn";
+
+      const { error: paymentError } = await supabase.from("payments").insert({
+        order_id: orderId,
+        provider: "stripe",
+        provider_payment_id: paymentIntentId,
+        amount_cents: amount,
+        currency,
+        status: "succeeded",
+        raw_payload: event,
+      });
+
+      if (paymentError) {
+        console.error("Payment insert error:", paymentError);
+      }
+
+      // Actualizar orden a pagada
+      const { error: orderError } = await supabase
+        .from("orders")
+        .update({ 
+          status: "paid",
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", orderId);
+
+      if (orderError) {
+        console.error("Order update error:", orderError);
+        return new Response("Failed to update order", { status: 500 });
+      }
+
+      // Crear o actualizar matrícula
+      const { error: enrollError } = await supabase
+        .from("enrollments")
+        .upsert(
+          {
+            user_id: userId,
+            program_id: programId,
+            order_id: orderId,
+            status: "inscrito",
+            started_at: new Date().toISOString(),
+          },
+          { 
+            onConflict: "unique_user_program",
+            ignoreDuplicates: false 
+          }
+        );
+
+      if (enrollError) {
+        console.error("Enrollment upsert error:", enrollError);
+        return new Response("Failed to create enrollment", { status: 500 });
+      }
+
+      console.log("Payment processed successfully for order:", orderId);
+    } catch (error: any) {
+      console.error("Error processing checkout:", error);
+      return new Response(`Error: ${error.message}`, { status: 500 });
+    }
+  }
+
+  // Manejar evento charge.refunded
+  if (event.type === "charge.refunded") {
+    const charge = event.data.object as Stripe.Charge;
+    
+    // Buscar el pago relacionado
+    const { data: payment } = await supabase
+      .from("payments")
+      .select("id, order_id")
+      .eq("provider_payment_id", charge.payment_intent)
+      .single();
+
+    if (payment) {
+      // Actualizar estado del pago
+      await supabase
+        .from("payments")
+        .update({ status: "refunded" })
+        .eq("id", payment.id);
+
+      // Actualizar orden
+      await supabase
+        .from("orders")
+        .update({ status: "refunded" })
+        .eq("id", payment.order_id);
+
+      // Opcional: revocar acceso
+      const { data: order } = await supabase
+        .from("orders")
+        .select("user_id, program_id")
+        .eq("id", payment.order_id)
+        .single();
+
+      if (order) {
+        await supabase
+          .from("enrollments")
+          .update({ status: "revocado" })
+          .eq("user_id", order.user_id)
+          .eq("program_id", order.program_id);
+      }
+    }
+  }
+
+  return new Response("OK", { status: 200 });
 });

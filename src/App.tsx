@@ -32,6 +32,15 @@ import Requisitos from "@/pages/admisiones/Requisitos";
 import Proceso from "@/pages/admisiones/Proceso";
 import Contacto from "@/pages/admisiones/Contacto";
 
+// Checkout Pages
+import ProgramCheckout from "@/pages/checkout/ProgramCheckout";
+import CheckoutSuccess from "@/pages/checkout/CheckoutSuccess";
+import CheckoutCancel from "@/pages/checkout/CheckoutCancel";
+
+// Campus Pages
+import Enrollments from "@/pages/campus/Enrollments";
+import Certificates from "@/pages/campus/Certificates";
+
 // Route Guards
 import { RequireAuth } from "@/components/guards/RequireAuth";
 import { RequirePaid } from "@/components/guards/RequirePaid";
@@ -74,6 +83,12 @@ function App() {
         <Route path="/ayuda" element={<Ayuda />} />
         <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
         <Route path="/verificar-certificado" element={<VerifyCertificate />} />
+        <Route path="/verificar-certificado/:publicId" element={<VerifyCertificate />} />
+
+        {/* CHECKOUT */}
+        <Route path="/checkout/:programSlug" element={<RequireAuth><ProgramCheckout /></RequireAuth>} />
+        <Route path="/checkout/success" element={<RequireAuth><CheckoutSuccess /></RequireAuth>} />
+        <Route path="/checkout/cancel" element={<RequireAuth><CheckoutCancel /></RequireAuth>} />
 
         {/* Redirects */}
         <Route path="/programa" element={<Navigate to="/programas/master-marketing-digital-2026" replace />} />
@@ -84,6 +99,8 @@ function App() {
 
         {/* CAMPUS VIRTUAL */}
         <Route path="/campus-virtual" element={<RequireAuth><Dashboard /></RequireAuth>} />
+        <Route path="/campus/enrollments" element={<RequireAuth><Enrollments /></RequireAuth>} />
+        <Route path="/campus/certificates" element={<RequireAuth><Certificates /></RequireAuth>} />
         <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
         <Route path="/modulos" element={<RequireAuth><RequirePaid><Modulos /></RequirePaid></RequireAuth>} />
         <Route path="/modulos/:id" element={<RequireAuth><RequirePaid><ModuleViewer /></RequirePaid></RequireAuth>} />

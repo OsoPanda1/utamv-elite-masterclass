@@ -1,7 +1,13 @@
+// ============================================
+// UTAMV Campus - Página de Verificación de Certificados
+// ============================================
+
 import { useEffect, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
+import { verifyCertificatePublic, formatPublicId } from '@/lib/certificates';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { 
   CheckCircle2, 
   XCircle, 
@@ -11,306 +17,319 @@ import {
   BookOpen,
   ArrowLeft,
   Shield,
-  ExternalLink
+  Search,
+  Loader2,
+  FileCheck
 } from 'lucide-react';
 import utamvSeal from '@/assets/utamv-seal.png';
 
 interface VerificationResult {
-  valid: boolean;
-  certificate?: {
-    number: string;
-    issued_at: string | null;
-    holder: string;
-    program: string;
-    institution: string;
-    status: string;
-  };
-  verification?: {
-    timestamp: string;
-    method: string;
-    issuer: string;
-  };
-  error?: string;
-  message?: string;
+  public_id: string;
+  student_name: string;
+  program_name: string;
+  issue_date: string;
+  status: string;
+  final_average: number | null;
 }
 
-const VerifyCertificate = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+export default function VerifyCertificatePage() {
+  const { publicId: urlPublicId } = useParams<{ publicId: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryPublicId = searchParams.get('cert');
+  
   const [result, setResult] = useState<VerificationResult | null>(null);
-  const [loading, setLoading] = useState(true);
-  const certificateNumber = searchParams.get('cert');
+  const [loading, setLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+
+  const publicId = urlPublicId || queryPublicId;
 
   useEffect(() => {
-    if (certificateNumber) {
-      verifyCertificate();
-    } else {
-      setLoading(false);
+    if (publicId) {
+      verifyCertificate(publicId);
     }
-  }, [certificateNumber]);
+  }, [publicId]);
 
-  const verifyCertificate = async () => {
+  const verifyCertificate = async (id: string) => {
+    setLoading(true);
+    setSearched(true);
+    
     try {
-      // Validar formato de número de certificado
-      const validCertFormat = /^UTAMV-\d+-.+/.test(certificateNumber!);
-      if (!validCertFormat) {
-        setResult({
-          valid: false,
-          error: 'Formato de certificado inválido',
-          message: 'El número de certificado debe seguir el formato UTAMV-YYYYMMDD-XXXX',
-        });
-        setLoading(false);
-        return;
-      }
-
-      // Buscar certificado en la base de datos
-      const { data: certificate, error } = await supabase
-        .from('certificates')
-        .select('*')
-        .eq('certificate_number', certificateNumber ?? '')
-        .single();
-
-      if (error) {
-        throw new Error('Certificado no encontrado');
-      }
-
-      // Obtener datos del usuario
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('full_name, email')
-        .eq('user_id', certificate.user_id)
-        .single();
-
-      // Obtener datos del curso
-      const { data: course } = await supabase
-        .from('courses')
-        .select('title')
-        .eq('id', certificate.course_id)
-        .single();
-
-      // Generar resultado de verificación
-      const verificationResult: VerificationResult = {
-        valid: true,
-        certificate: {
-          number: certificate.certificate_number,
-          issued_at: certificate.generated_at ?? '',
-          holder: profile?.full_name || 'Estudiante UTAMV',
-          program: course?.title || 'Programa no especificado',
-          institution: 'UTAMV - Universidad Tecnológica Avanzada del Marketing Virtual',
-          status: 'Activo',
-        },
-        verification: {
-          timestamp: new Date().toISOString(),
-          method: 'Online Verification System',
-          issuer: 'UTAMV Academic Registry',
-        },
-      };
-
-      setResult(verificationResult);
+      // Limpiar el ID (quitar guiones si los tiene)
+      const cleanId = id.replace(/-/g, '');
+      const data = await verifyCertificatePublic(cleanId);
+      setResult(data);
     } catch (err) {
-      console.error('Verification error:', err);
-      setResult({
-        valid: false,
-        error: 'Certificado no válido',
-        message: 'El certificado no se encuentra registrado en el sistema académico UTAMV.',
-      });
+      console.error('Error verifying certificate:', err);
+      setResult(null);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (inputValue.trim()) {
+      verifyCertificate(inputValue.trim());
+    }
+  };
+
+  // Si está cargando
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-silver-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Verificando certificado...</p>
-          <p className="text-sm text-muted-foreground mt-2">
-            N°: {certificateNumber}
-          </p>
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600">Verificando certificado...</p>
         </div>
       </div>
     );
   }
 
-  if (!certificateNumber) {
+  // Mostrar resultado de verificación - Certificado VÁLIDO
+  if (searched && result && result.status === 'valid') {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="max-w-md w-full text-center">
-          <div className="w-20 h-20 rounded-full bg-card border-2 border-silver-primary mx-auto mb-6 flex items-center justify-center shadow-silver">
-            <Shield className="w-10 h-10 text-silver-primary" />
-          </div>
-          <h1 className="font-display text-3xl font-bold text-gradient-silver mb-4">
-            Verificación de Certificados
-          </h1>
-          <p className="text-muted-foreground mb-8">
-            Sistema de validación oficial UTAMV. Ingrese o escanee un código QR para verificar la autenticidad de un certificado.
-          </p>
-          <Button variant="outline" onClick={() => navigate('/')}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Volver al inicio
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-card border-2 border-silver-primary flex items-center justify-center shadow-silver">
-              <img src={utamvSeal} alt="UTAMV" className="w-8 h-8 object-contain" />
-            </div>
-            <div>
-              <h1 className="font-display text-xl font-bold text-gradient-silver">
-                UTAMV
-              </h1>
-              <p className="text-sm text-muted-foreground">Sistema de Verificación</p>
-            </div>
-          </div>
-          <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Inicio
-          </Button>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-12">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4">
         <div className="max-w-2xl mx-auto">
-          {/* Result Card */}
-          <div className={`card-elite p-8 border-2 ${
-            result?.valid 
-              ? 'border-primary/50 bg-primary/5' 
-              : 'border-destructive/50 bg-destructive/5'
-          }`}>
-            {/* Status Icon */}
-            <div className="flex justify-center mb-6">
-              {result?.valid ? (
-                <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center animate-scale-in">
-                  <CheckCircle2 className="w-14 h-14 text-primary" />
-                </div>
-              ) : (
-                <div className="w-24 h-24 rounded-full bg-destructive/10 flex items-center justify-center animate-scale-in">
-                  <XCircle className="w-14 h-14 text-destructive" />
-                </div>
-              )}
-            </div>
-
-            {/* Status Title */}
-            <h2 className={`font-display text-3xl font-bold text-center mb-2 ${
-              result?.valid ? 'text-primary' : 'text-destructive'
-            }`}>
-              {result?.valid ? 'CERTIFICADO VÁLIDO' : 'CERTIFICADO NO VÁLIDO'}
-            </h2>
-
-            <p className="text-center text-muted-foreground mb-8">
-              {result?.valid 
-                ? 'Este certificado ha sido verificado exitosamente.'
-                : result?.message || 'No se pudo verificar este certificado.'}
+          {/* Header */}
+          <div className="text-center mb-8">
+            <img 
+              src={utamvSeal} 
+              alt="UTAMV Seal" 
+              className="h-24 w-24 mx-auto mb-4 object-contain"
+            />
+            <h1 className="text-3xl font-bold text-gray-900">
+              Verificación de Certificado
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Universidad Tecnológica Autónoma de México Virtual
             </p>
+          </div>
 
-            {/* Certificate Details */}
-            {result?.valid && result.certificate && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-lg bg-muted/30">
-                    <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                      <Award className="w-4 h-4" />
-                      <span className="text-sm">Número de Certificado</span>
-                    </div>
-                    <p className="font-mono font-semibold text-foreground">
-                      {result.certificate.number}
-                    </p>
+          {/* Resultado válido */}
+          <Card className="border-green-200 shadow-lg">
+            <CardContent className="pt-8 pb-8">
+              <div className="text-center mb-6">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle2 className="h-10 w-10 text-green-600" />
+                </div>
+                <h2 className="text-2xl font-bold text-green-700 mb-2">
+                  Certificado Válido
+                </h2>
+                <p className="text-gray-600">
+                  Este certificado ha sido verificado y es auténtico
+                </p>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-6 space-y-4">
+                <div className="flex items-start gap-3">
+                  <User className="h-5 w-5 text-blue-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-500">Nombre del titular</p>
+                    <p className="font-semibold text-gray-900">{result.student_name}</p>
                   </div>
+                </div>
 
-                  <div className="p-4 rounded-lg bg-muted/30">
-                    <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                      <Calendar className="w-4 h-4" />
-                      <span className="text-sm">Fecha de Emisión</span>
-                    </div>
-                    <p className="font-semibold text-foreground">
-                      {new Date(result.certificate.issued_at ?? '').toLocaleDateString('es-ES', {
+                <div className="flex items-start gap-3">
+                  <BookOpen className="h-5 w-5 text-blue-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-500">Programa</p>
+                    <p className="font-semibold text-gray-900">{result.program_name}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Calendar className="h-5 w-5 text-blue-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-500">Fecha de emisión</p>
+                    <p className="font-semibold text-gray-900">
+                      {new Date(result.issue_date).toLocaleDateString('es-MX', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'
                       })}
                     </p>
                   </div>
+                </div>
 
-                  <div className="p-4 rounded-lg bg-muted/30">
-                    <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                      <User className="w-4 h-4" />
-                      <span className="text-sm">Titular</span>
-                    </div>
-                    <p className="font-semibold text-foreground">
-                      {result.certificate.holder}
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-lg bg-muted/30">
-                    <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                      <BookOpen className="w-4 h-4" />
-                      <span className="text-sm">Programa</span>
-                    </div>
-                    <p className="font-semibold text-foreground text-sm">
-                      {result.certificate.program}
+                <div className="flex items-start gap-3">
+                  <FileCheck className="h-5 w-5 text-blue-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-500">Código de verificación</p>
+                    <p className="font-mono text-lg text-gray-900">
+                      {formatPublicId(result.public_id)}
                     </p>
                   </div>
                 </div>
 
-                <div className="p-4 rounded-lg bg-silver-primary/10 border border-silver-primary/30">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Shield className="w-5 h-5 text-silver-primary" />
-                    <span className="font-semibold text-foreground">
-                      {result.certificate.institution}
-                    </span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Estado: <span className="text-primary font-medium">{result.certificate.status}</span>
-                  </p>
-                </div>
-
-                {/* Verification metadata */}
-                {result.verification && (
-                  <div className="pt-4 border-t border-border text-center text-sm text-muted-foreground">
-                    <p>Verificación realizada: {new Date(result.verification.timestamp).toLocaleString('es-ES')}</p>
-                    <p>Método: {result.verification.method}</p>
-                    <p className="mt-2 text-xs">Powered by {result.verification.issuer}</p>
+                {result.final_average && (
+                  <div className="flex items-start gap-3">
+                    <Award className="h-5 w-5 text-blue-600 mt-0.5" />
+                    <div>
+                      <p className="text-sm text-gray-500">Promedio final</p>
+                      <p className="font-semibold text-gray-900">{result.final_average}/100</p>
+                    </div>
                   </div>
                 )}
               </div>
-            )}
 
-            {/* Error message */}
-            {!result?.valid && (
-              <div className="text-center">
-                <p className="text-sm text-muted-foreground mb-4">
-                  Número consultado: <span className="font-mono">{certificateNumber}</span>
+              <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div className="flex items-center gap-2 text-green-800">
+                  <Shield className="h-5 w-5" />
+                  <span className="font-medium">Verificación segura</span>
+                </div>
+                <p className="text-sm text-green-700 mt-1">
+                  Este documento fue emitido por UTAMV y está registrado en nuestra base de datos.
                 </p>
-                <Button variant="outline" onClick={() => navigate('/')}>
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Volver al inicio
+              </div>
+
+              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                <Button asChild variant="outline" className="flex-1">
+                  <Link to="/">
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Volver al inicio
+                  </Link>
+                </Button>
+                <Button onClick={() => {setSearched(false); setResult(null); setInputValue('');}} className="flex-1">
+                  <Search className="h-4 w-4 mr-2" />
+                  Verificar otro
                 </Button>
               </div>
-            )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  // Mostrar resultado de verificación - Certificado NO VÁLIDO
+  if (searched && !result) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-12 px-4">
+        <div className="max-w-xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <img 
+              src={utamvSeal} 
+              alt="UTAMV Seal" 
+              className="h-24 w-24 mx-auto mb-4 object-contain"
+            />
+            <h1 className="text-3xl font-bold text-gray-900">
+              Verificación de Certificado
+            </h1>
           </div>
 
-          {/* Footer note */}
-          <div className="mt-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              Sistema de verificación digital UTAMV
-            </p>
-            <p className="text-xs text-muted-foreground mt-1">
-              Tecnología TAMV ONLINE - Orgullosamente Realmontenses
-            </p>
-          </div>
+          <Card className="border-red-200">
+            <CardContent className="pt-8 pb-8 text-center">
+              <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <XCircle className="h-10 w-10 text-red-600" />
+              </div>
+              <h2 className="text-2xl font-bold text-red-700 mb-2">
+                Certificado No Encontrado
+              </h2>
+              <p className="text-gray-600 mb-6">
+                El código proporcionado no corresponde a ningún certificado válido en nuestro sistema.
+              </p>
+              
+              <div className="space-y-3">
+                <Button onClick={() => {setSearched(false); setResult(null); setInputValue('');}} className="w-full">
+                  <Search className="h-4 w-4 mr-2" />
+                  Intentar nuevamente
+                </Button>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to="/ayuda">
+                    Contactar soporte
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </main>
+      </div>
+    );
+  }
+
+  // Formulario de búsqueda (estado inicial)
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-12 px-4">
+      <div className="max-w-xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <img 
+            src={utamvSeal} 
+            alt="UTAMV Seal" 
+            className="h-24 w-24 mx-auto mb-4 object-contain"
+          />
+          <h1 className="text-3xl font-bold text-gray-900">
+            Verificación de Certificados
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Sistema oficial de validación de documentos académicos UTAMV
+          </p>
+        </div>
+
+        <Card className="shadow-lg">
+          <CardContent className="pt-8 pb-8">
+            <form onSubmit={handleSearch} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Código de certificado
+                </label>
+                <div className="relative">
+                  <Input
+                    type="text"
+                    placeholder="Ingresa el código (ej: ABCD-1234-EFGH)"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value.toUpperCase())}
+                    className="pr-12 text-lg tracking-wider"
+                    maxLength={14}
+                  />
+                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                </div>
+                <p className="text-sm text-gray-500 mt-2">
+                  Ingresa el código de 12 caracteres que aparece en tu certificado
+                </p>
+              </div>
+
+              <Button 
+                type="submit" 
+                className="w-full h-12 text-lg"
+                disabled={!inputValue.trim()}
+              >
+                <Shield className="h-5 w-5 mr-2" />
+                Verificar certificado
+              </Button>
+            </form>
+
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <h3 className="font-medium text-gray-900 mb-3">¿Dónde encuentro el código?</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-600">•</span>
+                  <span>En la parte inferior de tu certificado impreso o digital</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-600">•</span>
+                  <span>En el correo de confirmación de emisión del certificado</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-600">•</span>
+                  <span>En tu cuenta del campus virtual, sección "Mis certificados"</span>
+                </li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="text-center mt-6">
+          <Button asChild variant="outline">
+            <Link to="/">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Volver al inicio
+            </Link>
+          </Button>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default VerifyCertificate;
+}

@@ -1,148 +1,156 @@
-import Stripe from 'https://esm.sh/stripe@14.21.0';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0';
+// ============================================
+// UTAMV Campus - Edge Function: Create Checkout Session
+// ============================================
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { serve } from "https://deno.land/std@0.192.0/http/server.ts";
+import Stripe from "https://esm.sh/stripe@13.10.0?target=deno";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.47.4";
 
-Deno.serve(async (req) => {
-  // Handle CORS preflight
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
+  apiVersion: "2023-10-16",
+});
+
+const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+serve(async (req) => {
+  // Verificar método
+  if (req.method !== "POST") {
+    return new Response(JSON.stringify({ message: "Method not allowed" }), { 
+      status: 405,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  // Verificar autenticación
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) {
+    return new Response(JSON.stringify({ message: "Unauthorized" }), { 
+      status: 401,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+    global: { headers: { Authorization: authHeader } },
+  });
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  if (userError || !user) {
+    return new Response(JSON.stringify({ message: "Unauthorized" }), { 
+      status: 401,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  // Parsear body
+  let body;
+  try {
+    body = await req.json();
+  } catch {
+    return new Response(JSON.stringify({ message: "Invalid JSON body" }), { 
+      status: 400,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  const { programId, successUrl, cancelUrl } = body;
+  
+  if (!programId || !successUrl || !cancelUrl) {
+    return new Response(JSON.stringify({ message: "Missing required fields" }), { 
+      status: 400,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 
   try {
-    const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
-    if (!stripeKey) {
-      console.error('STRIPE_SECRET_KEY not configured');
-      throw new Error('Payment system not configured');
-    }
-
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_PUBLISHABLE_KEY')!;
-    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-
-    // Get user from auth header
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      throw new Error('No authorization header');
-    }
-
-    const supabaseClient = createClient(supabaseUrl, supabaseKey, {
-      global: { headers: { Authorization: authHeader } },
-    });
-
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-    if (userError || !user) {
-      console.error('User error:', userError);
-      throw new Error('User not authenticated');
-    }
-
-    console.log('Creating checkout for user:', user.id);
-
-    // Get course info
-    const { data: course, error: courseError } = await supabaseClient
-      .from('courses')
-      .select('*')
+    // Obtener información del programa
+    const { data: program, error: programError } = await supabase
+      .from("programs")
+      .select("id, name, price_cents, currency")
+      .eq("id", programId)
+      .eq("is_active", true)
       .single();
 
-    if (courseError || !course) {
-      console.error('Course error:', courseError);
-      throw new Error('Course not found');
-    }
-
-    // Initialize Stripe
-    const stripe = new Stripe(stripeKey, {
-      apiVersion: '2023-10-16',
-    });
-
-    // Check if user already has a Stripe customer
-    const adminClient = createClient(supabaseUrl, serviceRoleKey);
-    const { data: profile } = await adminClient
-      .from('profiles')
-      .select('stripe_customer_id, email, full_name')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    let customerId = profile?.stripe_customer_id;
-
-    if (!customerId) {
-      // Create new customer
-      const customer = await stripe.customers.create({
-        email: user.email || profile?.email,
-        name: profile?.full_name || undefined,
-        metadata: {
-          user_id: user.id,
-        },
+    if (programError || !program) {
+      return new Response(JSON.stringify({ message: "Program not found" }), { 
+        status: 404,
+        headers: { "Content-Type": "application/json" }
       });
-      customerId = customer.id;
-
-      // Save customer ID to profile
-      await adminClient
-        .from('profiles')
-        .update({ stripe_customer_id: customerId })
-        .eq('user_id', user.id);
-
-      console.log('Created Stripe customer:', customerId);
     }
 
-    // Parse request body for success/cancel URLs
-    const body = await req.json().catch(() => ({}));
-    const origin = body.origin || 'https://lovable.dev';
+    // Crear orden en estado pending
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .insert({
+        user_id: user.id,
+        program_id: program.id,
+        status: "pending",
+        total_amount_cents: program.price_cents,
+        currency: program.currency,
+      })
+      .select("id")
+      .single();
 
-    // Create checkout session
+    if (orderError || !order) {
+      console.error("Order creation error:", orderError);
+      return new Response(JSON.stringify({ message: "Failed to create order" }), { 
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    // Crear sesión de Stripe Checkout
     const session = await stripe.checkout.sessions.create({
-      customer: customerId,
+      mode: "payment",
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency: program.currency,
             product_data: {
-              name: course.title,
-              description: course.description || 'Programa de certificación internacional',
+              name: program.name,
+              metadata: {
+                program_id: program.id,
+              },
             },
-            unit_amount: course.price_cents || 19900, // $199.00
+            unit_amount: program.price_cents,
           },
           quantity: 1,
         },
       ],
-      mode: 'payment',
-      success_url: `${origin}/dashboard?payment=success`,
-      cancel_url: `${origin}/dashboard?payment=cancelled`,
+      success_url: `${successUrl}?order_id=${order.id}`,
+      cancel_url: `${cancelUrl}?order_id=${order.id}`,
       metadata: {
+        order_id: order.id,
+        program_id: program.id,
         user_id: user.id,
-        course_id: course.id,
       },
+      customer_email: user.email,
     });
 
-    console.log('Created checkout session:', session.id);
-
-    // Record pending payment
-    await adminClient.from('payments').insert({
-      user_id: user.id,
-      course_id: course.id,
-      stripe_session_id: session.id,
-      amount_cents: course.price_cents || 19900,
-      currency: 'usd',
-      status: 'pending',
-    });
+    // Actualizar orden con el ID de sesión
+    await supabase
+      .from("orders")
+      .update({ external_checkout_id: session.id })
+      .eq("id", order.id);
 
     return new Response(
-      JSON.stringify({ url: session.url }),
+      JSON.stringify({ 
+        checkoutUrl: session.url,
+        orderId: order.id 
+      }),
       { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
+        status: 200, 
+        headers: { "Content-Type": "application/json" } 
       }
     );
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Checkout error:', error);
+  } catch (error: any) {
+    console.error("Checkout error:", error);
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ message: error.message || "Internal server error" }), 
       { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400,
+        status: 500,
+        headers: { "Content-Type": "application/json" }
       }
     );
   }
