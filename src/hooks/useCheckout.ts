@@ -3,43 +3,40 @@
 // ============================================
 
 import { useState, useCallback } from "react";
-import { createCheckoutSession, CheckoutSessionParams } from "@/lib/payments";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 interface UseCheckoutReturn {
-  startCheckout: (programId: string, successUrl?: string, cancelUrl?: string) => Promise<void>;
+  startCheckout: (successUrl?: string, cancelUrl?: string) => Promise<void>;
   loading: boolean;
   error: string | null;
-  orderId: string | null;
 }
 
 /**
  * Hook para manejar el proceso de checkout de pagos
- * @returns Funciones y estado para el proceso de pago
  */
 export function useCheckout(): UseCheckoutReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [orderId, setOrderId] = useState<string | null>(null);
 
   const startCheckout = useCallback(
-    async (programId: string, successUrl?: string, cancelUrl?: string) => {
+    async (successUrl?: string, cancelUrl?: string) => {
       setLoading(true);
       setError(null);
-      setOrderId(null);
 
       try {
-        const result = await createCheckoutSession({
-          programId,
-          successUrl,
-          cancelUrl,
+        const { data, error: fnError } = await supabase.functions.invoke("create-checkout-session", {
+          body: {
+            origin: window.location.origin,
+            successUrl: successUrl || `${window.location.origin}/checkout/success`,
+            cancelUrl: cancelUrl || `${window.location.origin}/checkout/cancel`,
+          },
         });
 
-        setOrderId(result.orderId);
-        
-        // Redirigir a Stripe
-        if (result.checkoutUrl) {
-          window.location.href = result.checkoutUrl;
+        if (fnError) throw fnError;
+
+        if (data?.url) {
+          window.location.href = data.url;
         } else {
           throw new Error("No se recibió URL de checkout");
         }
@@ -57,6 +54,5 @@ export function useCheckout(): UseCheckoutReturn {
     startCheckout,
     loading,
     error,
-    orderId,
   };
 }

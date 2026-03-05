@@ -329,7 +329,7 @@ const Dashboard = () => {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="font-medium text-foreground">Máster Profesional en Marketing Digital</span>
-                    <span className="font-bold text-silver-primary">$4,999 USD</span>
+                    <span className="font-bold text-silver-primary">$11,999 MXN</span>
                   </div>
                   <Button variant="elite" size="lg" onClick={handleEnroll} className="w-full">
                     <Sparkles className="w-5 h-5 mr-2" />
