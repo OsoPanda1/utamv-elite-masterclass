@@ -10,35 +10,25 @@ const allPrograms = [
     slug: 'maestria-marketing-digital',
     type: 'Maestría',
     title: 'Maestría en Marketing Digital Estratégico',
-    description: 'Programa de posgrado avanzado enfocado en estrategias digitales, analítica de datos y gestión de campañas omnicanal. Incluye proyecto de investigación y diplomado internacional.',
-    hours: '200+',
-    duration: '12 meses',
-    modality: 'Híbrido',
-    level: 'Posgrado',
-    area: 'Marketing Digital',
-    featured: true,
+    description: 'Programa de posgrado avanzado enfocado en estrategias digitales, analítica de datos y gestión de campañas omnicanal.',
+    hours: '200+', duration: '12 meses', modality: 'Híbrido', level: 'Posgrado', area: 'Marketing Digital',
+    priceMXN: 11900, featured: true,
   },
   {
     slug: 'maestria-ia-empresarial',
     type: 'Maestría',
     title: 'Maestría en Inteligencia Artificial Aplicada',
-    description: 'Formación avanzada en desarrollo y aplicación de IA en entornos empresariales. Aprendizaje de algoritmos, automatización y análisis predictivo.',
-    hours: '180+',
-    duration: '12 meses',
-    modality: '100% en línea',
-    level: 'Posgrado',
-    area: 'Inteligencia Artificial',
+    description: 'Formación avanzada en desarrollo y aplicación de IA en entornos empresariales.',
+    hours: '180+', duration: '12 meses', modality: '100% en línea', level: 'Posgrado', area: 'Inteligencia Artificial',
+    priceMXN: 14900,
   },
   {
     slug: 'maestria-negocios-digitales',
     type: 'Maestría',
     title: 'Maestría en Negocios Digitales',
     description: 'Gestión de empresas en entornos digitales. Estrategia empresarial, innovación tecnológica y liderazgo digital.',
-    hours: '160+',
-    duration: '10 meses',
-    modality: 'Híbrido',
-    level: 'Posgrado',
-    area: 'Estrategia Digital',
+    hours: '160+', duration: '10 meses', modality: 'Híbrido', level: 'Posgrado', area: 'Estrategia Digital',
+    priceMXN: 11900,
   },
 
   // Máster Profesional
@@ -46,46 +36,41 @@ const allPrograms = [
     slug: 'master-marketing-digital-2026',
     type: 'Máster Profesional',
     title: 'Máster Profesional en Marketing Digital',
-    description: 'Programa insignia de formación avanzada en SEO, AEO, metadatos, geo-targeting, automatización con IA y estrategia omnicanal. 10 módulos con evaluación continua y proyecto integrador.',
-    hours: '50+',
-    duration: '6 meses',
-    modality: '100% en línea',
-    level: 'Avanzado',
-    area: 'Marketing Digital',
-    featured: true,
+    description: 'Programa insignia: SEO, AEO, metadatos, geo-targeting, IA aplicada y estrategia omnicanal. 10 módulos con evaluación continua.',
+    hours: '50+', duration: '6 meses', modality: '100% en línea', level: 'Avanzado', area: 'Marketing Digital',
+    priceMXN: 6900, featured: true,
   },
   {
     slug: 'master-analitica-digital',
     type: 'Máster Profesional',
     title: 'Máster Profesional en Analítica Digital',
-    description: 'Especialización en análisis de datos, dashboards y toma de decisiones basada en evidencia para campañas digitales.',
-    hours: '45+',
-    duration: '5 meses',
-    modality: '100% en línea',
-    level: 'Avanzado',
-    area: 'Estrategia Digital',
+    description: 'Especialización en análisis de datos, dashboards y toma de decisiones basada en evidencia.',
+    hours: '45+', duration: '5 meses', modality: '100% en línea', level: 'Avanzado', area: 'Estrategia Digital',
+    priceMXN: 6900,
   },
   {
     slug: 'master-ia-empresarial',
     type: 'Máster Profesional',
     title: 'Máster Profesional en IA para Negocios',
-    description: 'Aplicación práctica de inteligencia artificial en automatización, análisis predictivo y optimización de procesos empresariales.',
-    hours: '55+',
-    duration: '6 meses',
-    modality: '100% en línea',
-    level: 'Avanzado',
-    area: 'Inteligencia Artificial',
+    description: 'Aplicación práctica de IA en automatización, análisis predictivo y optimización de procesos.',
+    hours: '55+', duration: '6 meses', modality: '100% en línea', level: 'Avanzado', area: 'Inteligencia Artificial',
+    priceMXN: 8900,
   },
   {
     slug: 'master-transformacion-digital',
     type: 'Máster Profesional',
     title: 'Máster Profesional en Transformación Digital',
     description: 'Liderazgo en procesos de transformación digital, innovación tecnológica y adaptación a entornos disruptivos.',
-    hours: '50+',
-    duration: '6 meses',
-    modality: '100% en línea',
-    level: 'Avanzado',
-    area: 'Estrategia Digital',
+    hours: '50+', duration: '6 meses', modality: '100% en línea', level: 'Avanzado', area: 'Estrategia Digital',
+    priceMXN: 6900,
+  },
+  {
+    slug: 'master-python-cs-ia',
+    type: 'Máster Profesional',
+    title: 'Máster Profesional en Python, CS e Inteligencia Artificial',
+    description: 'Programa integrado de 8 módulos: Python, ciencia de datos, algoritmos, ML, deep learning, NLP e ingeniería de software aplicada al ecosistema TAMV.',
+    hours: '60+', duration: '8 meses', modality: '100% en línea', level: 'Avanzado', area: 'Tecnología',
+    priceMXN: 13900, featured: true,
   },
 
   // Diplomados
@@ -93,34 +78,25 @@ const allPrograms = [
     slug: 'diplomado-seo-avanzado',
     type: 'Diplomado',
     title: 'Diplomado en SEO y AEO Avanzado',
-    description: 'Formación especializada en optimización para motores de búsqueda tradicionales y motores de respuesta con inteligencia artificial.',
-    hours: '30',
-    duration: '2 meses',
-    modality: '100% en línea',
-    level: 'Intermedio',
-    area: 'Marketing Digital',
+    description: 'Optimización para motores de búsqueda y motores de respuesta con IA.',
+    hours: '30', duration: '2 meses', modality: '100% en línea', level: 'Intermedio', area: 'Marketing Digital',
+    priceMXN: 4900,
   },
   {
     slug: 'diplomado-ia-marketing',
     type: 'Diplomado',
-    title: 'Diplomado en Inteligencia Artificial para Marketing',
-    description: 'Aplicación práctica de herramientas de IA en automatización de campañas, análisis predictivo y generación de contenido.',
-    hours: '25',
-    duration: '2 meses',
-    modality: '100% en línea',
-    level: 'Intermedio',
-    area: 'Inteligencia Artificial',
+    title: 'Diplomado en IA para Marketing',
+    description: 'Herramientas de IA en automatización de campañas, análisis predictivo y generación de contenido.',
+    hours: '25', duration: '2 meses', modality: '100% en línea', level: 'Intermedio', area: 'Inteligencia Artificial',
+    priceMXN: 4900,
   },
   {
     slug: 'diplomado-programacion-fullstack',
     type: 'Diplomado',
     title: 'Diplomado en Programación Full Stack',
-    description: 'Desarrollo web completo desde cero: JavaScript, Python y Node.js. Aplicaciones reales y proyectos profesionales.',
-    hours: '40',
-    duration: '3 meses',
-    modality: '100% en línea',
-    level: 'Intermedio',
-    area: 'Tecnología',
+    description: 'Desarrollo web completo: JavaScript, Python, Node.js. Aplicaciones reales y proyectos profesionales.',
+    hours: '40', duration: '3 meses', modality: '100% en línea', level: 'Intermedio', area: 'Tecnología',
+    priceMXN: 7900,
   },
 
   // Certificaciones
@@ -128,45 +104,33 @@ const allPrograms = [
     slug: 'certificado-marketing-digital',
     type: 'Certificado Profesional',
     title: 'Certificado Profesional en Marketing Digital',
-    description: 'Programa introductorio que cubre los conceptos esenciales del marketing digital, herramientas básicas de análisis y fundamentos de posicionamiento en línea.',
-    hours: '5',
-    duration: '1 semana',
-    modality: '100% en línea',
-    level: 'Introductorio',
-    area: 'Marketing Digital',
+    description: 'Conceptos esenciales del marketing digital y herramientas de análisis.',
+    hours: '5', duration: '1 semana', modality: '100% en línea', level: 'Introductorio', area: 'Marketing Digital',
+    priceMXN: 1200,
   },
   {
     slug: 'certificado-analitica-digital',
     type: 'Certificado Profesional',
     title: 'Certificado Profesional en Analítica Digital',
-    description: 'Medición de resultados, configuración de dashboards y toma de decisiones basada en datos para campañas digitales.',
-    hours: '8',
-    duration: '2 semanas',
-    modality: '100% en línea',
-    level: 'Introductorio',
-    area: 'Estrategia Digital',
+    description: 'Medición de resultados, dashboards y toma de decisiones basada en datos.',
+    hours: '8', duration: '2 semanas', modality: '100% en línea', level: 'Introductorio', area: 'Estrategia Digital',
+    priceMXN: 1200,
   },
   {
     slug: 'certificado-seguridad-web',
     type: 'Certificado Profesional',
     title: 'Certificado Profesional en Seguridad Web',
-    description: 'Formación en protección de datos, ciberseguridad, cumplimiento normativo GDPR/LGPD y seguridad en plataformas educativas.',
-    hours: '6',
-    duration: '2 semanas',
-    modality: '100% en línea',
-    level: 'Introductorio',
-    area: 'Tecnología',
+    description: 'Protección de datos, ciberseguridad y cumplimiento normativo GDPR/LGPD.',
+    hours: '6', duration: '2 semanas', modality: '100% en línea', level: 'Introductorio', area: 'Tecnología',
+    priceMXN: 1200,
   },
   {
     slug: 'certificado-ia-basica',
     type: 'Certificado Profesional',
-    title: 'Certificado Profesional en Inteligencia Artificial Básica',
-    description: 'Fundamentos de IA, machine learning y aplicaciones prácticas para profesionales no técnicos.',
-    hours: '5',
-    duration: '1 semana',
-    modality: '100% en línea',
-    level: 'Introductorio',
-    area: 'Inteligencia Artificial',
+    title: 'Certificado Profesional en IA Básica',
+    description: 'Fundamentos de IA, machine learning y aplicaciones para profesionales no técnicos.',
+    hours: '5', duration: '1 semana', modality: '100% en línea', level: 'Introductorio', area: 'Inteligencia Artificial',
+    priceMXN: 1200,
   },
 
   // Doctorado
@@ -174,12 +138,9 @@ const allPrograms = [
     slug: 'doctorado-inteligencia-estrategica',
     type: 'Doctorado Profesional',
     title: 'Doctorado Profesional en Inteligencia Estratégica Digital',
-    description: 'Programa de investigación aplicada orientado a la dirección estratégica digital. Incluye tesis doctoral, mentoría personalizada y publicación académica.',
-    hours: '120+',
-    duration: '12 meses',
-    modality: '100% en línea',
-    level: 'Especialización',
-    area: 'Inteligencia Artificial',
+    description: 'Investigación aplicada a la dirección estratégica digital. Tesis doctoral, mentoría y publicación académica.',
+    hours: '120+', duration: '12 meses', modality: '100% en línea', level: 'Especialización', area: 'Inteligencia Artificial',
+    priceMXN: 29900,
   },
 ];
 
@@ -203,7 +164,7 @@ const Programas = () => {
               CATÁLOGO DE PROGRAMAS
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Oferta académica completa de UTAMV. Programas estructurados por nivel de formación, 
+              Oferta académica completa de UTAMV. Programas estructurados por nivel de formación,
               con información clara sobre duración, horas y competencias.
             </p>
           </div>
@@ -219,8 +180,8 @@ const Programas = () => {
                   onClick={() => setFilterType(type)}
                   className={`px-4 py-2 rounded-lg text-xs font-semibold tracking-wider whitespace-nowrap transition-all duration-300 ${
                     filterType === type
-                      ? 'bg-platinum text-[#0A1128] shadow-platinum'
-                      : 'bg-white/5 text-white/70 hover:text-platinum hover:bg-white/10 border border-transparent hover:border-platinum/20'
+                      ? 'bg-foreground text-background'
+                      : 'bg-muted text-muted-foreground hover:text-foreground border border-transparent hover:border-border'
                   }`}
                 >
                   {type.toUpperCase()}
@@ -244,7 +205,7 @@ const Programas = () => {
                 >
                   {prog.featured && (
                     <div className="bg-platinum/10 text-platinum text-[10px] font-bold tracking-[0.2em] text-center py-1.5 uppercase">
-                      Programa insignia
+                      Programa destacado
                     </div>
                   )}
                   <div className="p-6">
@@ -257,6 +218,15 @@ const Programas = () => {
                     <p className="text-xs text-muted-foreground mb-4 leading-relaxed line-clamp-3">
                       {prog.description}
                     </p>
+
+                    {/* Price */}
+                    <div className="mb-4 flex items-baseline gap-1">
+                      <span className="text-lg font-display font-bold text-foreground">
+                        ${prog.priceMXN.toLocaleString('es-MX')}
+                      </span>
+                      <span className="text-xs text-muted-foreground">MXN</span>
+                    </div>
+
                     <div className="grid grid-cols-2 gap-3 text-xs text-muted-foreground">
                       <div className="flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5" />
