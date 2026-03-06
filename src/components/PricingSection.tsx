@@ -121,22 +121,17 @@ const PricingSection = () => {
 
               {/* Precio */}
               <div className="p-8 text-center border-b border-border">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <span className="text-2xl text-muted-foreground line-through">
-                    $499 USD
-                  </span>
-                  <span className="px-2 py-1 rounded bg-teal-primary/20 text-teal-primary text-xs md:text-sm font-bold">
-                    Beca lanzamiento -60%
-                  </span>
-                </div>
                 <div className="flex items-baseline justify-center gap-1">
                   <span className="text-5xl md:text-6xl font-display font-bold text-gradient-silver">
-                    $199
+                    $6,900
                   </span>
-                  <span className="text-xl text-muted-foreground">USD</span>
+                  <span className="text-xl text-muted-foreground">MXN</span>
                 </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  ≈ $350 USD • 4 mensualidades de $1,800 MXN
+                </p>
                 <p className="text-xs md:text-sm text-muted-foreground mt-2">
-                  Validacion en CV • Respaldo Academico • Certificación incluida
+                  Validación en CV • Respaldo Académico • Certificación incluida
                 </p>
               </div>
 
@@ -170,7 +165,7 @@ const PricingSection = () => {
                   ) : (
                     <>
                       <Sparkles className="w-5 h-5" />
-                      Confirmar mi plaza en la cohorte 2026 – $199 USD
+                      Confirmar mi plaza — $6,900 MXN
                     </>
                   )}
                 </Button>
