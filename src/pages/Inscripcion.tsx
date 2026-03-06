@@ -1,4 +1,4 @@
-import { Check, Shield, Clock, Award, Users, FileText, Headphones, Sparkles } from 'lucide-react';
+import { Check, Shield, Clock, Award, Users, FileText, Headphones, Sparkles, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -13,49 +13,59 @@ const Inscripcion = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const features = [
-    { icon: FileText, text: '10 módulos con contenido multimedia estructurado' },
-    { icon: Clock, text: '50+ horas de formación académica' },
-    { icon: Award, text: 'Certificación UTAMV con verificación digital' },
-    { icon: Users, text: 'Acceso a la comunidad de estudiantes' },
-    { icon: Headphones, text: 'Soporte académico y tutoría IA' },
+    { icon: FileText, text: 'Contenido multimedia estructurado por módulos' },
+    { icon: Clock, text: 'Formación académica con horas acreditables' },
+    { icon: Award, text: 'Certificación UTAMV con verificación digital QR' },
+    { icon: Users, text: 'Acceso a la comunidad de estudiantes y egresados' },
+    { icon: Headphones, text: 'Soporte académico y tutoría con IA' },
     { icon: Shield, text: 'Acceso permanente al contenido del programa' },
   ];
 
   const tiers = [
     {
       name: 'Certificado Profesional',
-      price: 60,
-      description: 'Programa introductorio en áreas específicas del marketing digital.',
-      features: ['5-8 horas de formación', 'Certificado de finalización', 'Acceso a recursos básicos', 'Evaluación continua'],
+      priceMXN: 1200,
+      priceUSD: 60,
+      monthly: null,
+      description: 'Programa introductorio en áreas específicas. Ideal para explorar un campo antes de especializarte.',
+      features: ['5–8 horas de formación', 'Certificado digital UTAMV', 'Acceso a recursos básicos', 'Evaluación continua por quiz'],
       slug: 'certificado-profesional',
     },
     {
       name: 'Diplomado',
-      price: 399,
-      description: 'Programa intensivo de especialización en marketing digital.',
-      features: ['25-40 horas de formación', 'Diplomado UTAMV', 'Proyectos prácticos', 'Tutoría semanal', 'Comunidad exclusiva'],
-      slug: 'diplomado-marketing-digital',
+      priceMXN: 4900,
+      priceUSD: 250,
+      monthly: { months: 3, amount: 1700 },
+      description: 'Formación especializada intensiva con proyectos prácticos y acompañamiento semanal.',
+      features: ['25–40 horas de formación', 'Diplomado UTAMV con sello digital', 'Proyectos prácticos guiados', 'Tutoría semanal', 'Comunidad de especialización'],
+      slug: 'diplomado-seo-avanzado',
     },
     {
       name: 'Máster Profesional',
-      price: 799,
-      description: 'Programa insignia de formación avanzada en marketing digital 360.',
-      features: ['50+ horas de formación', 'Certificación UTAMV completa', 'Proyecto integrador', 'Tutoría personalizada', 'Comunidad VIP', 'Acceso permanente'],
+      priceMXN: 6900,
+      priceUSD: 350,
+      monthly: { months: 4, amount: 1800 },
+      description: 'Programa insignia de formación avanzada con proyecto integrador y certificación completa.',
+      features: ['50+ horas de formación', 'Certificación UTAMV completa', 'Proyecto integrador con caso real', 'Tutoría personalizada', 'Comunidad VIP', 'Acceso permanente'],
       slug: 'master-marketing-digital-2026',
       featured: true,
     },
     {
       name: 'Maestría',
-      price: 2499,
-      description: 'Programa de posgrado con profundización en áreas especializadas.',
-      features: ['160+ horas de formación', 'Tesis de maestría', 'Mentoría académica', 'Publicación en revistas', 'Red de profesionales'],
+      priceMXN: 11900,
+      priceUSD: 600,
+      monthly: { months: 6, amount: 2100 },
+      description: 'Programa de posgrado con investigación aplicada, tesis y mentoría académica.',
+      features: ['160–200+ horas de formación', 'Grado de maestría UTAMV', 'Tesis con asesor académico', 'Mentoría personalizada', 'Red profesional de egresados'],
       slug: 'maestria-marketing-digital',
     },
     {
       name: 'Doctorado Profesional',
-      price: 4999,
-      description: 'Programa de investigación aplicada y dirección estratégica.',
-      features: ['120+ horas de formación', 'Tesis doctoral', 'Mentoría personalizada', 'Publicación académica', 'Acceso a congresos'],
+      priceMXN: 29900,
+      priceUSD: 1500,
+      monthly: { months: 10, amount: 3200 },
+      description: 'Investigación aplicada y dirección estratégica. Incluye tesis doctoral y publicación académica.',
+      features: ['120+ horas de formación', 'Tesis doctoral con comité', 'Mentoría personalizada', 'Publicación académica', 'Acceso a seminarios'],
       slug: 'doctorado-inteligencia-estrategica',
     },
   ];
@@ -92,8 +102,8 @@ const Inscripcion = () => {
               ADMISIONES
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Selecciona el programa que mejor se adapte a tu perfil profesional y nivel de formación. 
-              Todos los programas incluyen certificación UTAMV con verificación digital.
+              Selecciona el programa que mejor se adapte a tu perfil profesional y nivel de formación.
+              Todos los precios están en pesos mexicanos (MXN) con equivalente en USD.
             </p>
           </div>
         </section>
@@ -120,10 +130,29 @@ const Inscripcion = () => {
                     </span>
                     <p className="text-sm text-muted-foreground mt-2 mb-4">{tier.description}</p>
 
-                    <div className="flex items-baseline gap-1 mb-6">
-                      <span className="text-3xl font-display font-bold text-foreground">${tier.price}</span>
-                      <span className="text-sm text-muted-foreground">USD</span>
+                    {/* Pricing */}
+                    <div className="mb-2">
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-3xl font-display font-bold text-foreground">
+                          ${tier.priceMXN.toLocaleString('es-MX')}
+                        </span>
+                        <span className="text-sm text-muted-foreground">MXN</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        ≈ ${tier.priceUSD.toLocaleString('en-US')} USD
+                      </p>
                     </div>
+
+                    {tier.monthly && (
+                      <div className="mb-4 px-3 py-2 rounded-lg bg-muted/50 border border-border">
+                        <div className="flex items-center gap-1.5 text-xs text-foreground">
+                          <CreditCard className="w-3.5 h-3.5 text-platinum" />
+                          <span className="font-medium">
+                            {tier.monthly.months} mensualidades de ${tier.monthly.amount.toLocaleString('es-MX')} MXN
+                          </span>
+                        </div>
+                      </div>
+                    )}
 
                     <ul className="space-y-2.5 mb-6">
                       {tier.features.map((f, j) => (
@@ -178,8 +207,26 @@ const Inscripcion = () => {
           </div>
         </section>
 
-        {/* Payment trust */}
+        {/* Becas */}
         <section className="py-12">
+          <div className="container mx-auto px-4">
+            <div className="max-w-2xl mx-auto text-center">
+              <h2 className="font-display text-lg font-bold text-foreground mb-4 tracking-wider uppercase">
+                Becas y apoyos
+              </h2>
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+                UTAMV ofrece becas parciales para estudiantes con mérito académico, profesionales en transición
+                laboral y grupos comunitarios. Contacta al equipo de admisiones para conocer los requisitos.
+              </p>
+              <Button variant="ghost" asChild>
+                <Link to="/admisiones/contacto">Solicitar beca →</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Payment trust */}
+        <section className="py-12 bg-muted/20">
           <div className="container mx-auto px-4 text-center">
             <p className="text-xs text-muted-foreground mb-4">Procesamiento de pago seguro</p>
             <div className="flex justify-center gap-4 items-center flex-wrap">
