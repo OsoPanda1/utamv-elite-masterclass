@@ -4,6 +4,7 @@ import QRCode from 'qrcode';
 import { Button } from '@/components/ui/button';
 import { Award, Download, ExternalLink, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import certificateTemplateSrc from '@/assets/certificate-template-utamv.png';
 
 interface CertificateGeneratorProps {
   studentName: string;
@@ -14,11 +15,7 @@ interface CertificateGeneratorProps {
 }
 
 const CertificateGenerator = ({
-  studentName,
-  certificateNumber,
-  courseTitle,
-  completionDate,
-  verificationUrl
+  studentName, certificateNumber, courseTitle, completionDate, verificationUrl
 }: CertificateGeneratorProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
@@ -27,297 +24,132 @@ const CertificateGenerator = ({
     setIsGenerating(true);
     
     try {
-      // Create PDF document
       const pdfDoc = await PDFDocument.create();
-      const page = pdfDoc.addPage([842, 595]); // A4 Landscape
+      // Portrait A4-ish to match the template image (3:4 ratio)
+      const pageWidth = 595;
+      const pageHeight = 842;
+      const page = pdfDoc.addPage([pageWidth, pageHeight]);
       
       const helveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
       const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
       const timesItalic = await pdfDoc.embedFont(StandardFonts.TimesRomanItalic);
 
-      const { width, height } = page.getSize();
+      // Embed background template image
+      try {
+        const templateBytes = await fetch(certificateTemplateSrc).then(r => r.arrayBuffer());
+        const templateImage = await pdfDoc.embedPng(templateBytes);
+        page.drawImage(templateImage, { x: 0, y: 0, width: pageWidth, height: pageHeight });
+      } catch {
+        // Fallback: dark background if template can't load
+        page.drawRectangle({ x: 0, y: 0, width: pageWidth, height: pageHeight, color: rgb(0.06, 0.06, 0.1) });
+        page.drawRectangle({ x: 15, y: 15, width: pageWidth - 30, height: pageHeight - 30, borderColor: rgb(0.7, 0.6, 0.3), borderWidth: 3 });
+      }
 
-      // Background gradient effect (silver/platinum theme)
-      page.drawRectangle({
-        x: 0,
-        y: 0,
-        width,
-        height,
-        color: rgb(0.08, 0.08, 0.12),
-      });
-
-      // Decorative border
-      const borderWidth = 4;
-      page.drawRectangle({
-        x: 20,
-        y: 20,
-        width: width - 40,
-        height: height - 40,
-        borderColor: rgb(0.7, 0.75, 0.8), // Silver
-        borderWidth,
-      });
-
-      // Inner decorative line
-      page.drawRectangle({
-        x: 35,
-        y: 35,
-        width: width - 70,
-        height: height - 70,
-        borderColor: rgb(0.5, 0.55, 0.6),
-        borderWidth: 1,
-      });
-
-      // Header - UTAMV
-      page.drawText('UTAMV', {
-        x: width / 2 - 80,
-        y: height - 100,
-        size: 48,
-        font: helveticaBold,
-        color: rgb(0.7, 0.75, 0.8),
-      });
-
-      // Subtitle
-      page.drawText('UNIVERSIDAD TÉCNICA DE ADMINISTRACIÓN VIRTUAL', {
-        x: width / 2 - 200,
-        y: height - 130,
-        size: 12,
-        font: helvetica,
-        color: rgb(0.6, 0.65, 0.7),
-      });
-
-      // Certificate title
-      page.drawText('CERTIFICADO DE FINALIZACIÓN', {
-        x: width / 2 - 150,
-        y: height - 180,
-        size: 22,
-        font: helveticaBold,
-        color: rgb(0.85, 0.87, 0.9),
-      });
-
-      // Decorative line
-      page.drawLine({
-        start: { x: 150, y: height - 200 },
-        end: { x: width - 150, y: height - 200 },
-        thickness: 1,
-        color: rgb(0.5, 0.55, 0.6),
-      });
-
-      // "Se certifica que" text
-      page.drawText('Se certifica que', {
-        x: width / 2 - 50,
-        y: height - 240,
-        size: 14,
-        font: timesItalic,
-        color: rgb(0.6, 0.65, 0.7),
-      });
-
-      // Student name
+      // Student name - positioned over the first white bar in the template (~58% from top)
+      const nameY = pageHeight * 0.42;
+      const nameSize = studentName.length > 25 ? 18 : 24;
+      const nameWidth = helveticaBold.widthOfTextAtSize(studentName.toUpperCase(), nameSize);
       page.drawText(studentName.toUpperCase(), {
-        x: width / 2 - (studentName.length * 12),
-        y: height - 280,
-        size: 32,
+        x: (pageWidth - nameWidth) / 2,
+        y: nameY,
+        size: nameSize,
         font: helveticaBold,
-        color: rgb(0.9, 0.92, 0.95),
+        color: rgb(0.15, 0.12, 0.08),
       });
 
-      // Underline for name
-      const nameWidth = studentName.length * 24;
-      page.drawLine({
-        start: { x: width / 2 - nameWidth / 2, y: height - 290 },
-        end: { x: width / 2 + nameWidth / 2, y: height - 290 },
-        thickness: 2,
-        color: rgb(0.7, 0.75, 0.8),
-      });
-
-      // Course completion text
-      page.drawText('ha completado satisfactoriamente el programa', {
-        x: width / 2 - 140,
-        y: height - 330,
-        size: 14,
-        font: helvetica,
-        color: rgb(0.6, 0.65, 0.7),
-      });
-
-      // Course title
+      // Program name - positioned over the second white bar (~28% from top)
+      const programY = pageHeight * 0.26;
+      const programSize = courseTitle.length > 40 ? 10 : 14;
+      const programWidth = helveticaBold.widthOfTextAtSize(courseTitle, programSize);
       page.drawText(courseTitle, {
-        x: width / 2 - (courseTitle.length * 7),
-        y: height - 370,
-        size: 20,
+        x: (pageWidth - programWidth) / 2,
+        y: programY,
+        size: programSize,
         font: helveticaBold,
-        color: rgb(0.85, 0.87, 0.9),
+        color: rgb(0.15, 0.12, 0.08),
       });
 
-      // Completion date
-      page.drawText(`Fecha de emisión: ${completionDate}`, {
-        x: width / 2 - 80,
-        y: height - 420,
-        size: 12,
-        font: helvetica,
-        color: rgb(0.5, 0.55, 0.6),
-      });
-
-      // Certificate number
-      page.drawText(`Certificado N°: ${certificateNumber}`, {
-        x: width / 2 - 90,
-        y: height - 445,
-        size: 12,
-        font: helveticaBold,
-        color: rgb(0.7, 0.75, 0.8),
-      });
-
-      // Generate QR Code
+      // QR Code - bottom left area matching template
       const qrDataUrl = await QRCode.toDataURL(verificationUrl, {
-        width: 100,
-        margin: 1,
-        color: {
-          dark: '#b8bcc4',
-          light: '#14141c'
-        }
+        width: 100, margin: 1,
+        color: { dark: '#1a1a2e', light: '#ffffff' }
+      });
+      const qrBytes = await fetch(qrDataUrl).then(r => r.arrayBuffer());
+      const qrImage = await pdfDoc.embedPng(qrBytes);
+      page.drawImage(qrImage, { x: 38, y: 45, width: 75, height: 75 });
+
+      // Certificate ID - below QR matching "Blockchain ID" position
+      const idText = `ID: ${certificateNumber}`;
+      page.drawText(idText, {
+        x: 38, y: 32, size: 6,
+        font: helvetica, color: rgb(0.7, 0.65, 0.5),
       });
 
-      // Embed QR code
-      const qrImageBytes = await fetch(qrDataUrl).then(res => res.arrayBuffer());
-      const qrImage = await pdfDoc.embedPng(qrImageBytes);
-      
-      page.drawImage(qrImage, {
-        x: width - 140,
-        y: 50,
-        width: 80,
-        height: 80,
-      });
-
-      // QR label
-      page.drawText('Verificar', {
-        x: width - 125,
-        y: 40,
-        size: 10,
-        font: helvetica,
-        color: rgb(0.5, 0.55, 0.6),
-      });
-
-      // Signature area
-      page.drawLine({
-        start: { x: 150, y: 100 },
-        end: { x: 350, y: 100 },
-        thickness: 1,
-        color: rgb(0.5, 0.55, 0.6),
-      });
-
-      page.drawText('Director Académico', {
-        x: 200,
-        y: 80,
-        size: 12,
-        font: helvetica,
-        color: rgb(0.5, 0.55, 0.6),
-      });
-
-      page.drawText('UTAMV', {
-        x: 230,
-        y: 65,
-        size: 10,
-        font: helvetica,
-        color: rgb(0.4, 0.45, 0.5),
-      });
-
-      // Footer text
-      page.drawText('Orgullosamente Realmontenses - Latinoamérica', {
-        x: 60,
-        y: 40,
-        size: 10,
-        font: timesItalic,
-        color: rgb(0.4, 0.45, 0.5),
-      });
-
-      page.drawText('Tecnología TAMV ONLINE', {
-        x: 60,
-        y: 25,
-        size: 8,
-        font: helvetica,
-        color: rgb(0.3, 0.35, 0.4),
+      // Date - small text near bottom
+      page.drawText(`Fecha: ${completionDate}`, {
+        x: 38, y: 22, size: 6,
+        font: helvetica, color: rgb(0.6, 0.55, 0.45),
       });
 
       // Save and download
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
-      
       const link = document.createElement('a');
       link.href = url;
       link.download = `UTAMV-Certificado-${certificateNumber}.pdf`;
       link.click();
-      
       URL.revokeObjectURL(url);
 
-      toast({
-        title: '¡Certificado generado!',
-        description: 'Tu certificado UTAMV ha sido descargado.',
-      });
+      toast({ title: '¡Certificado generado!', description: 'Tu certificado UTAMV ha sido descargado.' });
     } catch (error) {
       console.error('Error generating certificate:', error);
-      toast({
-        title: 'Error',
-        description: 'No se pudo generar el certificado. Intenta de nuevo.',
-        variant: 'destructive',
-      });
+      toast({ title: 'Error', description: 'No se pudo generar el certificado.', variant: 'destructive' });
     } finally {
       setIsGenerating(false);
     }
   };
 
   return (
-    <div className="card-elite p-6 border-silver-primary/30">
+    <div className="p-6 rounded-xl bg-card border border-secondary/30">
       <div className="flex items-center gap-4 mb-6">
-        <div className="w-16 h-16 rounded-full bg-gradient-silver flex items-center justify-center shadow-silver">
-          <Award className="w-8 h-8 text-background" />
+        <div className="w-14 h-14 rounded-full bg-secondary/20 flex items-center justify-center">
+          <Award className="w-7 h-7 text-secondary" />
         </div>
         <div>
-          <h3 className="font-display text-xl font-bold text-gradient-silver">
-            Certificación UTAMV
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            Certificado N°: {certificateNumber}
-          </p>
+          <h3 className="font-display text-lg font-bold text-foreground">Certificación UTAMV</h3>
+          <p className="text-xs text-muted-foreground">Certificado N°: {certificateNumber}</p>
         </div>
       </div>
 
-      <div className="space-y-4 mb-6">
-        <div className="p-4 rounded-lg bg-muted/30">
-          <p className="text-sm text-muted-foreground">Estudiante</p>
-          <p className="font-semibold text-foreground">{studentName}</p>
-        </div>
-        <div className="p-4 rounded-lg bg-muted/30">
-          <p className="text-sm text-muted-foreground">Programa</p>
-          <p className="font-semibold text-foreground">{courseTitle}</p>
-        </div>
-        <div className="p-4 rounded-lg bg-muted/30">
-          <p className="text-sm text-muted-foreground">Fecha de emisión</p>
-          <p className="font-semibold text-foreground">{completionDate}</p>
-        </div>
+      <div className="space-y-3 mb-6">
+        {[
+          { label: 'Estudiante', value: studentName },
+          { label: 'Programa', value: courseTitle },
+          { label: 'Fecha de emisión', value: completionDate },
+        ].map((item, i) => (
+          <div key={i} className="p-3 rounded-lg bg-muted/30">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{item.label}</p>
+            <p className="text-sm font-medium text-foreground">{item.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Preview of the certificate template */}
+      <div className="mb-6 rounded-lg overflow-hidden border border-border">
+        <img src={certificateTemplateSrc} alt="Plantilla de certificado UTAMV" className="w-full h-auto opacity-80" />
       </div>
 
       <div className="flex gap-3">
-        <Button 
-          variant="elite" 
-          className="flex-1"
-          onClick={generateCertificatePDF}
-          disabled={isGenerating}
-        >
+        <Button variant="outline" className="flex-1 border-secondary text-secondary hover:bg-secondary/10"
+          onClick={generateCertificatePDF} disabled={isGenerating}>
           {isGenerating ? (
-            <>
-              <Sparkles className="w-4 h-4 mr-2 animate-spin" />
-              Generando...
-            </>
+            <><Sparkles className="w-4 h-4 mr-2 animate-spin" />Generando...</>
           ) : (
-            <>
-              <Download className="w-4 h-4 mr-2" />
-              Descargar PDF
-            </>
+            <><Download className="w-4 h-4 mr-2" />Descargar PDF</>
           )}
         </Button>
-        <Button
-          variant="outline"
-          onClick={() => window.open(verificationUrl, '_blank')}
-        >
+        <Button variant="ghost" onClick={() => window.open(verificationUrl, '_blank')}>
           <ExternalLink className="w-4 h-4" />
         </Button>
       </div>

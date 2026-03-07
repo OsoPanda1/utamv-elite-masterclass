@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { z } from 'zod';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,8 +21,10 @@ const signupSchema = z.object({
   password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres').max(72, 'Contraseña demasiado larga'),
 });
 
+type AuthMode = 'login' | 'signup' | 'forgot';
+
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [mode, setMode] = useState<AuthMode>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -30,21 +33,45 @@ const Auth = () => {
   
   const { signIn, signUp, user, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+
+  const from = (location.state as any)?.from?.pathname || '/campus-virtual';
 
   useEffect(() => {
     if (!loading && user) {
-      navigate('/dashboard');
+      navigate(from, { replace: true });
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, from]);
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      setErrors({ email: 'Ingresa tu correo electrónico' });
+      return;
+    }
+    setIsLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setIsLoading(false);
+    if (error) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: 'Correo enviado', description: 'Revisa tu bandeja de entrada para restablecer tu contraseña.' });
+      setMode('login');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (mode === 'forgot') return handleForgotPassword(e);
+
     setErrors({});
     setIsLoading(true);
 
     try {
-      if (isLogin) {
+      if (mode === 'login') {
         const result = loginSchema.safeParse({ email, password });
         if (!result.success) {
           const fieldErrors: Record<string, string> = {};
@@ -58,25 +85,15 @@ const Auth = () => {
 
         const { error } = await signIn(email, password);
         if (error) {
-          if (error.message.includes('Invalid login credentials')) {
-            toast({
-              title: 'Error de inicio de sesión',
-              description: 'Credenciales incorrectas. Verifica tu correo y contraseña.',
-              variant: 'destructive',
-            });
-          } else {
-            toast({
-              title: 'Error',
-              description: error.message,
-              variant: 'destructive',
-            });
-          }
-        } else {
           toast({
-            title: '¡Bienvenido!',
-            description: 'Has iniciado sesión correctamente.',
+            title: 'Error de inicio de sesión',
+            description: error.message.includes('Invalid login credentials')
+              ? 'Credenciales incorrectas. Verifica tu correo y contraseña.'
+              : error.message,
+            variant: 'destructive',
           });
-          navigate('/dashboard');
+        } else {
+          toast({ title: '¡Bienvenido!', description: 'Has iniciado sesión correctamente.' });
         }
       } else {
         const result = signupSchema.safeParse({ email, password, fullName });
@@ -92,25 +109,15 @@ const Auth = () => {
 
         const { error } = await signUp(email, password, fullName);
         if (error) {
-          if (error.message.includes('User already registered')) {
-            toast({
-              title: 'Usuario existente',
-              description: 'Este correo ya está registrado. Intenta iniciar sesión.',
-              variant: 'destructive',
-            });
-          } else {
-            toast({
-              title: 'Error al registrarse',
-              description: error.message,
-              variant: 'destructive',
-            });
-          }
-        } else {
           toast({
-            title: '¡Registro exitoso!',
-            description: 'Tu cuenta ha sido creada. Bienvenido al Master Elite.',
+            title: error.message.includes('User already registered') ? 'Usuario existente' : 'Error al registrarse',
+            description: error.message.includes('User already registered')
+              ? 'Este correo ya está registrado. Intenta iniciar sesión.'
+              : error.message,
+            variant: 'destructive',
           });
-          navigate('/dashboard');
+        } else {
+          toast({ title: '¡Registro exitoso!', description: 'Tu cuenta ha sido creada. Bienvenido al Campus Virtual UTAMV.' });
         }
       }
     } finally {
@@ -133,38 +140,36 @@ const Auth = () => {
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-card border-2 border-platinum mb-4 shadow-platinum">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-card border-2 border-border mb-4 shadow-lg">
               <img src={utamvLogo} alt="UTAMV" className="w-14 h-14 object-contain" />
             </div>
-            <h1 className="font-display text-3xl font-bold text-gradient-silver">
-              {isLogin ? 'Bienvenido de Vuelta' : 'Únete a UTAMV'}
+            <h1 className="font-display text-3xl font-bold text-foreground">
+              {mode === 'login' ? 'Bienvenido de Vuelta' : mode === 'signup' ? 'Únete a UTAMV' : 'Recuperar Contraseña'}
             </h1>
             <p className="text-muted-foreground mt-2">
-              {isLogin 
-                ? 'Accede a tu dashboard académico' 
-                : 'Crea tu cuenta para comenzar tu educación'}
+              {mode === 'login'
+                ? 'Accede al Campus Virtual UTAMV'
+                : mode === 'signup'
+                ? 'Crea tu cuenta para comenzar tu formación académica'
+                : 'Ingresa tu correo para recibir instrucciones'}
             </p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {!isLogin && (
+            {mode === 'signup' && (
               <div className="space-y-2">
                 <Label htmlFor="fullName" className="text-foreground flex items-center gap-2">
                   <User className="w-4 h-4 text-primary" />
                   Nombre Completo
                 </Label>
                 <Input
-                  id="fullName"
-                  type="text"
-                  value={fullName}
+                  id="fullName" type="text" value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Tu nombre completo"
                   className="bg-card border-border focus:border-primary"
                 />
-                {errors.fullName && (
-                  <p className="text-sm text-destructive">{errors.fullName}</p>
-                )}
+                {errors.fullName && <p className="text-sm text-destructive">{errors.fullName}</p>}
               </div>
             )}
 
@@ -174,48 +179,49 @@ const Auth = () => {
                 Correo Electrónico
               </Label>
               <Input
-                id="email"
-                type="email"
-                value={email}
+                id="email" type="email" value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="tu@email.com"
                 className="bg-card border-border focus:border-primary"
               />
-              {errors.email && (
-                <p className="text-sm text-destructive">{errors.email}</p>
-              )}
+              {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-foreground flex items-center gap-2">
-                <Lock className="w-4 h-4 text-primary" />
-                Contraseña
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="bg-card border-border focus:border-primary"
-              />
-              {errors.password && (
-                <p className="text-sm text-destructive">{errors.password}</p>
-              )}
-            </div>
+            {mode !== 'forgot' && (
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-foreground flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-primary" />
+                  Contraseña
+                </Label>
+                <Input
+                  id="password" type="password" value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="bg-card border-border focus:border-primary"
+                />
+                {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
+              </div>
+            )}
+
+            {mode === 'login' && (
+              <div className="text-right">
+                <button type="button" onClick={() => { setMode('forgot'); setErrors({}); }}
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  ¿Olvidaste tu contraseña?
+                </button>
+              </div>
+            )}
 
             <Button
-              type="submit"
-              variant="outline"
-              size="lg"
-              className="w-full border-platinum text-platinum hover:bg-platinum/10 hover:border-platinum"
+              type="submit" variant="outline" size="lg"
+              className="w-full border-primary text-primary hover:bg-primary/10"
               disabled={isLoading}
             >
               {isLoading ? (
-                <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-platinum" />
+                <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary" />
               ) : (
                 <>
-                  {isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
+                  {mode === 'login' ? 'Iniciar Sesión' : mode === 'signup' ? 'Crear Cuenta' : 'Enviar instrucciones'}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </>
               )}
@@ -224,29 +230,29 @@ const Auth = () => {
 
           {/* Toggle */}
           <div className="mt-8 text-center">
-            <p className="text-muted-foreground">
-              {isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                setIsLogin(!isLogin);
-                setErrors({});
-              }}
-              className="text-primary hover:text-primary/80 font-medium mt-1 inline-flex items-center gap-1"
-            >
-              {isLogin ? 'Registrarse' : 'Iniciar Sesión'}
-              <Sparkles className="w-4 h-4" />
-            </button>
+            {mode === 'forgot' ? (
+              <button type="button" onClick={() => { setMode('login'); setErrors({}); }}
+                className="text-primary hover:text-primary/80 font-medium inline-flex items-center gap-1">
+                ← Volver a iniciar sesión
+              </button>
+            ) : (
+              <>
+                <p className="text-muted-foreground">
+                  {mode === 'login' ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
+                </p>
+                <button type="button"
+                  onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setErrors({}); }}
+                  className="text-primary hover:text-primary/80 font-medium mt-1 inline-flex items-center gap-1">
+                  {mode === 'login' ? 'Registrarse' : 'Iniciar Sesión'}
+                  <Sparkles className="w-4 h-4" />
+                </button>
+              </>
+            )}
           </div>
 
-          {/* Back to home */}
           <div className="mt-6 text-center">
-            <button
-              type="button"
-              onClick={() => navigate('/')}
-              className="text-muted-foreground hover:text-foreground text-sm"
-            >
+            <button type="button" onClick={() => navigate('/')}
+              className="text-muted-foreground hover:text-foreground text-sm">
               ← Volver al inicio
             </button>
           </div>
@@ -255,44 +261,28 @@ const Auth = () => {
 
       {/* Right side - Decorative */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-br from-card via-background to-card items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-platinum/5 via-transparent to-platinum/10" />
-        
-        {/* Academic elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
         <div className="relative z-10 text-center px-12">
-          <div className="w-40 h-40 mx-auto mb-8 rounded-full bg-card border-4 border-platinum/30 flex items-center justify-center shadow-platinum animate-float">
-            <GraduationCap className="w-20 h-20 text-platinum" />
+          <div className="w-40 h-40 mx-auto mb-8 rounded-full bg-card border-4 border-border flex items-center justify-center animate-float">
+            <GraduationCap className="w-20 h-20 text-primary" />
           </div>
-          
-          <h2 className="font-display text-4xl font-bold text-gradient-silver mb-4">
-            Universidad UTAMV
+          <h2 className="font-display text-4xl font-bold text-foreground mb-4">
+            Campus Virtual UTAMV
           </h2>
           <p className="text-xl text-muted-foreground mb-6">
             Educación Superior de Calidad
           </p>
-          
           <div className="space-y-4">
-            <div className="flex items-center gap-3 text-foreground">
-              <div className="w-8 h-8 rounded-full bg-platinum/10 flex items-center justify-center">
-                <span className="text-platinum font-bold">✓</span>
+            {['Certificación Académica con QR verificable', 'Programas desde $1,200 MXN', 'Primera Generación 2026–2027'].map((text, i) => (
+              <div key={i} className="flex items-center gap-3 text-foreground">
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="text-primary font-bold">✓</span>
+                </div>
+                <span>{text}</span>
               </div>
-              <span>Certificación Académica Internacional</span>
-            </div>
-            <div className="flex items-center gap-3 text-foreground">
-              <div className="w-8 h-8 rounded-full bg-platinum/10 flex items-center justify-center">
-                <span className="text-platinum font-bold">✓</span>
-              </div>
-              <span>Programas de Excelencia Académica</span>
-            </div>
-            <div className="flex items-center gap-3 text-foreground">
-              <div className="w-8 h-8 rounded-full bg-platinum/10 flex items-center justify-center">
-                <span className="text-platinum font-bold">✓</span>
-              </div>
-              <span>Educación Transformadora desde Latinoamérica</span>
-            </div>
+            ))}
           </div>
         </div>
-
-        {/* Decorative shapes */}
         <div className="absolute top-20 right-20 w-32 h-32 rounded-full bg-primary/5 blur-3xl" />
         <div className="absolute bottom-20 left-20 w-40 h-40 rounded-full bg-secondary/5 blur-3xl" />
       </div>
