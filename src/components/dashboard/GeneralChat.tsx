@@ -90,7 +90,14 @@ const GeneralChat = () => {
       .limit(100);
 
     if (data) {
-      setMessages(data);
+      setMessages(
+        data.map((m: any) => ({
+          ...m,
+          message: m.message ?? m.content ?? '',
+          created_at: m.created_at ?? new Date().toISOString(),
+          user_name: m.user_name ?? 'Estudiante',
+        }))
+      );
     }
   };
 
