@@ -1,0 +1,41 @@
+route: marketing-civilizatorio
+
+modules:
+  - id: M1
+    title: Epistemología y sistemas complejos
+    lessons:
+      - code: M1.L3
+        title: Introducción operativa al Método 4L como cerebro del arquitecto
+        type: conceptual-operativa
+        apex: ["analysis", "practice", "evidence", "xtrapolation"]
+        tamv_focus: ["contenido", "plataformas", "usuarios", "ofertas"]
+        four_l_outputs:
+          landscape: "Actores, factores y elementos clave del ecosistema mapeados antes de mover nada"
+          leverage: "Al menos una palanca real del sistema identificada, más allá de métricas superficiales"
+          loop: "Un bucle de retroalimentación positivo o negativo descrito"
+          learn: "Una regla o protocolo tipo si pasa X, hacemos Y definido"
+        eoct_focus: ["O", "C", "T"]
+        deliverable: "Primera lectura 4L documentada sobre el mapa M1.L2"
+
+  - id: M3
+    title: Metodo 4L
+    lessons:
+      - code: M3.L2
+        title: Landscape
+        apex: ["analysis"]
+        eoct_focus: ["C", "O"]
+
+      - code: M3.L3
+        title: Leverage
+        apex: ["analysis", "practice"]
+        eoct_focus: ["O"]
+
+      - code: M3.L4
+        title: Loop
+        apex: ["practice", "evidence"]
+        eoct_focus: ["O", "T"]
+
+      - code: M3.L5
+        title: Learn
+        apex: ["evidence", "xtrapolation"]
+        eoct_focus: ["C", "E"]
