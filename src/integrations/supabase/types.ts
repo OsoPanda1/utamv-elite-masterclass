@@ -46,26 +46,74 @@ export type Database = {
           },
         ]
       }
+      badges: {
+        Row: {
+          code: string
+          color: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+          tier: string
+          tokens_reward: number
+        }
+        Insert: {
+          code: string
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          tier?: string
+          tokens_reward?: number
+        }
+        Update: {
+          code?: string
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          tier?: string
+          tokens_reward?: number
+        }
+        Relationships: []
+      }
       certificates: {
         Row: {
+          blockchain_hash: string | null
           certificate_number: string
           course_id: string
+          final_score: number | null
           generated_at: string | null
+          hours_completed: number | null
           id: string
+          issued_at: string | null
           user_id: string
         }
         Insert: {
+          blockchain_hash?: string | null
           certificate_number: string
           course_id: string
+          final_score?: number | null
           generated_at?: string | null
+          hours_completed?: number | null
           id?: string
+          issued_at?: string | null
           user_id: string
         }
         Update: {
+          blockchain_hash?: string | null
           certificate_number?: string
           course_id?: string
+          final_score?: number | null
           generated_at?: string | null
+          hours_completed?: number | null
           id?: string
+          issued_at?: string | null
           user_id?: string
         }
         Relationships: [
@@ -87,28 +135,37 @@ export type Database = {
       }
       chat_messages: {
         Row: {
+          content: string | null
           created_at: string | null
           id: string
+          is_deleted: boolean | null
           is_flagged: boolean | null
-          message: string
+          message: string | null
+          room: string | null
           room_id: string | null
           user_id: string
           user_name: string | null
         }
         Insert: {
+          content?: string | null
           created_at?: string | null
           id?: string
+          is_deleted?: boolean | null
           is_flagged?: boolean | null
-          message: string
+          message?: string | null
+          room?: string | null
           room_id?: string | null
           user_id: string
           user_name?: string | null
         }
         Update: {
+          content?: string | null
           created_at?: string | null
           id?: string
+          is_deleted?: boolean | null
           is_flagged?: boolean | null
-          message?: string
+          message?: string | null
+          room?: string | null
           room_id?: string | null
           user_id?: string
           user_name?: string | null
@@ -152,28 +209,109 @@ export type Database = {
       }
       courses: {
         Row: {
+          category: string | null
           created_at: string | null
           description: string | null
+          hours: number | null
           id: string
+          instructor_bio: string | null
+          instructor_name: string | null
+          is_active: boolean | null
+          is_featured: boolean | null
+          learning_outcomes: string[] | null
+          level: string | null
+          prerequisites: string[] | null
           price_cents: number | null
+          price_mxn: number | null
+          price_usd: number | null
+          slug: string | null
           stripe_price_id: string | null
+          subtitle: string | null
+          thumbnail_url: string | null
           title: string
+          total_lessons: number | null
         }
         Insert: {
+          category?: string | null
           created_at?: string | null
           description?: string | null
+          hours?: number | null
           id?: string
+          instructor_bio?: string | null
+          instructor_name?: string | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          learning_outcomes?: string[] | null
+          level?: string | null
+          prerequisites?: string[] | null
           price_cents?: number | null
+          price_mxn?: number | null
+          price_usd?: number | null
+          slug?: string | null
           stripe_price_id?: string | null
+          subtitle?: string | null
+          thumbnail_url?: string | null
           title: string
+          total_lessons?: number | null
         }
         Update: {
+          category?: string | null
           created_at?: string | null
           description?: string | null
+          hours?: number | null
           id?: string
+          instructor_bio?: string | null
+          instructor_name?: string | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          learning_outcomes?: string[] | null
+          level?: string | null
+          prerequisites?: string[] | null
           price_cents?: number | null
+          price_mxn?: number | null
+          price_usd?: number | null
+          slug?: string | null
           stripe_price_id?: string | null
+          subtitle?: string | null
+          thumbnail_url?: string | null
           title?: string
+          total_lessons?: number | null
+        }
+        Relationships: []
+      }
+      enrollments: {
+        Row: {
+          amount_paid_mxn: number | null
+          completed_at: string | null
+          course_id: string
+          enrolled_at: string
+          id: string
+          status: string
+          stripe_payment_intent: string | null
+          stripe_session_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_paid_mxn?: number | null
+          completed_at?: string | null
+          course_id: string
+          enrolled_at?: string
+          id?: string
+          status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_paid_mxn?: number | null
+          completed_at?: string | null
+          course_id?: string
+          enrolled_at?: string
+          id?: string
+          status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -224,25 +362,37 @@ export type Database = {
       }
       lesson_progress: {
         Row: {
+          completed: boolean | null
           completed_at: string | null
+          course_id: string | null
           id: string
+          last_position_seconds: number | null
           lesson_id: string
+          progress_percent: number | null
           started_at: string | null
           time_spent_seconds: number | null
           user_id: string
         }
         Insert: {
+          completed?: boolean | null
           completed_at?: string | null
+          course_id?: string | null
           id?: string
+          last_position_seconds?: number | null
           lesson_id: string
+          progress_percent?: number | null
           started_at?: string | null
           time_spent_seconds?: number | null
           user_id: string
         }
         Update: {
+          completed?: boolean | null
           completed_at?: string | null
+          course_id?: string | null
           id?: string
+          last_position_seconds?: number | null
           lesson_id?: string
+          progress_percent?: number | null
           started_at?: string | null
           time_spent_seconds?: number | null
           user_id?: string
@@ -267,35 +417,50 @@ export type Database = {
       lessons: {
         Row: {
           audio_content: string | null
+          audio_url: string | null
           content: string | null
+          course_id: string | null
           created_at: string | null
           duration_minutes: number | null
           id: string
+          is_free_preview: boolean | null
           module_id: string
           order_index: number
           title: string
+          transcript: string | null
+          type: string | null
           video_url: string | null
         }
         Insert: {
           audio_content?: string | null
+          audio_url?: string | null
           content?: string | null
+          course_id?: string | null
           created_at?: string | null
           duration_minutes?: number | null
           id?: string
+          is_free_preview?: boolean | null
           module_id: string
           order_index: number
           title: string
+          transcript?: string | null
+          type?: string | null
           video_url?: string | null
         }
         Update: {
           audio_content?: string | null
+          audio_url?: string | null
           content?: string | null
+          course_id?: string | null
           created_at?: string | null
           duration_minutes?: number | null
           id?: string
+          is_free_preview?: boolean | null
           module_id?: string
           order_index?: number
           title?: string
+          transcript?: string | null
+          type?: string | null
           video_url?: string | null
         }
         Relationships: [
@@ -305,6 +470,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "admin_user_progress"
             referencedColumns: ["module_id"]
+          },
+          {
+            foreignKeyName: "lessons_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "lessons_module_id_fkey"
@@ -341,6 +513,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "admin_user_progress"
             referencedColumns: ["module_id"]
+          },
+          {
+            foreignKeyName: "module_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "module_progress_module_id_fkey"
@@ -453,18 +632,47 @@ export type Database = {
           },
         ]
       }
+      processed_stripe_events: {
+        Row: {
+          event_id: string
+          event_type: string
+          payload: Json | null
+          processed_at: string
+        }
+        Insert: {
+          event_id: string
+          event_type: string
+          payload?: Json | null
+          processed_at?: string
+        }
+        Update: {
+          event_id?: string
+          event_type?: string
+          payload?: Json | null
+          processed_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           ai_daily_quota_used: number
           ai_quota_reset_at: string
           avatar_url: string | null
+          bio: string | null
+          country: string | null
           created_at: string | null
+          display_name: string | null
           email: string | null
           full_name: string | null
           id: string
           is_paid: boolean | null
+          level: number
+          linkedin_url: string | null
+          phone: string | null
+          profession: string | null
           role: string | null
           stripe_customer_id: string | null
+          tokens: number
           updated_at: string | null
           user_id: string
         }
@@ -472,13 +680,21 @@ export type Database = {
           ai_daily_quota_used?: number
           ai_quota_reset_at?: string
           avatar_url?: string | null
+          bio?: string | null
+          country?: string | null
           created_at?: string | null
+          display_name?: string | null
           email?: string | null
           full_name?: string | null
           id?: string
           is_paid?: boolean | null
+          level?: number
+          linkedin_url?: string | null
+          phone?: string | null
+          profession?: string | null
           role?: string | null
           stripe_customer_id?: string | null
+          tokens?: number
           updated_at?: string | null
           user_id: string
         }
@@ -486,13 +702,21 @@ export type Database = {
           ai_daily_quota_used?: number
           ai_quota_reset_at?: string
           avatar_url?: string | null
+          bio?: string | null
+          country?: string | null
           created_at?: string | null
+          display_name?: string | null
           email?: string | null
           full_name?: string | null
           id?: string
           is_paid?: boolean | null
+          level?: number
+          linkedin_url?: string | null
+          phone?: string | null
+          profession?: string | null
           role?: string | null
           stripe_customer_id?: string | null
+          tokens?: number
           updated_at?: string | null
           user_id?: string
         }
@@ -608,6 +832,13 @@ export type Database = {
             foreignKeyName: "quiz_scores_module_id_fkey"
             columns: ["module_id"]
             isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_scores_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
             referencedRelation: "modules"
             referencedColumns: ["id"]
           },
@@ -674,6 +905,13 @@ export type Database = {
             foreignKeyName: "quizzes_module_id_fkey"
             columns: ["module_id"]
             isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quizzes_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
             referencedRelation: "modules"
             referencedColumns: ["id"]
           },
@@ -702,6 +940,186 @@ export type Database = {
           window_start?: string
         }
         Relationships: []
+      }
+      rdm_commerces: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          name: string
+          owner_user_id: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          name: string
+          owner_user_id?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          name?: string
+          owner_user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rdm_commerces_owner_user_id_fkey"
+            columns: ["owner_user_id"]
+            isOneToOne: false
+            referencedRelation: "rdm_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rdm_payment_intents: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          external_id: string | null
+          id: string
+          provider: string
+          status: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          external_id?: string | null
+          id?: string
+          provider: string
+          status: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          external_id?: string | null
+          id?: string
+          provider?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      rdm_places: {
+        Row: {
+          id: string
+          lat: number
+          lng: number
+          name: string
+          tags: string[]
+          type: string
+        }
+        Insert: {
+          id?: string
+          lat: number
+          lng: number
+          name: string
+          tags?: string[]
+          type: string
+        }
+        Update: {
+          id?: string
+          lat?: number
+          lng?: number
+          name?: string
+          tags?: string[]
+          type?: string
+        }
+        Relationships: []
+      }
+      rdm_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          evidence_hash: string
+          id: string
+          metadata: Json
+          type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          evidence_hash: string
+          id?: string
+          metadata?: Json
+          type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          evidence_hash?: string
+          id?: string
+          metadata?: Json
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rdm_transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "rdm_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rdm_users: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          role: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          role?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          role?: string
+        }
+        Relationships: []
+      }
+      rdm_wallets: {
+        Row: {
+          balance: number
+          currency: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          currency?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          currency?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rdm_wallets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "rdm_users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       room_members: {
         Row: {
@@ -732,6 +1150,39 @@ export type Database = {
           },
         ]
       }
+      stripe_webhook_failures: {
+        Row: {
+          created_at: string
+          error_message: string
+          event_id: string | null
+          event_type: string | null
+          id: string
+          payload: Json | null
+          resolved: boolean
+          retry_count: number
+        }
+        Insert: {
+          created_at?: string
+          error_message: string
+          event_id?: string | null
+          event_type?: string | null
+          id?: string
+          payload?: Json | null
+          resolved?: boolean
+          retry_count?: number
+        }
+        Update: {
+          created_at?: string
+          error_message?: string
+          event_id?: string | null
+          event_type?: string | null
+          id?: string
+          payload?: Json | null
+          resolved?: boolean
+          retry_count?: number
+        }
+        Relationships: []
+      }
       support_tickets: {
         Row: {
           created_at: string | null
@@ -758,6 +1209,158 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      tamv_federation_ring: {
+        Row: {
+          id: string
+          last_heartbeat: string
+          meta: Json | null
+          node_name: string
+          region: string | null
+          status: string
+        }
+        Insert: {
+          id?: string
+          last_heartbeat?: string
+          meta?: Json | null
+          node_name: string
+          region?: string | null
+          status?: string
+        }
+        Update: {
+          id?: string
+          last_heartbeat?: string
+          meta?: Json | null
+          node_name?: string
+          region?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      tamv_kernel_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          message: string | null
+          payload: Json | null
+          severity: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          message?: string | null
+          payload?: Json | null
+          severity?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          message?: string | null
+          payload?: Json | null
+          severity?: string | null
+        }
+        Relationships: []
+      }
+      tamvcrums_logs: {
+        Row: {
+          created_at: string
+          ecg_rhythm: number | null
+          emotional_state: Json | null
+          event_type: string
+          federation_id: string | null
+          id: string
+          payload: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          ecg_rhythm?: number | null
+          emotional_state?: Json | null
+          event_type: string
+          federation_id?: string | null
+          id?: string
+          payload?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          ecg_rhythm?: number | null
+          emotional_state?: Json | null
+          event_type?: string
+          federation_id?: string | null
+          id?: string
+          payload?: Json | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      tts_jobs: {
+        Row: {
+          audio_url: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          lesson_id: string | null
+          status: string
+          updated_at: string
+          voice: string | null
+        }
+        Insert: {
+          audio_url?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          lesson_id?: string | null
+          status?: string
+          updated_at?: string
+          voice?: string | null
+        }
+        Update: {
+          audio_url?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          lesson_id?: string | null
+          status?: string
+          updated_at?: string
+          voice?: string | null
+        }
+        Relationships: []
+      }
+      user_badges: {
+        Row: {
+          awarded_at: string
+          badge_id: string
+          id: string
+          tokens_awarded: number
+          user_id: string
+        }
+        Insert: {
+          awarded_at?: string
+          badge_id: string
+          id?: string
+          tokens_awarded?: number
+          user_id: string
+        }
+        Update: {
+          awarded_at?: string
+          badge_id?: string
+          id?: string
+          tokens_awarded?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_progress: {
         Row: {
@@ -816,6 +1419,48 @@ export type Database = {
         }
         Relationships: []
       }
+      utamv_ai_logs: {
+        Row: {
+          academic_area: string | null
+          academic_subarea: string | null
+          bloom_level: string | null
+          created_at: string
+          foundation_confidence: number | null
+          foundation_type: string | null
+          id: string
+          prompt: string
+          request_type: string | null
+          risk_flags: string[] | null
+          user_id: string
+        }
+        Insert: {
+          academic_area?: string | null
+          academic_subarea?: string | null
+          bloom_level?: string | null
+          created_at?: string
+          foundation_confidence?: number | null
+          foundation_type?: string | null
+          id?: string
+          prompt: string
+          request_type?: string | null
+          risk_flags?: string[] | null
+          user_id: string
+        }
+        Update: {
+          academic_area?: string | null
+          academic_subarea?: string | null
+          bloom_level?: string | null
+          created_at?: string
+          foundation_confidence?: number | null
+          foundation_type?: string | null
+          id?: string
+          prompt?: string
+          request_type?: string | null
+          risk_flags?: string[] | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       admin_user_progress: {
@@ -835,6 +1480,87 @@ export type Database = {
         }
         Relationships: []
       }
+      course_modules: {
+        Row: {
+          content: string | null
+          course_id: string | null
+          created_at: string | null
+          description: string | null
+          id: string | null
+          image_url: string | null
+          is_free_preview: boolean | null
+          order_index: number | null
+          title: string | null
+        }
+        Insert: {
+          content?: string | null
+          course_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          image_url?: string | null
+          is_free_preview?: never
+          order_index?: number | null
+          title?: string | null
+        }
+        Update: {
+          content?: string | null
+          course_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          image_url?: string | null
+          is_free_preview?: never
+          order_index?: number | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "modules_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "admin_user_progress"
+            referencedColumns: ["course_id"]
+          },
+          {
+            foreignKeyName: "modules_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leaderboard_view: {
+        Row: {
+          avatar_url: string | null
+          badges_count: number | null
+          display_name: string | null
+          lessons_completed: number | null
+          level: number | null
+          tokens: number | null
+          user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          badges_count?: never
+          display_name?: never
+          lessons_completed?: never
+          level?: never
+          tokens?: never
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          badges_count?: never
+          display_name?: never
+          lessons_completed?: never
+          level?: never
+          tokens?: never
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       check_rate_limit: {
@@ -844,6 +1570,10 @@ export type Database = {
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
+      }
+      grant_badge: {
+        Args: { _badge_code: string; _user_id: string }
+        Returns: Json
       }
       has_course_access: {
         Args: { p_course_id: string; p_user_id: string }
